@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   prepare: [
     "@semantic-release/changelog",
     "@semantic-release/npm",
