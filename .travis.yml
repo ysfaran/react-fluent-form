@@ -1,26 +1,14 @@
 language: node_js
 node_js: lts/*
-cache:
-  directories:
-    - node_modules
-stages:
-  - build
-  - test
-  - name: deploy
-    if: branch = master
-jobs:
-  include:
-    - stage: build
-      script:
-        - npm run build:package
-    - stage: test
-      script:
-        - npm run test:package
-      after_success:
-        - npm run coveralls
-    - stage: deploy
-      deploy:
-        provider: script
-        skip_cleanup: true
-        script:
-          - npx semantic-release
+script:
+  - npm run build:package
+  - npm run test:package
+after_success:
+  - npm run coveralls
+deploy:
+  provider: script
+  skip_cleanup: true
+  script:
+    - npx semantic-release
+  on:
+    branch: master
