@@ -1,0 +1,89 @@
+{
+  "name": "react-fluent-form",
+  "version": "0.0.0",
+  "description": "Describe your forms fluently",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "module": "dist/index.es.js",
+  "jsnext:main": "dist/index.es.js",
+  "author": "Yusuf Aran <yusuf.aran@outlook.de>",
+  "license": "MIT",
+  "repository": "ysfaran/react-fluent-form",
+  "homepage": "https://github.com/ysfaran/react-fluent-form/",
+  "bugs": {
+    "url": "https://github.com/ysfaran/react-fluent-form/issues"
+  },
+  "scripts": {
+    "clean:dist": "rimraf dist",
+    "clean:tmp": "rimraf tmp",
+    "clean": "npm-run-all clean:dist clean:tmp",
+    "build": "rollup -c",
+    "build:watch": "rollup -c -w",
+    "build:package": "npm-run-all clean build clean:tmp",
+    "prettier-watch": "onchange \"**/*\" --exclude dist/**/* --exclude node_modules/**/* -- prettier --write {{changed}}",
+    "start": "npm-run-all --parallel build:watch prettier-watch",
+    "test": "jest",
+    "test:watch": "jest --watchAll",
+    "test:lint": "eslint \"src/**\" \"test/**\"",
+    "test:coverage": "jest --coverage",
+    "test:package": "npm-run-all test:lint test:coverage",
+    "coveralls": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {},
+  "peerDependencies": {
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.8.4",
+    "@babel/preset-react": "^7.8.3",
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-conventional": "^8.3.4",
+    "@testing-library/jest-dom": "^5.1.1",
+    "@testing-library/react": "^9.4.0",
+    "@testing-library/react-hooks": "^3.2.1",
+    "@types/jest": "^24.9.1",
+    "@types/react": "^16.9.19",
+    "@types/react-dom": "^16.9.5",
+    "@types/yup": "^0.26.30",
+    "@typescript-eslint/eslint-plugin": "^2.19.0",
+    "@typescript-eslint/parser": "^2.19.0",
+    "babel-jest": "^24.9.0",
+    "coveralls": "^3.0.9",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-react": "^7.18.3",
+    "eslint-plugin-react-hooks": "^2.3.0",
+    "husky": "^4.2.2",
+    "jest": "^25.1.0",
+    "npm-run-all": "^4.1.5",
+    "onchange": "6.1.0",
+    "prettier": "^1.19.1",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-test-renderer": "^16.12.0",
+    "rimraf": "^3.0.1",
+    "rollup": "^1.31.0",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-dts": "^1.2.1",
+    "rollup-plugin-typescript2": "^0.25.3",
+    "ts-jest": "^25.2.0",
+    "typescript": "^3.7.5",
+    "yup": "^0.27.0"
+  },
+  "keywords": [
+    "react",
+    "form",
+    "hook",
+    "validation",
+    "fluent"
+  ],
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  }
+}
