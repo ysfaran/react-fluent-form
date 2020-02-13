@@ -186,7 +186,7 @@ It's recommended to add custom fields using [`addField`](#addfield).
 
 ### Type
 
-Instance of #### `FieldCreator`
+Instance of `FieldCreator`
 
 ### Description
 
