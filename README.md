@@ -7,6 +7,10 @@
 </h1>
 
 <p align="center">
+  <a href="https://www.npmjs.com/package/react-fluent-form">
+    <img src="https://img.shields.io/npm/v/react-fluent-form.svg" alt="Current Release" />
+  </a>
+
   <a href="https://travis-ci.org/ysfaran/react-fluent-form">
     <img src="https://travis-ci.org/ysfaran/react-fluent-form.svg?branch=master" alt="Build Status"/>
   </a>
