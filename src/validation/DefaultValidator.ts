@@ -8,6 +8,7 @@ import {
   ValidateYupSchemaArgs,
   Validations
 } from "../types";
+import { isYupSchema } from "../utils/isYupSchema";
 import { Validator } from "./Validator";
 
 export class DefaultValidator<
@@ -76,7 +77,7 @@ export class DefaultValidator<
         validate: validate as ValidateFunction<ValuesType, K>,
         context
       });
-    } else if (typeof validate === "object" && validate.validateSync) {
+    } else if (isYupSchema(validate)) {
       return this.validateYupSchema({
         value,
         values,

@@ -5,26 +5,18 @@ import { act, renderHook } from "@testing-library/react-hooks";
 
 import { createForm, field, useFluentForm } from "../src";
 import { renderWithFluentForm } from "./test-utils/renderWithFluentForm";
-
-// type Coordinates = {
-//   x: string;
-//   y: string;
-// };
-// const config = createForm<Coordinates>()({
-//   x: field.text().validateOnChange(),
-//   y: field.text()
-// })
-
-// config.withValidation({
-//   x: (value) => undefined,
-// });
+import {
+  AgeModel,
+  CarModel,
+  ColorModel,
+  CommentModel,
+  MultiColorModel,
+  NameModel,
+  SendEmailModel
+} from "./types";
 
 describe("useFluentForm (fields)", () => {
   describe("text", () => {
-    type NameModel = {
-      name: string;
-    };
-
     it("is by default not touched and empty string", () => {
       const formConfig = createForm<NameModel>()({
         name: field.text()
@@ -94,10 +86,6 @@ describe("useFluentForm (fields)", () => {
   });
 
   describe("checkbox", () => {
-    type SendEmailModel = {
-      sendEmail: boolean;
-    };
-
     it("is by default not touched and false", () => {
       const formConfig = createForm<SendEmailModel>()({
         sendEmail: field.checkbox().type("checkbox") // for 100% coverage
@@ -165,10 +153,6 @@ describe("useFluentForm (fields)", () => {
   });
 
   describe("radio", () => {
-    type ColorModel = {
-      color: string;
-    };
-
     it("is by default not touched and empty string", () => {
       const formConfig = createForm<ColorModel>()({
         color: field
@@ -323,11 +307,6 @@ describe("useFluentForm (fields)", () => {
     });
 
     it("works with multiple radio button groups", () => {
-      type MultiColorModel = {
-        firstColor: string;
-        secondColor: string;
-      };
-
       const formConfig = createForm<MultiColorModel>()({
         firstColor: field.radio().name("color1"),
         secondColor: field.radio().name("color2")
@@ -372,10 +351,6 @@ describe("useFluentForm (fields)", () => {
   });
 
   describe("select", () => {
-    type CarModel = {
-      brand: string;
-    };
-
     it("is by default not touched and empty string", () => {
       const formConfig = createForm<CarModel>()({
         brand: field.select()
@@ -466,10 +441,6 @@ describe("useFluentForm (fields)", () => {
   });
 
   describe("textarea", () => {
-    type CommentModel = {
-      comment: string;
-    };
-
     it("is by default not touched and empty string", () => {
       const formConfig = createForm<CommentModel>()({
         comment: field.textarea()
@@ -539,10 +510,6 @@ describe("useFluentForm (fields)", () => {
   });
 
   describe("raw", () => {
-    type AgeModel = {
-      age: number;
-    };
-
     it("is by default not touched and allows passing initial value", () => {
       const formConfig = createForm<AgeModel>()({
         age: field.raw(5)

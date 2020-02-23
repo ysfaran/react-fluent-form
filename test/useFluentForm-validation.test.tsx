@@ -6,11 +6,7 @@ import { fireEvent } from "@testing-library/react";
 import { createForm, field } from "../src";
 import { RequiredValidator } from "./test-helper/RequiredValidator";
 import { renderWithFluentForm } from "./test-utils/renderWithFluentForm";
-
-type UserModel = {
-  username: string;
-  email: string;
-};
+import { UserModel } from "./types";
 
 describe("useFluentForm (validations)", () => {
   it("allows passing custom validator", () => {

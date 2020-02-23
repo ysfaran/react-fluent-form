@@ -3,16 +3,37 @@ import * as yup from "yup";
 
 import { ValidationTrigger } from "./constants/validationTrigger";
 import { Field } from "./fields/Field";
+import { FormConfigHelper } from "./form-config";
+import { FormArrayConfig } from "./form-config/FormArrayConfig";
+import { FormArrayConfigHelper } from "./form-config/FormArrayConfigHelper";
 import { FormConfig } from "./form-config/FormConfig";
-import { FluentFormActionTypes } from "./reducer";
+import { FluentFormArrayActionTypes } from "./hooks/fluent-form-array/state-manager/reducer";
+import { FluentFormActionTypes } from "./hooks/fluent-form/state-manager/reducer";
+
+// -------------------- FluentForm --------------------
+
+export interface UseFluentForm<Config extends FormConfig> {
+  values: ExtractValuesType<Config>;
+  touched: StateTouched<ExtractValuesType<Config>>;
+  validity: StateValidity<ExtractValuesType<Config>>;
+  errors: ExtractErrorsType<Config>;
+  context: any;
+  submitting: boolean;
+  fields: MappedFields<ExtractFieldsType<Config>>;
+  setValues: (values: Partial<ExtractValuesType<Config>>) => void;
+  setInitialValues: (values: Partial<ExtractValuesType<Config>>) => void;
+  setContext: (context: any) => void;
+  handleSubmit: HandleSubmit;
+  reset: () => void;
+}
 
 // FluentForm: state
 
 export type StateValidity<ValuesType> = {
-  readonly [K in keyof ValuesType]?: boolean;
+  [K in keyof ValuesType]?: boolean;
 };
 export type StateTouched<ValuesType> = {
-  readonly [K in keyof ValuesType]?: boolean;
+  [K in keyof ValuesType]?: boolean;
 };
 export type ErrorsType<ValuesType extends object, Error = any> = {
   [K in keyof ValuesType]?: Error;
@@ -40,56 +61,190 @@ export type FluentFormReducer<
   FluentFormActionTypes<ValuesType, keyof ValuesType, Errors>
 >;
 
-export type Action<K, Payload = void> = Payload extends void
-  ? { type: K }
-  : { type: K; payload: Payload };
-
 // FluentForm: state setters
 
 export type SetValue<V> = (value: V) => void;
-export type SetValidity = (value?: boolean) => void;
 export type SetTouched = (value?: boolean) => void;
-export type SetError<E> = (value: E) => void;
 
-// FluentForm: misc
+// FluentForm: state manager
 
-export type HandleSubmitOptions = {
-  preventDefault?: boolean;
-  stopPropagation?: boolean;
-};
-
-export type FluentFormReturnType<Config extends FormConfig> = {
-  values: ExtractValuesType<Config>;
-  touched: StateTouched<ExtractValuesType<Config>>;
-  validity: StateValidity<ExtractValuesType<Config>>;
-  errors: ExtractErrorsType<Config>;
-  context: any;
-  submitting: boolean;
-  fields: MappedFields<ExtractFieldsType<Config>>;
-  setValues: (values: Partial<ExtractValuesType<Config>>) => void;
-  setInitialValues: (values: ExtractValuesType<Config>) => void;
+export interface UseFluentStateManager<Config extends FormConfig> {
+  formConfigHelperRef: React.MutableRefObject<FormConfigHelper<Config>>;
+  state: FluentFormState<ExtractValuesType<Config>, ExtractErrorsType<Config>>;
   setContext: (context: any) => void;
-  handleSubmit: (
-    success?: Function,
-    failure?: Function,
-    options?: HandleSubmitOptions
-  ) => (e?: any) => void;
+  setInitialValuesRef: (values: Partial<ExtractValuesType<Config>>) => void;
+  setSubmittingResult: (errors: ExtractErrorsType<Config>) => void;
+  setTouched: <K extends keyof ExtractFieldsType<Config>>(
+    field: K,
+    touched: boolean
+  ) => void;
+  setValidationFailure: <K extends keyof ExtractValuesType<Config>>(
+    field: K,
+    error: ExtractErrorsType<Config>
+  ) => void;
+  setValidationSuccess: <K extends keyof ExtractValuesType<Config>>(
+    field: K
+  ) => void;
+  setValue: <K extends keyof ExtractValuesType<Config>>(
+    field: K,
+    value: ExtractValuesType<Config>[K],
+    touched?: boolean
+  ) => void;
+  setValues: (values: Partial<ExtractValuesType<Config>>) => void;
+  startSubmitting: () => void;
   reset: () => void;
+}
+
+// -------------------- FluentFormArray --------------------
+
+export type FormArrayStates<
+  T extends object,
+  E extends ErrorsType<any, any>
+> = FormItem<T, E>[];
+
+export interface UseFluentFormArray<Config extends FormArrayConfig> {
+  formArray: UseFluentFormItemArgs<Config>[];
+  formStates: FormArrayStates<
+    ExtractValuesType<Config>,
+    ExtractErrorsType<Config>
+  >;
+  submitting: boolean;
+  addForm: AddForm<ExtractValuesType<Config>>;
+  removeForm: (key: FormKey) => void;
+  getFormStateByKey: (
+    key: FormKey
+  ) =>
+    | FormItem<ExtractValuesType<Config>, ExtractErrorsType<Config>>
+    | undefined;
+  handleSubmit: HandleSubmit;
+}
+
+// FluentFormArray: state
+
+export interface FluentFormArrayState<ValuesType extends object, Errors> {
+  submitting: boolean;
+  formArray: FormArrayState<ValuesType, Errors>;
+}
+
+export interface FormArrayState<ValuesType extends object, Errors> {
+  [key: string]: FormItem<ValuesType, Errors>;
+}
+
+export type FluentFormInitialStates<Config extends FormConfig> = {
+  [key in FormKey]: FluentFormState<
+    ExtractValuesType<Config>,
+    ExtractErrorsType<Config>
+  >;
 };
 
-// FormConfig
+// FluentFormArray: reducer
 
-export type ShouldValidateOneChangeArgs = {
+export type FluentFormArrayReducer<
+  ValuesType extends object,
+  Errors extends ErrorsType<ValuesType>
+> = Reducer<
+  FluentFormArrayState<ValuesType, Errors>,
+  FluentFormArrayActionTypes<ValuesType, keyof ValuesType, Errors>
+>;
+
+// FluentFormArray: item
+
+export type FormKey = number | string;
+
+export interface UseFluentFormItemArgs<Config extends FormArrayConfig> {
+  key: FormKey;
+  config: Config;
+  stateManager: UseFluentArrayStateManager<Config>;
+}
+
+export interface FormItem<ValuesType extends object, Errors>
+  extends FluentFormState<ValuesType, Errors> {
+  key: FormKey;
+  sortPosition: number;
+}
+
+export interface UseFluentFormItem<Config extends FormConfig>
+  extends UseFluentForm<Config> {
+  key: FormKey;
+  removeSelf: () => void;
+}
+
+// FluentFormArray: state manager
+
+export interface UseFluentArrayStateManager<Config extends FormArrayConfig> {
+  formConfigHelperRef: React.MutableRefObject<FormConfigHelper<Config>>;
+  formArrayConfigHelperRef: React.MutableRefObject<
+    FormArrayConfigHelper<Config>
+  >;
+  initalStateRefs: React.MutableRefObject<FluentFormInitialStates<Config>>;
+  formArray: FormItem<ExtractValuesType<Config>, ExtractErrorsType<Config>>[];
+  submitting: boolean;
+  startSubmittingArray: () => void;
+  setSubmittingResultForArray: (
+    errors: FormArrayError<ExtractErrorsType<Config>>
+  ) => void;
+  setContext: (key: FormKey, context: any) => void;
+  setInitialValuesRef: (
+    key: FormKey,
+    values: Partial<ExtractValuesType<Config>>
+  ) => void;
+  setSubmittingResult: (
+    key: FormKey,
+    errors: ExtractErrorsType<Config>
+  ) => void;
+  setTouched: <K extends keyof ExtractFieldsType<Config>>(
+    key: FormKey,
+    field: K,
+    touched: boolean
+  ) => void;
+  setValidationFailure: <K extends keyof ExtractValuesType<Config>>(
+    key: FormKey,
+    field: K,
+    error: ExtractErrorsType<Config>[K]
+  ) => void;
+  setValidationSuccess: <K extends keyof ExtractValuesType<Config>>(
+    key: FormKey,
+    field: K
+  ) => void;
+  setValue: <K extends keyof ExtractValuesType<Config>>(
+    key: FormKey,
+    field: K,
+    value: ExtractValuesType<Config>[K],
+    touched?: boolean
+  ) => void;
+  setValues: (key: FormKey, values: Partial<ExtractValuesType<Config>>) => void;
+  startSubmitting: (key: FormKey) => void;
+  reset: (key: FormKey) => void;
+  addForm: AddForm<ExtractValuesType<Config>>;
+  removeForm: (key: FormKey) => void;
+}
+
+export type FormArrayError<Errors extends ErrorsType<any>> = {
+  [key in FormKey]: Errors;
+};
+
+export interface AddFormArgs<ValuesType extends object> {
+  initialValues?: Partial<ValuesType>;
+  key?: FormKey;
+}
+
+export type AddForm<ValuesType extends object> = (
+  args?: AddFormArgs<ValuesType>
+) => void;
+
+// -------------------- FormConfig & FormArrayConfig --------------------
+
+export interface ShouldValidateOneChangeArgs {
   globalTrigger: ValidationTrigger;
   fieldTrigger: ValidationTrigger | undefined;
   touched: boolean | undefined;
-};
+}
 
-export type ShouldValidateOnBlurArgs = {
+export interface ShouldValidateOnBlurArgs {
   globalTrigger: ValidationTrigger;
   fieldTrigger: ValidationTrigger | undefined;
   touchedNow: boolean | undefined;
-};
+}
 
 export type ExtractFieldsType<
   Config extends FormConfig
@@ -103,17 +258,21 @@ export type ExtractErrorsType<
   Config extends FormConfig
 > = Config extends FormConfig<any, any, infer Error> ? Error : never;
 
-// Fields
+export type KeyGenerator<ValuesType> = (value: ValuesType) => FormKey;
+
+// -------------------- Fields --------------------
 
 export type Fields<ValuesType extends object = any> = {
   [K in keyof ValuesType]: Field<ValuesType[K]>;
 };
 
-export type ComponentPropsMapperArgs<V> = {
+// Fields: mapToComponentProps
+
+export interface ComponentPropsMapperArgs<V> {
   value: V;
   setValue: SetValue<V>;
   setTouched: SetTouched;
-};
+}
 
 export type ComponentPropsMapper<V, Props> = (
   args: ComponentPropsMapperArgs<V>
@@ -195,6 +354,8 @@ export interface RawProps<V> {
   onBlur: () => void;
 }
 
+// -------------------- Validation --------------------
+
 // Validation: DefaultValidator
 
 export type ValidateFunction<
@@ -247,3 +408,29 @@ export interface ValidateFunctionArgs<
   validate: ValidateFunction<ValuesType, K, Error>;
   context: any;
 }
+
+// -------------------- HandleSubmit --------------------
+
+export interface HandleSubmitOptions {
+  preventDefault?: boolean;
+  stopPropagation?: boolean;
+}
+
+export type HandleSubmit = (
+  success?: Function,
+  failure?: Function,
+  options?: HandleSubmitOptions
+) => (e?: any) => void;
+
+export interface UseHandleSubmitArgs {
+  submitting: boolean;
+  valid: boolean;
+  startSubmitting: () => void;
+  submitAction: () => void;
+}
+
+// -------------------- Misc --------------------
+
+export type Action<K, Payload = void> = Payload extends void
+  ? { type: K }
+  : { type: K; payload: Payload };

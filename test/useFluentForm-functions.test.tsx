@@ -6,16 +6,7 @@ import { act as actHooks, renderHook } from "@testing-library/react-hooks";
 
 import { createForm, field, useFluentForm } from "../src";
 import { renderWithFluentForm } from "./test-utils/renderWithFluentForm";
-
-type RegisterModel = {
-  username: string;
-  password: string;
-};
-
-type UserModel = {
-  username: string;
-  email: string;
-};
+import { RegisterModel, UserModel } from "./types";
 
 describe("useFluentForm (functions)", () => {
   it("allows setting values manually", () => {
