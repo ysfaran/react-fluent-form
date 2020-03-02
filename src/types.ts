@@ -217,7 +217,7 @@ export type DefaultError<
   ValuesType extends object,
   V extends Validations<ValuesType>
 > = {
-  [K in keyof V]?: DefaultValidationReturnType<V[K]>;
+  [K in keyof ValuesType]?: DefaultValidationReturnType<V[K]>;
 };
 
 export type DefaultValidationReturnType<
