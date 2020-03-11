@@ -11,6 +11,3 @@ export const createFormArray = <ValuesType extends object = any>() => {
   return <F extends Fields<ValuesType>>(fields: F) =>
     new FormArrayConfig<ValuesType, F>(fields);
 };
-
-export * from "./FormConfig";
-export * from "./FormConfigHelper";

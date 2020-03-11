@@ -1,13 +1,13 @@
 import { useCallback, useMemo } from "react";
 
+import { FormConfig } from "../../form-config/FormConfig";
 import {
   ExtractFieldsType,
   ExtractValuesType,
-  FormConfig,
   MappedFields,
   UseFluentForm,
   UseFluentStateManager
-} from "../..";
+} from "../../types";
 import { useHandleSubmit } from "../helper/useHandleSubmit";
 
 export function useFluentFormBase<Config extends FormConfig>(

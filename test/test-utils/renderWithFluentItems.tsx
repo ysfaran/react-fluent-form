@@ -2,9 +2,9 @@ import React from "react";
 
 import { render } from "@testing-library/react";
 
-import { useFluentFormArray, useFluentFormItem } from "../../src";
 import { FormArrayConfig } from "../../src/form-config/FormArrayConfig";
-import { FormConfig } from "../../src/form-config/FormConfig";
+import { useFluentFormArray } from "../../src/hooks/fluent-form-array/useFluentFormArray";
+import { useFluentFormItem } from "../../src/hooks/fluent-form-array/useFluentFormItem";
 import {
   FluentFormArrayRef,
   FluentFormItemsRef,

@@ -1,4 +1,5 @@
-import { ComponentPropsMapper, Field, InputPropsValue } from "../../src";
+import { Field } from "../../src/fields/Field";
+import { ComponentPropsMapper, InputPropsValue } from "../../src/types";
 
 export class CustomField extends Field<string, InputPropsValue> {
   constructor(initialValue = "") {

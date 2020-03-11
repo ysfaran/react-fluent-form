@@ -1,5 +1,7 @@
 import { ValueInputTypes } from "../types";
-import { CheckboxField, RadioField, TextField } from "./input";
+import { CheckboxField } from "./input/CheckboxField";
+import { RadioField } from "./input/RadioField";
+import { TextField } from "./input/TextField";
 import { RawField } from "./RawField";
 import { SelectField } from "./SelectField";
 import { TextAreaField } from "./TextAreaField";

@@ -1,8 +1,8 @@
 import { useCallback, useMemo, useReducer, useRef } from "react";
 
-import { FormConfigHelper } from "../../../form-config";
 import { FormArrayConfig } from "../../../form-config/FormArrayConfig";
 import { FormArrayConfigHelper } from "../../../form-config/FormArrayConfigHelper";
+import { FormConfigHelper } from "../../../form-config/FormConfigHelper";
 import {
   AddFormArgs,
   ExtractErrorsType,

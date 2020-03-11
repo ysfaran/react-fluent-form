@@ -3,7 +3,8 @@ import * as yup from "yup";
 
 import { fireEvent } from "@testing-library/react";
 
-import { createForm, field } from "../src";
+import { field } from "../src/fields/FieldCreatorInstance";
+import { createForm } from "../src/form-config/FormCreators";
 import { RequiredValidator } from "./test-helper/RequiredValidator";
 import { renderWithFluentForm } from "./test-utils/renderWithFluentForm";
 import { UserModel } from "./types";

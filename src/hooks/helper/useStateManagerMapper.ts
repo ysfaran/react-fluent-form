@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from "react";
 
-import { FormConfig } from "../../form-config";
+import { FormArrayConfig } from "../../form-config/FormArrayConfig";
 import {
   ExtractErrorsType,
   ExtractFieldsType,
@@ -10,7 +10,7 @@ import {
   UseFluentStateManager
 } from "../../types";
 
-export function useStateManagerMapper<Config extends FormConfig>(
+export function useStateManagerMapper<Config extends FormArrayConfig>(
   key: FormKey,
   arrayStateManager: UseFluentArrayStateManager<Config>
 ): UseFluentStateManager<Config> {

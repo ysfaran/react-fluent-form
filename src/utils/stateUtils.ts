@@ -1,4 +1,4 @@
-import { ErrorsType, StateTouched, StateValidity } from "../";
+import { ErrorsType, StateTouched, StateValidity } from "../types";
 
 export function generateAllTouchedTrue<T extends object>(keys: Array<keyof T>) {
   const touched: StateTouched<T> = {};

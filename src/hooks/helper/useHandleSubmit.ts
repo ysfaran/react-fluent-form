@@ -1,6 +1,10 @@
 import { useCallback, useRef } from "react";
 
-import { HandleSubmit, HandleSubmitOptions, UseHandleSubmitArgs } from "../..";
+import {
+  HandleSubmit,
+  HandleSubmitOptions,
+  UseHandleSubmitArgs
+} from "../../types";
 import { useEffectIgnoreFirst } from "./useEffectIgnoreFirst";
 
 export const useHandleSubmit = ({

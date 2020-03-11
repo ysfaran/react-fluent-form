@@ -1,9 +1,9 @@
 import { useCallback } from "react";
 
-import { UseFluentFormItemArgs, useStateManagerMapper } from "../..";
 import { FormArrayConfig } from "../../form-config/FormArrayConfig";
-import { UseFluentFormItem } from "../../types";
+import { UseFluentFormItem, UseFluentFormItemArgs } from "../../types";
 import { useFluentFormBase } from "../fluent-form/useFluentFormBase";
+import { useStateManagerMapper } from "../helper/useStateManagerMapper";
 
 export function useFluentFormItem<Config extends FormArrayConfig>(
   args: UseFluentFormItemArgs<Config>

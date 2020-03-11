@@ -1,4 +1,4 @@
-import { field } from "../src";
+import { field } from "../src/fields/FieldCreatorInstance";
 import { FormArrayConfig } from "../src/form-config/FormArrayConfig";
 import { FormArrayConfigHelper } from "../src/form-config/FormArrayConfigHelper";
 

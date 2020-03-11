@@ -3,8 +3,9 @@ import * as yup from "yup";
 
 import { act, fireEvent } from "@testing-library/react";
 
-import { createFormArray, field } from "../src";
+import { field } from "../src/fields/FieldCreatorInstance";
 import { FormArrayConfig } from "../src/form-config/FormArrayConfig";
+import { createFormArray } from "../src/form-config/FormCreators";
 import { renderWithFluentFormItems } from "./test-utils/renderWithFluentItems";
 import { RegisterModel, UserModel } from "./types";
 

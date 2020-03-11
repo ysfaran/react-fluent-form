@@ -3,10 +3,10 @@ import * as yup from "yup";
 
 import { ValidationTrigger } from "./constants/validationTrigger";
 import { Field } from "./fields/Field";
-import { FormConfigHelper } from "./form-config";
 import { FormArrayConfig } from "./form-config/FormArrayConfig";
 import { FormArrayConfigHelper } from "./form-config/FormArrayConfigHelper";
 import { FormConfig } from "./form-config/FormConfig";
+import { FormConfigHelper } from "./form-config/FormConfigHelper";
 import { FluentFormArrayActionTypes } from "./hooks/fluent-form-array/state-manager/reducer";
 import { FluentFormActionTypes } from "./hooks/fluent-form/state-manager/reducer";
 

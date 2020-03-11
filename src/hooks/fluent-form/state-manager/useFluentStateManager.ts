@@ -1,15 +1,15 @@
 import { useCallback, useReducer, useRef } from "react";
 
+import { FormConfig } from "../../../form-config/FormConfig";
+import { FormConfigHelper } from "../../../form-config/FormConfigHelper";
 import {
   ExtractErrorsType,
   ExtractFieldsType,
   ExtractValuesType,
   FluentFormReducer,
   FluentFormState,
-  FormConfig,
-  FormConfigHelper,
   UseFluentStateManager
-} from "../../..";
+} from "../../../types";
 import { fluentFormReducer } from "./reducer";
 
 export function useFluentStateManager<Config extends FormConfig>(

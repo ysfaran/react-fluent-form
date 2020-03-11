@@ -2,7 +2,9 @@ import * as yup from "yup";
 
 import { act, renderHook } from "@testing-library/react-hooks";
 
-import { createFormArray, field, useFluentFormArray } from "../src";
+import { field } from "../src/fields/FieldCreatorInstance";
+import { createFormArray } from "../src/form-config/FormCreators";
+import { useFluentFormArray } from "../src/hooks/fluent-form-array/useFluentFormArray";
 import { UserModel } from "./types";
 
 describe("useFluentFormArray", () => {

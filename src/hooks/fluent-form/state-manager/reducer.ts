@@ -1,4 +1,4 @@
-import { Action, ErrorsType, FluentFormState } from "../../..";
+import { Action, ErrorsType, FluentFormState } from "../../../types";
 import {
   deriveValidityFromErrors,
   generateAllTouchedTrue
