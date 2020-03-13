@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/ysfaran/react-fluent-form/compare/v1.1.0...v1.2.0) (2020-03-13)
+
+
+### Features
+
+* **hooks:** add support for form arrays ([94bb300](https://github.com/ysfaran/react-fluent-form/commit/94bb30063f41071974905ee9cd22c7b724f3af02)), closes [#11](https://github.com/ysfaran/react-fluent-form/issues/11)
+
 # [1.1.0](https://github.com/ysfaran/react-fluent-form/compare/v1.0.1...v1.1.0) (2020-03-02)
 
 
