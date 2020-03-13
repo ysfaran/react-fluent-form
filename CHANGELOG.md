@@ -1,3 +1,5 @@
+## [1.2.1](https://github.com/ysfaran/react-fluent-form/compare/v1.2.0...v1.2.1) (2020-03-13)
+
 # [1.2.0](https://github.com/ysfaran/react-fluent-form/compare/v1.1.0...v1.2.0) (2020-03-13)
 
 
