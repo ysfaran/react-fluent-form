@@ -47,21 +47,17 @@ export class FormConfig<
 
   public withValidation<V extends Validations<ValuesType>>(
     validations: V
-  ): FormConfig<ValuesType, F, DefaultError<ValuesType, V>> {
+  ): this & FormConfig<ValuesType, F, DefaultError<ValuesType, V>> {
     this._validator = new DefaultValidator(validations) as any;
     return this;
   }
 
   public withCustomValidator<V extends Validator<ValuesType, any>>(
     validator: V
-  ) {
+  ): this & FormConfig<ValuesType, F, ErrorsType<ValuesType, any>> {
     this._validator = validator as any;
     // TODO improve return type
-    return (this as any) as FormConfig<
-      ValuesType,
-      F,
-      ErrorsType<ValuesType, any>
-    >;
+    return this as any;
   }
 
   public withContext(context: object) {

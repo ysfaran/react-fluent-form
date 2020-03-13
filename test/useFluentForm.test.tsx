@@ -3,17 +3,16 @@ import React from "react";
 import { fireEvent } from "@testing-library/react";
 import { renderHook } from "@testing-library/react-hooks";
 
-import {
-  addField,
-  createForm,
-  field,
-  FieldCreator,
-  useFluentForm
-} from "../src";
+import { addField } from "../src/configuration/addField";
+import { FieldCreator } from "../src/fields/FieldCreator";
+import { field } from "../src/fields/FieldCreatorInstance";
 import { FormConfig } from "../src/form-config/FormConfig";
-import { fluentFormReducer } from "../src/reducer";
+import { createForm } from "../src/form-config/FormCreators";
+import { fluentFormReducer } from "../src/hooks/fluent-form/state-manager/reducer";
+import { useFluentForm } from "../src/hooks/fluent-form/useFluentForm";
 import { CustomField } from "./test-helper/CustomField";
 import { renderWithFluentForm } from "./test-utils/renderWithFluentForm";
+import { UsernameModel } from "./types";
 
 describe("useFluentForm", () => {
   it("initializes state from config", () => {
@@ -63,9 +62,6 @@ describe("useFluentForm", () => {
     });
 
     it("allows adding custom fields", async () => {
-      type UsernameModel = {
-        username: string;
-      };
       const formConfig = createForm<UsernameModel>()({
         username: (field as any).customField()
       });

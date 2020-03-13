@@ -1,4 +1,5 @@
-import { ErrorsType, Validator } from "../../src";
+import { ErrorsType } from "../../src/types";
+import { Validator } from "../../src/validation/Validator";
 
 export type RequiredField<T> = {
   [K in keyof T]?: "required";

@@ -1,5 +1,5 @@
-import { field } from "../src";
 import { ValidationTrigger } from "../src/constants/validationTrigger";
+import { field } from "../src/fields/FieldCreatorInstance";
 import { FormConfig } from "../src/form-config/FormConfig";
 import { FormConfigHelper } from "../src/form-config/FormConfigHelper";
 import { setTrigger } from "./test-utils/setTrigger";

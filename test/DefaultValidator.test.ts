@@ -1,11 +1,7 @@
 import * as yup from "yup";
 
 import { DefaultValidator } from "../src/validation/DefaultValidator";
-
-type TestModel = {
-  aString: string;
-  aDate: Date | null;
-};
+import { TestModel } from "./types";
 
 describe("DefaultValidator", () => {
   let testModel: TestModel;

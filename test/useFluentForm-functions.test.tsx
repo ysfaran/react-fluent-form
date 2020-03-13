@@ -4,18 +4,11 @@ import * as yup from "yup";
 import { act, fireEvent } from "@testing-library/react";
 import { act as actHooks, renderHook } from "@testing-library/react-hooks";
 
-import { createForm, field, useFluentForm } from "../src";
+import { field } from "../src/fields/FieldCreatorInstance";
+import { createForm } from "../src/form-config/FormCreators";
+import { useFluentForm } from "../src/hooks/fluent-form/useFluentForm";
 import { renderWithFluentForm } from "./test-utils/renderWithFluentForm";
-
-type RegisterModel = {
-  username: string;
-  password: string;
-};
-
-type UserModel = {
-  username: string;
-  email: string;
-};
+import { RegisterModel, UserModel } from "./types";
 
 describe("useFluentForm (functions)", () => {
   it("allows setting values manually", () => {

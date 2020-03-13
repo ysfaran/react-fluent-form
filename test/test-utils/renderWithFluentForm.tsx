@@ -2,8 +2,8 @@ import React from "react";
 
 import { render } from "@testing-library/react";
 
-import { useFluentForm } from "../../src";
 import { FormConfig } from "../../src/form-config/FormConfig";
+import { useFluentForm } from "../../src/hooks/fluent-form/useFluentForm";
 import { FluentFormRef, UiComponentProps } from "../types";
 
 export function renderWithFluentForm<C extends FormConfig>(
