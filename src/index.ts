@@ -1,3 +1,5 @@
+export * from "./types";
+
 export { addField } from "./configuration/addField";
 
 export { ValidationTrigger } from "./constants/validationTrigger";
