@@ -1,3 +1,10 @@
+## [1.2.2](https://github.com/ysfaran/react-fluent-form/compare/v1.2.1...v1.2.2) (2020-03-16)
+
+
+### Bug Fixes
+
+* **hooks:** add form items after initial array ([4c83a07](https://github.com/ysfaran/react-fluent-form/commit/4c83a07e817a0fae2164c29df938c1fe2755d7d2))
+
 ## [1.2.1](https://github.com/ysfaran/react-fluent-form/compare/v1.2.0...v1.2.1) (2020-03-13)
 
 # [1.2.0](https://github.com/ysfaran/react-fluent-form/compare/v1.1.0...v1.2.0) (2020-03-13)
