@@ -35,6 +35,39 @@ describe("useFluentFormArray", () => {
       expect(result.current.formStates).toHaveLength(1);
     });
 
+    it("adds form items after inital array", async () => {
+      const formConfig = createFormArray<UserModel>()({
+        username: field.text(),
+        email: field.email()
+      }).withInitialArray([
+        { username: "username0", email: "email0" },
+        { username: "username1", email: "email1" }
+      ]);
+
+      const { result } = renderHook(() => useFluentFormArray(formConfig));
+
+      act(() =>
+        result.current.addForm({
+          initialValues: { username: "username2", email: "email2" }
+        })
+      );
+
+      expect(result.current.formStates.map(state => state.values)).toEqual([
+        {
+          username: "username0",
+          email: "email0"
+        },
+        {
+          username: "username1",
+          email: "email1"
+        },
+        {
+          username: "username2",
+          email: "email2"
+        }
+      ]);
+    });
+
     it("allows to specify key manually", async () => {
       const formConfig = createFormArray<UserModel>()({
         username: field.text(),

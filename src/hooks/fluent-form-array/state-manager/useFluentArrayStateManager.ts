@@ -34,7 +34,8 @@ export function useFluentArrayStateManager<Config extends FormArrayConfig>(
       formArray: formArrayConfigHelper.getInitialArrayValues()
     }
   );
-  const sortPositionCountRef = useRef(0);
+
+  const sortPositionCountRef = useRef(Object.keys(state.formArray).length);
 
   const formConfigHelperRef = useRef(new FormConfigHelper(config));
   const { current: formConfigHelper } = formConfigHelperRef;
