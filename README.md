@@ -34,7 +34,7 @@ Check out the full API [here](docs/API.md). It's written for typescript!
 - **Fluent API**: Configure forms with fluent API syntax
 - **Integrated [yup](https://www.npmjs.com/package/yup) validation**: Create validation schemes fluently
 - **HTML support**: Support for all reasonable HTML `input` types, `textarea` and `select`
-- **Customizable**: Add custom fields, also from third party libraries like [react-select](https://www.npmjs.com/package/react-select) or attach a self-implented validator
+- **Customizable**: Add custom fields, also from third party libraries like [react-select](https://www.npmjs.com/package/react-select) or attach a self-implemented validator
 
 # Installation & Prerequisites
 
@@ -54,7 +54,7 @@ import { createForm, field, useFluentForm } from "react-fluent-form";
 const formConfig = createForm()({
   username: field.text(),
   gender: field.radio("gender").unselectable(), // allows to select nothing
-  password: field.password().validateOnSubmit()
+  password: field.password().validateOnSubmitOnly()
 });
 
 function RegistrationForm() {
@@ -99,7 +99,7 @@ formConfig.withValidation({
   password: value => {
     if (value.length < 8) {
       // return *any* custom error here (e.g. also complex objects or numbers)
-      return "Password is to short";
+      return "Password is too short";
     }
   }
 });
@@ -123,16 +123,15 @@ function RegistrationForm() {
       <label>
         Username*:
         <input {...fields.username} />
-        {touched.username && validity.username && (
+        {touched.username && !validity.username && (
           <div>{errors.username[0]}</div>
         )}
       </label>
       <label>
         Password*:
         <input {...fields.password} />
-        {touched.password && validity.password && (
-          <div>{errors.password[0]}</div>
-        )}
+        {/* validity.password stays undefined until the submission (validateOnSubmitOnly) */}
+        {touched.password && validity.password === false && <div>{errors.password[0]}</div>}
       </label>
       <button type="submit">Submit</button>
     </form>
@@ -185,7 +184,7 @@ formConfig.withValidation({
     is: 0,
     then: yup.string().required()
   }),
-  password: (value, values, context) => {
+  password: (value, values, { context }) => {
     if (context.x < context.y) return "error";
   }
 });
@@ -327,7 +326,7 @@ To add a custom validator a class need to be implemented which extends `Validato
 
 - `field: KeyType`: name of the field that should be validated
 - `values: ValuesType`: current values of the form
-- `context: any`: current context value
+- `context: object`: current context value
 
 For the sake of simplicity lets assume you just want to have an optional required check on your fields. An implementation could look like following:
 
