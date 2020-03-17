@@ -21,7 +21,7 @@ export class FormConfigHelper<Config extends FormConfig = any> {
 
   public getValidationResultForAllFields(
     values: ExtractValuesType<Config>,
-    context: any
+    context: object
   ): ExtractErrorsType<Config> {
     if (this.formConfig._validator) {
       return this.formConfig._validator.validateAllFields(values, context);
@@ -34,7 +34,7 @@ export class FormConfigHelper<Config extends FormConfig = any> {
     field: K,
     value: ExtractValuesType<Config>[K],
     values: ExtractValuesType<Config>,
-    context: any
+    context: object
   ): ExtractErrorsType<Config>[K] {
     if (this.formConfig._validator) {
       const error = this.formConfig._validator.validateField(

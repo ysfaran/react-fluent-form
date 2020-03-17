@@ -62,7 +62,7 @@ export function useFluentArrayStateManager<Config extends FormArrayConfig>(
         touched: {},
         validity: {},
         errors: {} as Errors,
-        context: _context,
+        context: _context || {},
         submitting: false
       };
 
@@ -107,7 +107,7 @@ export function useFluentArrayStateManager<Config extends FormArrayConfig>(
     []
   );
 
-  const setContext = useCallback((key: FormKey, context: any) => {
+  const setContext = useCallback((key: FormKey, context: object) => {
     dispatch({ type: "SET_CONTEXT", payload: { key, context } });
   }, []);
 

@@ -7,10 +7,10 @@ export abstract class Validator<
   public abstract validateField<K extends keyof ValuesType>(
     field: K,
     values: ValuesType,
-    context?: any
+    context: object
   ): Errors[K] | void;
 
-  public validateAllFields(values: ValuesType, context?: any): Errors {
+  public validateAllFields(values: ValuesType, context: object): Errors {
     const fields = Object.keys(values) as (keyof ValuesType)[];
 
     return fields.reduce(

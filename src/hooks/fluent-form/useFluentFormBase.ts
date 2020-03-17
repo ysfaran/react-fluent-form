@@ -47,7 +47,7 @@ export function useFluentFormBase<Config extends FormConfig>(
   );
 
   const setContext = useCallback(
-    (context: any) => {
+    (context: object) => {
       setContextState(context);
       if (_validateOnContextChange) {
         validateAllFields(context);

@@ -29,7 +29,7 @@ export function useFluentStateManager<Config extends FormConfig>(
     touched: {},
     validity: {},
     errors: {} as Errors,
-    context: _context,
+    context: _context || {},
     submitting: false
   });
 
@@ -38,7 +38,7 @@ export function useFluentStateManager<Config extends FormConfig>(
     intitalStateRef.current
   );
 
-  const setContext = useCallback((context: any) => {
+  const setContext = useCallback((context: object) => {
     dispatch({ type: "SET_CONTEXT", payload: { context } });
   }, []);
 

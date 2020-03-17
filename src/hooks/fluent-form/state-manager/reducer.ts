@@ -15,7 +15,7 @@ export type FluentFormActionTypes<
       { field: K; value: ValuesType[K]; touched?: boolean }
     >
   | Action<"SET_SINGLE_TOUCHED", { field: K; touched?: boolean }>
-  | Action<"SET_CONTEXT", { context: any }>
+  | Action<"SET_CONTEXT", { context: object }>
   | Action<
       "VALUE_CHANGE",
       { field: K; value: ValuesType[K]; touched?: boolean }
