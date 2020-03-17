@@ -49,7 +49,7 @@ describe("FormConfigHelper", () => {
           validity: {},
           errors: {},
           submitting: false,
-          context: undefined
+          context: {}
         },
         "1": {
           key: 1,
@@ -59,7 +59,7 @@ describe("FormConfigHelper", () => {
           validity: {},
           errors: {},
           submitting: false,
-          context: undefined
+          context: {}
         }
       });
     });

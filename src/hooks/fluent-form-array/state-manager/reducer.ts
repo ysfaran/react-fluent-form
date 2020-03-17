@@ -34,7 +34,7 @@ export type FluentFormArrayActionTypes<
       { key: FormKey; field: K; value: ValuesType[K]; touched?: boolean }
     >
   | Action<"SET_SINGLE_TOUCHED", { key: FormKey; field: K; touched?: boolean }>
-  | Action<"SET_CONTEXT", { key: FormKey; context: any }>
+  | Action<"SET_CONTEXT", { key: FormKey; context: object }>
   | Action<
       "VALUE_CHANGE",
       { key: FormKey; field: K; value: ValuesType[K]; touched?: boolean }

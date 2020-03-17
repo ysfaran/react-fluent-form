@@ -36,7 +36,7 @@ export function useStateManagerMapper<Config extends FormArrayConfig>(
   );
 
   const setContext = useCallback(
-    (context: any) => setContextWithKey(key, context),
+    (context: object) => setContextWithKey(key, context),
     [key, setContextWithKey]
   );
 

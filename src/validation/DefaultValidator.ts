@@ -63,7 +63,7 @@ export class DefaultValidator<
   public validateField<K extends keyof ValuesType>(
     field: K,
     values: ValuesType,
-    context?: any
+    context: object = {}
   ): DefaultValidationReturnType<V[K]> | void {
     const validate = this.validations[field];
     const value = values[field];

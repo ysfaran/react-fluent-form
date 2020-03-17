@@ -17,12 +17,12 @@ export interface UseFluentForm<Config extends FormConfig> {
   touched: StateTouched<ExtractValuesType<Config>>;
   validity: StateValidity<ExtractValuesType<Config>>;
   errors: ExtractErrorsType<Config>;
-  context: any;
+  context: object;
   submitting: boolean;
   fields: MappedFields<ExtractFieldsType<Config>>;
   setValues: (values: Partial<ExtractValuesType<Config>>) => void;
   setInitialValues: (values: Partial<ExtractValuesType<Config>>) => void;
-  setContext: (context: any) => void;
+  setContext: (context: object) => void;
   handleSubmit: HandleSubmit;
   reset: () => void;
 }
@@ -47,7 +47,7 @@ export interface FluentFormState<
   touched: StateTouched<ValuesType>;
   validity: StateValidity<ValuesType>;
   errors: Errors;
-  context: any;
+  context: object;
   submitting: boolean;
 }
 
@@ -71,7 +71,7 @@ export type SetTouched = (value?: boolean) => void;
 export interface UseFluentStateManager<Config extends FormConfig> {
   formConfigHelperRef: React.MutableRefObject<FormConfigHelper<Config>>;
   state: FluentFormState<ExtractValuesType<Config>, ExtractErrorsType<Config>>;
-  setContext: (context: any) => void;
+  setContext: (context: object) => void;
   setInitialValuesRef: (values: Partial<ExtractValuesType<Config>>) => void;
   setSubmittingResult: (errors: ExtractErrorsType<Config>) => void;
   setTouched: <K extends keyof ExtractFieldsType<Config>>(
@@ -183,7 +183,7 @@ export interface UseFluentArrayStateManager<Config extends FormArrayConfig> {
   setSubmittingResultForArray: (
     errors: FormArrayError<ExtractErrorsType<Config>>
   ) => void;
-  setContext: (key: FormKey, context: any) => void;
+  setContext: (key: FormKey, context: object) => void;
   setInitialValuesRef: (
     key: FormKey,
     values: Partial<ExtractValuesType<Config>>
@@ -361,11 +361,12 @@ export interface RawProps<V> {
 export type ValidateFunction<
   ValuesType,
   K extends keyof ValuesType,
-  Error = unknown
+  Error = unknown,
+  Context extends object = any
 > = (
   value: ValuesType[K],
   values: ValuesType,
-  context: any
+  context: Context
 ) => yup.Schema<any> | Error | undefined;
 
 export type Validations<ValuesType> = {
@@ -395,7 +396,7 @@ export interface ValidateYupSchemaArgs<ValuesType, K extends keyof ValuesType> {
   value: ValuesType[K];
   values: ValuesType;
   schema: yup.Schema<any>;
-  context: any;
+  context: object;
 }
 
 export interface ValidateFunctionArgs<
@@ -406,7 +407,7 @@ export interface ValidateFunctionArgs<
   value: ValuesType[K];
   values: ValuesType;
   validate: ValidateFunction<ValuesType, K, Error>;
-  context: any;
+  context: object;
 }
 
 // -------------------- HandleSubmit --------------------

@@ -335,7 +335,7 @@ describe("useFluentFormItem (multiple)", () => {
       });
       expect(formItemContext1).toEqual(formArrayContext1);
 
-      expect(formArrayContext0).toEqual(undefined);
+      expect(formArrayContext0).toEqual({});
       expect(formItemContext0).toEqual(formArrayContext0);
       expect(formArrayContext2).toEqual(formArrayContext0);
       expect(formItemContext2).toEqual(formArrayContext0);

@@ -28,7 +28,7 @@ export class FormArrayConfigHelper<Config extends FormArrayConfig = any> {
         touched: {},
         validity: {},
         errors: {} as Errors,
-        context: undefined,
+        context: {},
         submitting: false
       };
     }

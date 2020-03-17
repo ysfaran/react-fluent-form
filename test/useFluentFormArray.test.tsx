@@ -339,7 +339,7 @@ describe("useFluentFormArray", () => {
           touched: { username: true, email: true },
           validity: { username: true, email: true },
           errors: { username: undefined, email: undefined },
-          context: undefined,
+          context: {},
           submitting: false
         },
         {
@@ -352,7 +352,7 @@ describe("useFluentFormArray", () => {
           touched: { username: true, email: true },
           validity: { username: true, email: true },
           errors: { username: undefined, email: undefined },
-          context: undefined,
+          context: {},
           submitting: false
         }
       ]);
@@ -386,7 +386,7 @@ describe("useFluentFormArray", () => {
           touched: { username: true, email: true },
           validity: { username: false, email: true },
           errors: { username: expect.any(Array), email: undefined },
-          context: undefined,
+          context: {},
           submitting: false
         },
         {
@@ -399,7 +399,7 @@ describe("useFluentFormArray", () => {
           touched: { username: true, email: true },
           validity: { username: false, email: true },
           errors: { username: expect.any(Array), email: undefined },
-          context: undefined,
+          context: {},
           submitting: false
         }
       ]);

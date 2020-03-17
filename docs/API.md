@@ -52,8 +52,8 @@
   - [Description](#description-3)
   - [Generic types](#generic-types-2)
   - [Members](#members-2)
-    - [`abstract validateField: <K extends keyof ValuesType>(field: K, values: ValuesType, context?: any) => Errors[K] | void`](#abstract-validatefield-k-extends-keyof-valuestypefield-k-values-valuestype-context-any--errorsk--void)
-    - [`validateAllFields: (values: ValuesType, context?: any) => Errors`](#validateallfields-values-valuestype-context-any--errors)
+    - [`abstract validateField: <K extends keyof ValuesType>(field: K, values: ValuesType, context: object) => Errors[K] | void`](#abstract-validatefield-k-extends-keyof-valuestypefield-k-values-valuestype-context-object--errorsk--void)
+    - [`validateAllFields: (values: ValuesType, context: object) => Errors`](#validateallfields-values-valuestype-context-object--errors)
 - [`FormConfig`](#formconfig)
   - [Type](#type-5)
   - [Description](#description-4)
@@ -64,7 +64,7 @@
     - [`validateOnSubmit: () => FormConfig`](#validateonsubmit---formconfig)
     - [`validateOnContextChange: (validate: boolean = true) => FormConfig`](#validateoncontextchange-validate-boolean--true--formconfig)
     - [`withInitialValues: (values: Partial<ValuesType>) => FormConfig`](#withinitialvalues-values-partialvaluestype--formconfig)
-    - [`withContext: (context: any) => FormConfig`](#withcontext-context-any--formconfig)
+    - [`withContext: (context: object) => FormConfig`](#withcontext-context-object--formconfig)
     - [`withValidation: (validations: Validations) => FormConfig`](#withvalidation-validations-validations--formconfig)
     - [`withCustomValidator: (validator: Validator) => FormConfig`](#withcustomvalidator-validator-validator--formconfig)
 - [`useFluentForm`](#usefluentform)
@@ -75,12 +75,12 @@
     - [`touched: StateTouched`](#touched-statetouched)
     - [`validity: StateValidity`](#validity-statevalidity)
     - [`errors: ErrorsType<ValuesType, ErrorType>`](#errors-errorstypevaluestype-errortype)
-    - [`context: any`](#context-any)
+    - [`context: object`](#context-object)
     - [`submitting: boolean`](#submitting-boolean)
     - [`fields: Fields<ValuesType>`](#fields-fieldsvaluestype)
     - [`setValues: (values: Partial<ValuesType>) => void`](#setvalues-values-partialvaluestype--void)
     - [`setInitialValues: (values: Partial<ValuesType>) => void`](#setinitialvalues-values-partialvaluestype--void)
-    - [`setContext: (context: Partial<ValuesType>) => void`](#setcontext-context-partialvaluestype--void)
+    - [`setContext: (context: object) => void`](#setcontext-context-object--void)
     - [`handleSubmit: (success?: Function, failure?: Function, options?: HandleSubmitOptions) => (event: any) => void`](#handlesubmit-success-function-failure-function-options-handlesubmitoptions--event-any--void)
     - [`reset: () => void`](#reset---void)
 
@@ -334,11 +334,11 @@ Type of errors object. Needs to extend `ErrorsType`.
 
 ### Members
 
-#### `abstract validateField: <K extends keyof ValuesType>(field: K, values: ValuesType, context?: any) => Errors[K] | void`
+#### `abstract validateField: <K extends keyof ValuesType>(field: K, values: ValuesType, context: object) => Errors[K] | void`
 
 Validates one form field and returns validation error for field in case of validation failure else nothing. Needs to be overriden when custom validator is required.
 
-#### `validateAllFields: (values: ValuesType, context?: any) => Errors`
+#### `validateAllFields: (values: ValuesType, context: object) => Errors`
 
 Validates all fields based on `validateField`. Can be overriden to e.g. improve performance.
 
@@ -395,9 +395,9 @@ const formConfig = createForm<UserForm>()({
 }).withInitialValues({ email: "email@example.com" });
 ```
 
-#### `withContext: (context: any) => FormConfig`
+#### `withContext: (context: object) => FormConfig`
 
-Sets the initial context value. It needs to be an object of any type.  
+Sets the initial context value. It needs to be an **object** of any type.  
  It's recommend to wrap your context values in a `context` field (s. `withValidation` below for more details):
 
 ```ts
@@ -474,7 +474,7 @@ export class RequiredValidator<ValuesType> extends Validator<
   public validateField<K extends keyof ValuesType>(
     field: K,
     values: ValuesType,
-    _context: any // not relevant for this example
+    _context: object // not relevant for this example
   ) {
     if (this.requiredFields[field] && !values[field]) {
       return "field is required";
@@ -591,9 +591,9 @@ Possible values for each field:
 }
 ```
 
-#### `context: any`
+#### `context: object`
 
-Current context value. Initial value is `undefined`.
+Current context value. Initial value is `{}`.
 
 #### `submitting: boolean`
 
@@ -627,7 +627,7 @@ Sets values of form.
 
 Sets initial values of form. This is important when resetting a form.
 
-#### `setContext: (context: Partial<ValuesType>) => void`
+#### `setContext: (context: object) => void`
 
 Updates value of validation context. To re-validate all fields on context change `FormConfig.validateOnContextChange` can be used.
 Works well in combinations with `useEffect`.

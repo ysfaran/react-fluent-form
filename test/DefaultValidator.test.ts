@@ -21,22 +21,20 @@ describe("DefaultValidator", () => {
 
     validator.validateField = jest.fn(() => 1) as any;
 
-    const result = validator.validateAllFields(testModel, "context");
+    const result = validator.validateAllFields(testModel, {
+      context: "context"
+    });
 
     expect(result).toMatchObject({
       aString: 1,
       aDate: 1
     });
-    expect(validator.validateField).toHaveBeenCalledWith(
-      "aString",
-      testModel,
-      "context"
-    );
-    expect(validator.validateField).toHaveBeenCalledWith(
-      "aDate",
-      testModel,
-      "context"
-    );
+    expect(validator.validateField).toHaveBeenCalledWith("aString", testModel, {
+      context: "context"
+    });
+    expect(validator.validateField).toHaveBeenCalledWith("aDate", testModel, {
+      context: "context"
+    });
   });
 
   describe("validateField", () => {
