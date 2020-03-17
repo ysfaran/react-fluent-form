@@ -1,3 +1,10 @@
+## [1.2.4](https://github.com/ysfaran/react-fluent-form/compare/v1.2.3...v1.2.4) (2020-03-17)
+
+
+### Bug Fixes
+
+* **form-config:** change context type from `any` to `object` ([6cd7f87](https://github.com/ysfaran/react-fluent-form/commit/6cd7f876433223162216c4b845a2e963db43fdec))
+
 ## [1.2.3](https://github.com/ysfaran/react-fluent-form/compare/v1.2.2...v1.2.3) (2020-03-17)
 
 
