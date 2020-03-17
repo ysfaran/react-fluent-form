@@ -1,3 +1,10 @@
+## [1.2.3](https://github.com/ysfaran/react-fluent-form/compare/v1.2.2...v1.2.3) (2020-03-17)
+
+
+### Bug Fixes
+
+* **config:** remove vulnerabilities ([1e49f3f](https://github.com/ysfaran/react-fluent-form/commit/1e49f3f238f5d312ae426a8e3431a058fe1cad8c))
+
 ## [1.2.2](https://github.com/ysfaran/react-fluent-form/compare/v1.2.1...v1.2.2) (2020-03-16)
 
 
