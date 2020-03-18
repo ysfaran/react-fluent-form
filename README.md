@@ -53,7 +53,11 @@ import { createForm, field, useFluentForm } from "react-fluent-form";
 
 const formConfig = createForm()({
   username: field.text(),
-  gender: field.radio("gender").unselectable(), // allows to select nothing
+  gender: field
+    .radio()
+    .name("gender")
+    // allows to select nothing
+    .unselectable(),
   password: field.password().validateOnSubmitOnly()
 });
 
@@ -72,11 +76,11 @@ function RegistrationForm() {
         Gender:
         <label>
           male
-          <input {...fields.radio("male")} />
+          <input {...fields.gender("male")} />
         </label>
         <label>
           female
-          <input {...fields.radio("female")} />
+          <input {...fields.gender("female")} />
         </label>
       </div>
       <label>
