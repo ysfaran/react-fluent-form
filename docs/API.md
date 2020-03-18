@@ -12,7 +12,7 @@
   - [Members](#members)
     - [`validateAfterTouchOnChange: () => Field`](#validateaftertouchonchange---field)
     - [`validateOnChange: () => Field`](#validateonchange---field)
-    - [`validateOnSubmit: () => Field`](#validateonsubmit---field)
+    - [`validateOnSubmitOnly: () => Field`](#validateonsubmitonly---field)
     - [`abstract mapToComponentProps: (args: ComponentPropsMapperArgs) => ComponentProps`](#abstract-maptocomponentprops-args-componentpropsmapperargs--componentprops)
 - [`field`](#field-1)
   - [Type](#type-1)
@@ -47,29 +47,42 @@
   - [Generic types](#generic-types-1)
   - [Arguments](#arguments)
   - [Example](#example)
-- [`Validator`](#validator)
+- [`createFormArray`](#createformarray)
   - [Type](#type-4)
   - [Description](#description-3)
   - [Generic types](#generic-types-2)
+  - [Arguments](#arguments-1)
+  - [Example](#example-1)
+- [`Validator`](#validator)
+  - [Type](#type-5)
+  - [Description](#description-4)
+  - [Generic types](#generic-types-3)
   - [Members](#members-2)
     - [`abstract validateField: <K extends keyof ValuesType>(field: K, values: ValuesType, context: object) => Errors[K] | void`](#abstract-validatefield-k-extends-keyof-valuestypefield-k-values-valuestype-context-object--errorsk--void)
     - [`validateAllFields: (values: ValuesType, context: object) => Errors`](#validateallfields-values-valuestype-context-object--errors)
 - [`FormConfig`](#formconfig)
-  - [Type](#type-5)
-  - [Description](#description-4)
-  - [Generic types](#generic-types-3)
+  - [Type](#type-6)
+  - [Description](#description-5)
+  - [Generic types](#generic-types-4)
   - [Members](#members-3)
     - [`validateAfterTouchOnChange: () => FormConfig`](#validateaftertouchonchange---formconfig)
     - [`validateOnChange: () => FormConfig`](#validateonchange---formconfig)
-    - [`validateOnSubmit: () => FormConfig`](#validateonsubmit---formconfig)
+    - [`validateOnSubmitOnly: () => FormConfig`](#validateonsubmitonly---formconfig)
     - [`validateOnContextChange: (validate: boolean = true) => FormConfig`](#validateoncontextchange-validate-boolean--true--formconfig)
     - [`withInitialValues: (values: Partial<ValuesType>) => FormConfig`](#withinitialvalues-values-partialvaluestype--formconfig)
     - [`withContext: (context: object) => FormConfig`](#withcontext-context-object--formconfig)
     - [`withValidation: (validations: Validations) => FormConfig`](#withvalidation-validations-validations--formconfig)
     - [`withCustomValidator: (validator: Validator) => FormConfig`](#withcustomvalidator-validator-validator--formconfig)
+- [`FormArrayConfig`](#formarrayconfig)
+  - [Type](#type-7)
+  - [Description](#description-6)
+  - [Generic types](#generic-types-5)
+  - [Members](#members-4)
+    - [`withInitialArray: (initialArray: ValuesType[]) => FormArrayConfig`](#withinitialarray-initialarray-valuestype--formarrayconfig)
+    - [`withKeyGenerator: (generator: KeyGenerator<ValuesType>) => FormConfig`](#withkeygenerator-generator-keygeneratorvaluestype--formconfig)
 - [`useFluentForm`](#usefluentform)
-  - [Type](#type-6)
-  - [Description](#description-5)
+  - [Type](#type-8)
+  - [Description](#description-7)
   - [Return type](#return-type)
     - [`values: ValuesType`](#values-valuestype)
     - [`touched: StateTouched`](#touched-statetouched)
@@ -83,6 +96,23 @@
     - [`setContext: (context: object) => void`](#setcontext-context-object--void)
     - [`handleSubmit: (success?: Function, failure?: Function, options?: HandleSubmitOptions) => (event: any) => void`](#handlesubmit-success-function-failure-function-options-handlesubmitoptions--event-any--void)
     - [`reset: () => void`](#reset---void)
+- [`useFluentFormArray`](#usefluentformarray)
+  - [Type](#type-9)
+  - [Description](#description-8)
+  - [Return type](#return-type-1)
+    - [`formArray: UseFluentFormItemArgs[]`](#formarray-usefluentformitemargs)
+    - [`formStates: FormArrayStates`](#formstates-formarraystates)
+    - [`submitting: boolean`](#submitting-boolean-1)
+    - [`addForm: (args?: AddFormArgs) => void`](#addform-args-addformargs--void)
+    - [`removeForm: (key: string | number) => void`](#removeform-key-string--number--void)
+    - [`getFormStateByKey: (key: string | number) => FormItem | undefined`](#getformstatebykey-key-string--number--formitem--undefined)
+    - [`handleSubmit: (success?: Function, failure?: Function, options?: HandleSubmitOptions) => (event: any) => void`](#handlesubmit-success-function-failure-function-options-handlesubmitoptions--event-any--void-1)
+- [`useFluentFormItem`](#usefluentformitem)
+  - [Type](#type-10)
+  - [Description](#description-9)
+  - [Return type](#return-type-2)
+    - [`key: string | number`](#key-string--number)
+    - [`removeSelf: () => void`](#removeself---void)
 
 </details>
 
@@ -119,7 +149,7 @@ Configures field to trigger validation once it was touched, then always if it ha
 
 Configures field to trigger validation everytime it has changed and on submit.
 
-#### `validateOnSubmit: () => Field`
+#### `validateOnSubmitOnly: () => Field`
 
 Configures field to trigger validation only on submit.
 
@@ -195,8 +225,6 @@ It specifies a member function for each HTML `input` type, `select` and `textare
 
 ### Members
 
-For `input`s use following members:
-
 #### `checkbox: (initialChecked: boolean = false) => CheckboxField`
 
 #### `color: (initialValue: string = "") => TextField`
@@ -217,6 +245,39 @@ For `input`s use following members:
 
 #### `radio: (initialValue: string = "") => RadioField`
 
+Additional configuration:
+
+- `name: (value: string) => RadioField`: value for the `name` property passed to `<input />`'s
+- `unselectable: (value = true) => RadioField`: option to unselect a radio option by clicking on it again
+
+```tsx
+const formConfig = createForm()({
+  gender: field
+    .radio()
+    .name("gender")
+    // allows to select nothing
+    .unselectable()
+});
+
+const GenderForm = () => {
+  const { fields } = useFluentForm(formConfig);
+
+  return (
+    <div>
+      Gender:
+      <label>
+        male
+        <input {...fields.gender("male")} />
+      </label>
+      <label>
+        female
+        <input {...fields.gender("female")} />
+      </label>
+    </div>
+  );
+};
+```
+
 #### `range: (initialValue: string = "") => TextField`
 
 #### `search: (initialValue: string = "") => TextField`
@@ -231,15 +292,59 @@ For `input`s use following members:
 
 #### `week: (initialValue: string = "") => TextField`
 
-For `select`, `textarea` and `raw` use following members:
-
-> **NOTE:** For `raw` fields an initial value is required!
-
 #### `textarea: (initialValue: string = "") => TextAreaField`
 
 #### `select: (initialValue: string = "") => SelectField`
 
+```tsx
+const formConfig = createForm()({
+  role: field.select("admin")
+});
+
+const RolesForm = () => {
+  const { fields } = useFluentForm(formConfig);
+
+  return (
+    <select {...fields.role.select}>
+      <option {...fields.role.option("admin")}>Admin</option>
+      <option {...fields.role.option("user")}>User</option>
+    </select>
+  );
+};
+```
+
 #### `raw: <ValueType>(initialValue: ValueType) => RawField`
+
+For components like [react-datepicker](https://www.npmjs.com/package/react-datepicker) it's not necessary to implement a custom field.
+`react-fluent-form` comes with a raw field type which works for components with following characteristics:
+
+- it has `value` and a `onChange` prop
+- `value` has the same type as the first parameter of `onChange` handler
+- it optionally has a `onBlur` prop to indicate when the field is touched
+
+For raw fields it's required to pass an initial value:
+
+```jsx
+const formConfig = createForm()({
+  dateOfBirth: field.raw(new Date())
+});
+
+const MyForm = () => {
+  const { fields } = useFluentForm(formConfig);
+};
+```
+
+The type of `fields` object would look like this:
+
+```ts
+type FieldsType = {
+  dateOfBirth: {
+    value: Date;
+    onChange: (newValue: Date) => void;
+    onBlur: () => void; // will just set the "touched" state to true
+  };
+};
+```
 
 ## `addField`
 
@@ -257,11 +362,14 @@ import { addField } from "react-fluent-form";
 // only necessary for typescript because types need to be known at compile time
 declare module "react-fluent-form" {
   interface FieldCreator {
-    clearableText: (initalValue: string) => ClearableTextField;
+    clearableText: (initalValue?: string) => ClearableTextField;
   }
 }
 
-addField("clearableText", intialValue => new ClearableTextField(initialValue));
+addField(
+  "clearableText",
+  (initalValue = "") => new ClearableTextField(initialValue)
+);
 ```
 
 Usage:
@@ -280,7 +388,7 @@ const formConfig = createForm()({
 
 ### Description
 
-`creatForm` is a curried function that can be used to create an instance of [`FormConfig`](#formconfig).
+`createForm` is a curried function that can be used to create an instance of [`FormConfig`](#formconfig).
 
 > **_Why is it curried?_**  
 > Typescript has a missing feature called [`partial type argument inference`](https://github.com/Microsoft/TypeScript/pull/26349) which has some work arrounds, one of them is to use curried functions. This issue is well known and part of typescript current roadmap. Once this feature is introduced the API will be changed accordingly.
@@ -295,7 +403,47 @@ Type of field values.
 
 `field: Fields`
 
-Object of fields (s. [Field](#field) for configuration details).  
+Object of fields (see [Field](#field) for configuration details).  
+Needs to match with properties of `ValuesType`.
+
+### Example
+
+```ts
+interface RegistrationForm {
+  username: string;
+  password: string;
+}
+
+const formConfig = createForm<RegistrationForm>()({
+  username: field.text(),
+  password: field.password()
+});
+
+// values will be of type RegistrationForm
+const { values } = useFluentForm(formConfig);
+```
+
+## `createFormArray`
+
+### Type
+
+`<ValuesType>() => (fields: Fields) => FormArrayConfig`
+
+### Description
+
+`creatFormArray` is a curried function - like [`createForm`](#createform) - that can be used to create an instance of [`FormArrayConfig`](#formarrayconfig).
+
+### Generic types
+
+`ValuesType`
+
+Type of field values.
+
+### Arguments
+
+`field: Fields`
+
+Object of fields (see [Field](#field) for configuration details).  
 Needs to match with properties of `ValuesType`.
 
 ### Example
@@ -320,7 +468,7 @@ const { values } = useFluentForm(formConfig);
 
 ### Description
 
-Base class of `DefaultValidator`, which is used for form validation by default (s. `withValidation` below). Can be extended to add custom validator (s. `withCustomValidator` below).
+Base class of `DefaultValidator`, which is used for form validation by default (see [`withValidation`](#withvalidation-validations-validations--formconfig)). Can be extended to add custom validator (see [`withCustomValidator`](#withcustomvalidator-validator-validator--formconfig)).
 
 ### Generic types
 
@@ -336,7 +484,7 @@ Type of errors object. Needs to extend `ErrorsType`.
 
 #### `abstract validateField: <K extends keyof ValuesType>(field: K, values: ValuesType, context: object) => Errors[K] | void`
 
-Validates one form field and returns validation error for field in case of validation failure else nothing. Needs to be overriden when custom validator is required.
+Validates one form field and returns validation error for field in case of validation failure else nothing. Needs to be overriden when custom validator is implemented.
 
 #### `validateAllFields: (values: ValuesType, context: object) => Errors`
 
@@ -351,7 +499,7 @@ Validates all fields based on `validateField`. Can be overriden to e.g. improve 
 ### Description
 
 Stores configuration of form like validation and fields. It's the only argument that needs to be passed to [useFluentForm](#usefluentform).  
-It's recommended to use [createForm](#createform) to create a form config.
+It's recommended to use [createForm](#createform) to create an instance of `FormConfig`.
 
 ### Generic types
 
@@ -375,7 +523,7 @@ Configures validation for all fields to trigger once they touched, then always i
 
 Configures validation for all fields to trigger everytime they have changed and on submit.
 
-#### `validateOnSubmit: () => FormConfig`
+#### `validateOnSubmitOnly: () => FormConfig`
 
 Configures validation for all fields to trigger only on submit.
 
@@ -397,8 +545,8 @@ const formConfig = createForm<UserForm>()({
 
 #### `withContext: (context: object) => FormConfig`
 
-Sets the initial context value. It needs to be an **object** of any type.  
- It's recommend to wrap your context values in a `context` field (s. `withValidation` below for more details):
+Sets the initial context value. **It needs to be an object of any type**.  
+ It's recommend to wrap context values in a `context` field (see `withValidation` below for more details):
 
 ```ts
 const formConfig = createForm<UserForm>()({
@@ -424,7 +572,7 @@ A `validate function` receives following values as paramater:
 
 Using a `yup.Schema` will always result in an `string[]` error type.
 In contrast to that `validate function` allow any kind of error type to be returned. Returning nothing (`undefined`) will indicate that there is no validation error.  
-On top of that also a `yup.Schema` can be return by a `validate functions` which enables conditional `yup.Schema` validation. In this case the error type will also be from type `string[]`. To say it in other words: returning a `yup.Schema` in a `validate function` will result in an evaulation of the returned `yup.Schema`.
+On top of that also a `yup.Schema` can be returned by a `validate functions` which enables conditional `yup.Schema` validation. In this case the error type will also be from type `string[]`. To say it in other words: returning a `yup.Schema` in a `validate function` will result in an evaulation of the returned `yup.Schema`.
 
 > **IMPORTANT:**  
 > When using `yup validation` other form fields need to be accessed with a leading `$` (here `$lastName`) which usually means the value is coming from the context. In fact other form values are passed as context to the `yup schema` for each field during validation execution.  
@@ -496,19 +644,61 @@ const formConfig = createForm()({
 });
 ```
 
+## `FormArrayConfig`
+
+### Type
+
+`class`, extends [`FormConfig`](#formconfig)
+
+### Description
+
+Stores configuration of form array like validation and fields, but also configuration about the array (e.g. inital array values). It's the only argument that needs to be passed to [useFluentFormArray](#usefluentformarray).  
+It's recommended to use [createFormArray](#createformarray) to create a form array config.
+
+### Generic types
+
+`ValuesType`
+
+Type of field values.
+
+### Members
+
+> **NOTE:** Every member function returns `this` to enable fluent API.
+
+For form item level configuration refer to [`FormConfig`](#formconfig) since it has the same configuration options as `FormArrayConfig`. Following members are **only** relevant on array level:
+
+#### `withInitialArray: (initialArray: ValuesType[]) => FormArrayConfig`
+
+Sets initial values of the form array.
+
+#### `withKeyGenerator: (generator: KeyGenerator<ValuesType>) => FormConfig`
+
+To identify items in a form array they need a unique key assigned to them. On default keys are generated with a key counter. That behaviour can be overriden by specifying a `KeyGenerator` which has type `(item: ValuesType) => string | number`:
+
+```ts
+interface UserRoleForm {
+  username: string;
+  role: string;
+}
+
+const arrayConfig = createFormArray<UserRoleForm>()({
+  username: field.text(),
+  role: field.select()
+}).withKeyGenerator(item => item.username);
+```
+
 ## `useFluentForm`
 
 ### Type
 
-`<Config extends FormConfig>(config: Config) => FluentFormReturnType`
+`<Config extends FormConfig>(config: Config) => UseFluentForm`
 
 ### Description
 
 Core react hook of this library.
-Expects only a [`FormConfig`](#formconfig) as parameter:
+Expects a [`FormConfig`](#formconfig) as parameter:
 
 ```ts
-// ValuesType
 type RegistrationForm = { username: string; password: string };
 
 const formConfig = createForm<RegistrationForm>()({
@@ -542,7 +732,7 @@ Contains current values of form. Initial values are comming from [`FormConfig`](
 
 Contains information about the touched state of each field.
 Initial value is `{}`.  
-Usually field are touched once `onBlur` event was triggered for the field.
+Usually fields are touched once `onBlur` event was triggered for the field.
 This can help to trigger validations depended on the specified validation trigger.
 
 Possible values for each field:
@@ -601,7 +791,7 @@ Current context value. Initial value is `{}`.
 
 #### `fields: Fields<ValuesType>`
 
-Contains props for each component which resulted from evaluation of `mapToComponentProps` member function of each field (s. [`Field`](#field)).
+Contains props for each component which resulted from evaluation of `mapToComponentProps` member function of each field (see [`Field`](#field)).
 
 ```tsx
 const formConfig = createForm<RegistrationForm>()({
@@ -630,7 +820,7 @@ Sets initial values of form. This is important when resetting a form.
 #### `setContext: (context: object) => void`
 
 Updates value of validation context. To re-validate all fields on context change `FormConfig.validateOnContextChange` can be used.
-Works well in combinations with `useEffect`.
+Works well in combination with `useEffect`.
 
 ```jsx
 const { setContext } = useFluentForm(formConfig.validateOnContextChange());
@@ -677,7 +867,7 @@ function LoginForm() {
     <form onSubmit={handleSubmit(
       handleSubmitSuccess,
       handleSubmitFailure,
-      // these are default options
+      // these are the default values
       { preventDefault: true, stopPropagtion: true }
     )}>
         <input {...fields.username} />
@@ -691,3 +881,168 @@ function LoginForm() {
 #### `reset: () => void`
 
 Sets complete form state to inital state. Initial values can be modified using `setInitialValues`.
+
+## `useFluentFormArray`
+
+### Type
+
+`<Config extends FormArrayConfig>(config: Config) => UseFluentFormArray`
+
+### Description
+
+Hook to create form arrays.
+Expects a [`FormArrayConfig`](#formarrayconfig) as parameter:
+
+```ts
+type UserRoleForm = { username: string; role: string };
+
+const arrayConfig = createFormArray<UserRoleForm>()({
+  username: field.text(),
+  role: field.select()
+}).withInitalArray([{ username: "ysfaran", role: "admin" }]);
+
+const {
+  formArray,
+  formStates,
+  submitting,
+  addForm,
+  removeForm,
+  getFormStateByKey,
+  handleSubmit
+} = useFluentFormArray(arrayConfig);
+```
+
+### Return type
+
+#### `formArray: UseFluentFormItemArgs[]`
+
+Contains all items that need to be passed to [`useFluentFormItem`](#usefluentformitem).
+
+```tsx
+const UserRoleFormArray = () => {
+  const { formArray } = useFluentFormArray(arrayConfig);
+
+  return formArray.map(item => <UserRoleForm key={item.key} formItem={item} />);
+};
+```
+
+```tsx
+interface UserRoleFormProps {
+  formItem: UseFluentFormItemArgs<typeof arrayConfig>;
+}
+
+const UserRoleForm: React.FC<UserRoleFormProps> = ({ formItem }) => {
+  const { fields } = useFluentFormItem(arrayConfig);
+
+  return (
+    <div>
+      <label>
+        Username:
+        <input {...fields.username} />
+      </label>
+      {/* ... */}
+    </div>
+  );
+};
+```
+
+#### `formStates: FormArrayStates`
+
+Array that contains information about states of each form item.
+The state is equally structured as the state returned by [`useFluentForm`](#usefluentform), but contains an additional `key` prop to identify the item:
+
+```tsx
+const { formStates } = useFluentFormArray(arrayConfig);
+const { key, values, errors /* ... */ } = formStates[0];
+```
+
+#### `submitting: boolean`
+
+`true` if form array is currently submitting else `false`.
+
+#### `addForm: (args?: AddFormArgs) => void`
+
+Add new item to form array.
+
+`AddFormArgs`:
+
+```ts
+{
+  // default: initial values of FormArrayConfig
+  initialValues?: Partial<ValuesType>;
+  // default: key counter or key generator passed to withKeyGenerator
+  key?: string | number;
+}
+```
+
+#### `removeForm: (key: string | number) => void`
+
+Removes form item with specified `key` from the form array.
+
+#### `getFormStateByKey: (key: string | number) => FormItem | undefined`
+
+Returns state of form item with specified key or `undefined` in case item is not in the form array.
+
+#### `handleSubmit: (success?: Function, failure?: Function, options?: HandleSubmitOptions) => (event: any) => void`
+
+Returns a submit handler. When this handler is called validation for all fields in all form items will be triggered. Works equally to [`handleSubmit`](#handlesubmit-success-function-failure-function-options-handlesubmitoptions--event-any--void) returned by [`useFluentForm`](#usefluentform).
+
+## `useFluentFormItem`
+
+### Type
+
+`<Config extends FormArrayConfig>(args: UseFluentFormItemArgs): UseFluentFormItem`
+
+### Description
+
+Hook to create form item.
+Expects `UseFluentFormItemArgs`, which is an item of [`formArray`](#formarray-usefluentformitemargs), as parameter.
+
+```tsx
+const UserRoleFormArray = () => {
+  const { formArray } = useFluentFormArray(arrayConfig);
+
+  return formArray.map(item => <UserRoleForm key={item.key} formItem={item} />);
+};
+```
+
+```tsx
+interface UserRoleFormProps {
+  formItem: UseFluentFormItemArgs<typeof arrayConfig>;
+}
+
+const UserRoleForm: React.FC<UserRoleFormProps> = ({ formItem }) => {
+  const {
+    key,
+    values,
+    touched,
+    validity,
+    // ...
+    handleSubmit,
+    reset,
+    removeSelf
+  } = useFluentFormItem(formItem);
+
+  return (
+    <div>
+      <label>
+        Username:
+        <input {...fields.username} />
+      </label>
+      {/* ... */}
+    </div>
+  );
+};
+```
+
+### Return type
+
+Is equal to return type of [`useFluentForm`](#usefluentform), with following additional properties:
+
+#### `key: string | number`
+
+Unique key that is used to identify a form item.
+
+#### `removeSelf: () => void`
+
+Removes itself from the form array.
