@@ -1,3 +1,11 @@
+### [1.2.5](https://github.com/ysfaran/react-fluent-form/compare/v1.2.4...v1.2.5) (2020-03-19)
+
+
+### Documentation
+
+* **readme:** add documentation for form arrays ([56105c7](https://github.com/ysfaran/react-fluent-form/commit/56105c7813737111ab1de39038a655fec4c08a20))
+* **readme:** fix wrong example for radio field ([63744d8](https://github.com/ysfaran/react-fluent-form/commit/63744d8b14d4a143a6191f6f3c28ebbab6b3dccf))
+
 ## [1.2.4](https://github.com/ysfaran/react-fluent-form/compare/v1.2.3...v1.2.4) (2020-03-17)
 
 
