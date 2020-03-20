@@ -19,7 +19,16 @@ module.exports = {
     "scope-enum": [
       2,
       "always",
-      ["config", "dev", "form-config", "hooks", "fields", "typings", "readme"]
+      [
+        "config",
+        "dev",
+        "form",
+        "form-array",
+        "form-item",
+        "fields",
+        "typings",
+        "readme"
+      ]
     ]
   }
 };
