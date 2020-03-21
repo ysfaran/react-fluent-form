@@ -3,6 +3,7 @@ import {
   ExtractErrorsType,
   ExtractFieldsType,
   ExtractValuesType,
+  FluentFormState,
   MappedFields
 } from "../types";
 import { FormConfig } from "./FormConfig";
@@ -12,6 +13,19 @@ export class FormConfigHelper<Config extends FormConfig = any> {
 
   constructor(formConfig: Config) {
     this.formConfig = formConfig;
+  }
+
+  public getInitialState(
+    initialValues: Partial<ExtractValuesType<Config>> = {}
+  ): FluentFormState<ExtractValuesType<Config>, ExtractErrorsType<Config>> {
+    return {
+      values: { ...this.getInitialValues(), ...initialValues },
+      touched: {},
+      validity: {},
+      errors: {} as ExtractErrorsType<Config>,
+      context: this.formConfig._context || {},
+      submitting: false
+    };
   }
 
   public getInitialValues(): ExtractValuesType<Config> {

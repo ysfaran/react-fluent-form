@@ -1,10 +1,13 @@
+import React from "react";
 import * as yup from "yup";
 
-import { act, renderHook } from "@testing-library/react-hooks";
+import { act, fireEvent } from "@testing-library/react";
+import { act as actHooks, renderHook } from "@testing-library/react-hooks";
 
 import { field } from "../src/fields/FieldCreatorInstance";
 import { createFormArray } from "../src/form-config/FormCreators";
 import { useFluentFormArray } from "../src/hooks/fluent-form-array/useFluentFormArray";
+import { renderWithFluentFormItems } from "./test-utils/renderWithFluentItems";
 import { UserModel } from "./types";
 
 describe("useFluentFormArray", () => {
@@ -29,7 +32,7 @@ describe("useFluentFormArray", () => {
 
       const { result } = renderHook(() => useFluentFormArray(formConfig));
 
-      act(() => result.current.addForm());
+      actHooks(() => result.current.addForm());
 
       expect(result.current.formArray).toHaveLength(1);
       expect(result.current.formStates).toHaveLength(1);
@@ -46,7 +49,7 @@ describe("useFluentFormArray", () => {
 
       const { result } = renderHook(() => useFluentFormArray(formConfig));
 
-      act(() =>
+      actHooks(() =>
         result.current.addForm({
           initialValues: { username: "username2", email: "email2" }
         })
@@ -76,7 +79,7 @@ describe("useFluentFormArray", () => {
 
       const { result } = renderHook(() => useFluentFormArray(formConfig));
 
-      act(() => result.current.addForm({ key: "some-custom-key" }));
+      actHooks(() => result.current.addForm({ key: "some-custom-key" }));
 
       expect(result.current.formStates[0].key).toBe("some-custom-key");
     });
@@ -89,12 +92,12 @@ describe("useFluentFormArray", () => {
 
       const { result } = renderHook(() => useFluentFormArray(formConfig));
 
-      act(() => {
+      actHooks(() => {
         result.current.addForm({ key: 0 });
         result.current.addForm({ key: 2 });
       });
 
-      act(() => {
+      actHooks(() => {
         result.current.addForm();
         result.current.addForm();
       });
@@ -115,7 +118,7 @@ describe("useFluentFormArray", () => {
 
       const { result } = renderHook(() => useFluentFormArray(formConfig));
 
-      act(() => {
+      actHooks(() => {
         result.current.addForm({ initialValues: { username: "user0" } });
         result.current.addForm({ initialValues: { username: "user1" } });
       });
@@ -136,7 +139,7 @@ describe("useFluentFormArray", () => {
 
       const { result } = renderHook(() => useFluentFormArray(formConfig));
 
-      act(() => result.current.addForm());
+      actHooks(() => result.current.addForm());
 
       expect(result.current.formStates[0]).toMatchObject({
         values: {
@@ -161,7 +164,7 @@ describe("useFluentFormArray", () => {
 
       const { result } = renderHook(() => useFluentFormArray(formConfig));
 
-      act(() =>
+      actHooks(() =>
         result.current.addForm({
           initialValues: { email: "prefered@email.com" }
         })
@@ -181,10 +184,10 @@ describe("useFluentFormArray", () => {
 
       const { result } = renderHook(() => useFluentFormArray(formConfig));
 
-      act(() => result.current.addForm({ key: 100 }));
-      act(() => result.current.addForm({ key: "z" }));
-      act(() => result.current.addForm({ key: 34 }));
-      act(() => result.current.addForm({ key: "b" }));
+      actHooks(() => result.current.addForm({ key: 100 }));
+      actHooks(() => result.current.addForm({ key: "z" }));
+      actHooks(() => result.current.addForm({ key: 34 }));
+      actHooks(() => result.current.addForm({ key: "b" }));
 
       expect(result.current.formArray.map(item => item.key)).toEqual([
         100,
@@ -210,8 +213,8 @@ describe("useFluentFormArray", () => {
 
       const { result } = renderHook(() => useFluentFormArray(formConfig));
 
-      act(() => result.current.addForm());
-      act(() => result.current.removeForm(0));
+      actHooks(() => result.current.addForm());
+      actHooks(() => result.current.removeForm(0));
 
       expect(result.current.formArray).toHaveLength(0);
       expect(result.current.formStates).toHaveLength(0);
@@ -225,12 +228,12 @@ describe("useFluentFormArray", () => {
 
       const { result } = renderHook(() => useFluentFormArray(formConfig));
 
-      act(() => result.current.addForm({ key: 100 }));
-      act(() => result.current.addForm({ key: "z" }));
-      act(() => result.current.addForm({ key: 34 }));
-      act(() => result.current.addForm({ key: "b" }));
+      actHooks(() => result.current.addForm({ key: 100 }));
+      actHooks(() => result.current.addForm({ key: "z" }));
+      actHooks(() => result.current.addForm({ key: 34 }));
+      actHooks(() => result.current.addForm({ key: "b" }));
 
-      act(() => result.current.removeForm("z"));
+      actHooks(() => result.current.removeForm("z"));
 
       expect(result.current.formArray.map(item => item.key)).toEqual([
         100,
@@ -252,11 +255,11 @@ describe("useFluentFormArray", () => {
 
       const { result } = renderHook(() => useFluentFormArray(formConfig));
 
-      act(() => result.current.addForm({ key: 100 }));
-      act(() => result.current.addForm({ key: 34 }));
-      act(() => result.current.addForm({ key: "b" }));
+      actHooks(() => result.current.addForm({ key: 100 }));
+      actHooks(() => result.current.addForm({ key: 34 }));
+      actHooks(() => result.current.addForm({ key: "b" }));
 
-      act(() => result.current.removeForm("non existent key"));
+      actHooks(() => result.current.removeForm("non existent key"));
 
       expect(result.current.formArray.map(item => item.key)).toEqual([
         100,
@@ -271,6 +274,137 @@ describe("useFluentFormArray", () => {
     });
   });
 
+  describe("setInitialArray and resetArray", () => {
+    it("resets array based on config", () => {
+      const arrayConfig = createFormArray<UserModel>()({
+        username: field.text(),
+        email: field.email()
+      })
+        .withValidation({ username: () => "error" })
+        .withInitialArray([
+          { username: "user0", email: "email0" },
+          { username: "user1", email: "email1" }
+        ])
+        .validateOnChange()
+        .withContext({ contextValue: 1 });
+
+      const {
+        fluentFormArrayRef,
+        fluentFormItemsRef,
+        getAllByTestId
+      } = renderWithFluentFormItems(
+        arrayConfig,
+        ({ formItem: { key, fields } }) => {
+          return (
+            <>
+              <input data-testid={"username" + key} {...fields.username} />
+              <input data-testid={"email" + key} {...fields.email} />
+            </>
+          );
+        }
+      );
+      const [userInput0, userInput1] = getAllByTestId(/username/);
+      const [emailInput0, emailInput1] = getAllByTestId(/email/);
+
+      fireEvent.change(userInput0, { target: { value: "new user0" } });
+      fireEvent.change(userInput1, { target: { value: "new user1" } });
+      fireEvent.change(emailInput0, { target: { value: "new email0" } });
+      fireEvent.change(emailInput1, { target: { value: "new email1" } });
+
+      act(() =>
+        fluentFormItemsRef.current[0].setContext({ contextValue: 999 })
+      );
+      act(() =>
+        fluentFormItemsRef.current[1].setContext({ contextValue: 222 })
+      );
+      act(() => fluentFormArrayRef.current.resetArray());
+
+      expect(fluentFormArrayRef.current.formStates).toEqual([
+        {
+          key: 0,
+          values: {
+            username: "user0",
+            email: "email0"
+          },
+          touched: {},
+          validity: {},
+          errors: {},
+          submitting: false,
+          context: { contextValue: 1 },
+          sortPosition: 0
+        },
+        {
+          key: 1,
+          values: {
+            username: "user1",
+            email: "email1"
+          },
+          touched: {},
+          validity: {},
+          errors: {},
+          submitting: false,
+          context: { contextValue: 1 },
+          sortPosition: 1
+        }
+      ]);
+    });
+
+    it("resets array based on manually set initial array", () => {
+      const arrayConfig = createFormArray<UserModel>()({
+        username: field.text(),
+        email: field.email()
+      })
+        .withValidation({ username: () => "error" })
+        .withInitialArray([
+          { username: "user0", email: "email0" },
+          { username: "user1", email: "email1" }
+        ])
+        .validateOnChange();
+
+      const { fluentFormArrayRef, getAllByTestId } = renderWithFluentFormItems(
+        arrayConfig,
+        ({ formItem: { key, fields } }) => {
+          return (
+            <>
+              <input data-testid={"username" + key} {...fields.username} />
+              <input data-testid={"email" + key} {...fields.email} />
+            </>
+          );
+        }
+      );
+
+      fluentFormArrayRef.current.setInitialArray([
+        { username: "new initial user", email: "new initial email" }
+      ]);
+
+      const [userInput0, userInput1] = getAllByTestId(/username/);
+      const [emailInput0, emailInput1] = getAllByTestId(/email/);
+
+      fireEvent.change(userInput0, { target: { value: "new user0" } });
+      fireEvent.change(userInput1, { target: { value: "new user1" } });
+      fireEvent.change(emailInput0, { target: { value: "new email0" } });
+      fireEvent.change(emailInput1, { target: { value: "new email1" } });
+
+      act(() => fluentFormArrayRef.current.resetArray());
+
+      expect(fluentFormArrayRef.current.formStates).toEqual([
+        {
+          key: 0,
+          values: {
+            username: "new initial user",
+            email: "new initial email"
+          },
+          touched: {},
+          validity: {},
+          errors: {},
+          submitting: false,
+          context: {},
+          sortPosition: 0
+        }
+      ]);
+    });
+  });
+
   describe("getFormStateByKey", () => {
     it("returns form state of form item with provided key", () => {
       const formConfig = createFormArray<UserModel>()({
@@ -280,8 +414,8 @@ describe("useFluentFormArray", () => {
 
       const { result } = renderHook(() => useFluentFormArray(formConfig));
 
-      act(() => result.current.addForm());
-      act(() => result.current.addForm());
+      actHooks(() => result.current.addForm());
+      actHooks(() => result.current.addForm());
 
       const formsState = result.current.getFormStateByKey(0);
       expect(formsState).toEqual(result.current.formStates[0]);
@@ -295,7 +429,7 @@ describe("useFluentFormArray", () => {
 
       const { result } = renderHook(() => useFluentFormArray(formConfig));
 
-      act(() => result.current.addForm());
+      actHooks(() => result.current.addForm());
 
       const formsState = result.current.getFormStateByKey("non existent key");
       expect(formsState).toBeUndefined();
@@ -320,10 +454,10 @@ describe("useFluentFormArray", () => {
 
       const { result } = renderHook(() => useFluentFormArray(formConfig));
 
-      act(() => result.current.addForm());
-      act(() => result.current.addForm());
+      actHooks(() => result.current.addForm());
+      actHooks(() => result.current.addForm());
 
-      act(() => result.current.handleSubmit(success, failure)());
+      actHooks(() => result.current.handleSubmit(success, failure)());
 
       expect(success).toHaveBeenCalled();
       expect(failure).not.toHaveBeenCalled();
@@ -368,10 +502,10 @@ describe("useFluentFormArray", () => {
       const failure = jest.fn();
       const { result } = renderHook(() => useFluentFormArray(formConfig));
 
-      act(() => result.current.addForm());
-      act(() => result.current.addForm());
+      actHooks(() => result.current.addForm());
+      actHooks(() => result.current.addForm());
 
-      act(() => result.current.handleSubmit(success, failure)());
+      actHooks(() => result.current.handleSubmit(success, failure)());
 
       expect(success).not.toHaveBeenCalled();
       expect(failure).toHaveBeenCalled();

@@ -109,8 +109,10 @@ export interface UseFluentFormArray<Config extends FormArrayConfig> {
     ExtractErrorsType<Config>
   >;
   submitting: boolean;
+  setInitialArray: (initialArray: ExtractValuesType<Config>[]) => void;
   addForm: AddForm<ExtractValuesType<Config>>;
   removeForm: (key: FormKey) => void;
+  resetArray: () => void;
   getFormStateByKey: (
     key: FormKey
   ) =>
@@ -179,10 +181,13 @@ export interface UseFluentArrayStateManager<Config extends FormArrayConfig> {
   initalStateRefs: React.MutableRefObject<FluentFormInitialStates<Config>>;
   formArray: FormItem<ExtractValuesType<Config>, ExtractErrorsType<Config>>[];
   submitting: boolean;
+  setInitialArrayRef: (initalArray: ExtractValuesType<Config>[]) => void;
   startSubmittingArray: () => void;
   setSubmittingResultForArray: (
     errors: FormArrayError<ExtractErrorsType<Config>>
   ) => void;
+
+  resetArray: () => void;
   setContext: (key: FormKey, context: object) => void;
   setInitialValuesRef: (
     key: FormKey,

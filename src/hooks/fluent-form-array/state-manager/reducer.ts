@@ -28,6 +28,7 @@ export type FluentFormArrayActionTypes<
   | Action<"REMOVE_FORM", { key: FormKey }>
   | Action<"SUBMITTING_ARRAY">
   | Action<"FINISHED_SUBMITTING_ARRAY", { formArrayErrors: FormArrayError<E> }>
+  | Action<"RESET_ARRAY", FluentFormArrayState<ValuesType, E>>
   | Action<"SET_VALUES", { key: FormKey; values: Partial<ValuesType> }>
   | Action<
       "SET_SINGLE_VALUE",
@@ -119,6 +120,9 @@ export const fluentFormArrayReducer = <
       }
 
       return stateCopy;
+    }
+    case "RESET_ARRAY": {
+      return { ...action.payload };
     }
     case "SET_VALUES": {
       const { key, values } = action.payload;

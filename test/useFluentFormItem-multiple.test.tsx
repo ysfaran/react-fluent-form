@@ -270,6 +270,48 @@ describe("useFluentFormItem (multiple)", () => {
       expect(formItem2).toEqual(expect.objectContaining(formArrayState2));
     });
 
+    it("resets forms independently when one was initialzied with inital array and the other with addFrom", () => {
+      const arrayConfig = createFormArray<UserModel>()({
+        username: field.text("initial user"),
+        email: field.email("initial@email.com")
+      }).withInitialArray([{ username: "user0", email: "email0" }]);
+
+      const {
+        fluentFormArrayRef,
+        fluentFormItemsRef,
+        getAllByTestId
+      } = renderFluentFormItemsForTest(arrayConfig);
+
+      act(() => fluentFormArrayRef.current.addForm());
+
+      const [userInput0, userInput1] = getAllByTestId(/username/);
+      const [emailInput0, emailInput1] = getAllByTestId(/email/);
+
+      fireEvent.change(userInput0, { target: { value: "new user0" } });
+      fireEvent.change(emailInput0, { target: { value: "new email0" } });
+      fireEvent.change(userInput1, { target: { value: "new user1" } });
+      fireEvent.change(emailInput1, { target: { value: "new email1" } });
+
+      act(() => fluentFormItemsRef.current[0].reset());
+      act(() => fluentFormItemsRef.current[1].reset());
+
+      const formArrayValues0 = fluentFormArrayRef.current.formStates[0].values;
+      const formArrayValues1 = fluentFormArrayRef.current.formStates[1].values;
+      const formItemValues0 = fluentFormItemsRef.current[0].values;
+      const formItemValues1 = fluentFormItemsRef.current[1].values;
+
+      expect(formArrayValues0).toEqual({
+        username: "user0",
+        email: "email0"
+      });
+      expect(formItemValues0).toEqual(formArrayValues0);
+      expect(formArrayValues1).toEqual({
+        username: "initial user",
+        email: "initial@email.com"
+      });
+      expect(formItemValues1).toEqual(formArrayValues1);
+    });
+
     it("updates values independently when setting them manually", () => {
       const {
         fluentFormArrayRef,
