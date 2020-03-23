@@ -104,9 +104,11 @@
     - [`formStates: FormArrayStates`](#formstates-formarraystates)
     - [`submitting: boolean`](#submitting-boolean-1)
     - [`addForm: (args?: AddFormArgs) => void`](#addform-args-addformargs--void)
+    - [`setInitialArray: (initialArray: ValuesType[]) => void`](#setinitialarray-initialarray-valuestype--void)
     - [`removeForm: (key: string | number) => void`](#removeform-key-string--number--void)
     - [`getFormStateByKey: (key: string | number) => FormItem | undefined`](#getformstatebykey-key-string--number--formitem--undefined)
     - [`handleSubmit: (success?: Function, failure?: Function, options?: HandleSubmitOptions) => (event: any) => void`](#handlesubmit-success-function-failure-function-options-handlesubmitoptions--event-any--void-1)
+    - [`resetArray: () => void`](#resetarray---void)
 - [`useFluentFormItem`](#usefluentformitem)
   - [Type](#type-10)
   - [Description](#description-9)
@@ -905,8 +907,10 @@ const {
   formArray,
   formStates,
   submitting,
+  setInitialArray,
   addForm,
   removeForm,
+  resetArray,
   getFormStateByKey,
   handleSubmit
 } = useFluentFormArray(arrayConfig);
@@ -975,6 +979,10 @@ Add new item to form array.
 }
 ```
 
+#### `setInitialArray: (initialArray: ValuesType[]) => void`
+
+Sets initial array values of form array. This is important when resetting a form array.
+
 #### `removeForm: (key: string | number) => void`
 
 Removes form item with specified `key` from the form array.
@@ -986,6 +994,10 @@ Returns state of form item with specified key or `undefined` in case item is not
 #### `handleSubmit: (success?: Function, failure?: Function, options?: HandleSubmitOptions) => (event: any) => void`
 
 Returns a submit handler. When this handler is called validation for all fields in all form items will be triggered. Works equally to [`handleSubmit`](#handlesubmit-success-function-failure-function-options-handlesubmitoptions--event-any--void) returned by [`useFluentForm`](#usefluentform).
+
+#### `resetArray: () => void`
+
+Sets complete form array state to inital state. Initial values can be modified using [`setInitialArray`](#setinitialarray-initialarray-valuestype--void).
 
 ## `useFluentFormItem`
 

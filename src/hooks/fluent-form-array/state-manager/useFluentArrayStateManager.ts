@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useReducer, useRef } from "react";
+import { useCallback, useEffect, useMemo, useReducer, useRef } from "react";
 
 import { FormArrayConfig } from "../../../form-config/FormArrayConfig";
 import { FormArrayConfigHelper } from "../../../form-config/FormArrayConfigHelper";
@@ -9,6 +9,7 @@ import {
   ExtractFieldsType,
   ExtractValuesType,
   FluentFormArrayReducer,
+  FluentFormArrayState,
   FluentFormInitialStates,
   FluentFormState,
   FormArrayError,
@@ -27,12 +28,20 @@ export function useFluentArrayStateManager<Config extends FormArrayConfig>(
   const formArrayConfigHelperRef = useRef(new FormArrayConfigHelper(config));
   const { current: formArrayConfigHelper } = formArrayConfigHelperRef;
 
+  const initalFormArrayValues = useMemo(
+    () => formArrayConfigHelper.getInitialArrayValues(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
+
+  const initialArrayStateRef = useRef<FluentFormArrayState<Values, Errors>>({
+    submitting: false,
+    formArray: initalFormArrayValues
+  });
+
   const [state, dispatch] = useReducer<FluentFormArrayReducer<Values, Errors>>(
     fluentFormArrayReducer,
-    {
-      submitting: false,
-      formArray: formArrayConfigHelper.getInitialArrayValues()
-    }
+    initialArrayStateRef.current
   );
 
   const sortPositionCountRef = useRef(Object.keys(state.formArray).length);
@@ -40,7 +49,7 @@ export function useFluentArrayStateManager<Config extends FormArrayConfig>(
   const formConfigHelperRef = useRef(new FormConfigHelper(config));
   const { current: formConfigHelper } = formConfigHelperRef;
 
-  const { _context, _generateKey } = config;
+  const { _generateKey } = config;
 
   const initalStateRefs = useRef<FluentFormInitialStates<Config>>({});
 
@@ -55,16 +64,37 @@ export function useFluentArrayStateManager<Config extends FormArrayConfig>(
     }
   }, [state.formArray]);
 
+  const setInitialStateRefsFromInitialArray = useCallback(() => {
+    const entries = Object.entries(initialArrayStateRef.current.formArray);
+    if (!entries.length) return;
+
+    initalStateRefs.current = {};
+    for (let i = 0; i < entries.length; i++) {
+      const [key, item] = entries[i];
+      initalStateRefs.current[
+        key
+      ] = formConfigHelperRef.current.getInitialState(item.values);
+    }
+  }, []);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(setInitialStateRefsFromInitialArray, []);
+
+  const setInitialArrayRef = useCallback(
+    (initialArray: Values[]) => {
+      initialArrayStateRef.current.formArray = formArrayConfigHelper.getInitialArrayValues(
+        initialArray
+      );
+    },
+    [formArrayConfigHelper]
+  );
+
   const addForm = useCallback(
     ({ initialValues, key }: AddFormArgs<Values> = {}) => {
-      const initialState: FluentFormState<Values, Errors> = {
-        values: { ...formConfigHelper.getInitialValues(), ...initialValues },
-        touched: {},
-        validity: {},
-        errors: {} as Errors,
-        context: _context || {},
-        submitting: false
-      };
+      const initialState: FluentFormState<
+        Values,
+        Errors
+      > = formConfigHelper.getInitialState(initialValues);
 
       key =
         key ||
@@ -82,7 +112,7 @@ export function useFluentArrayStateManager<Config extends FormArrayConfig>(
         }
       });
     },
-    [_context, _generateKey, formConfigHelper, getUniqueKey]
+    [_generateKey, formConfigHelper, getUniqueKey]
   );
 
   const removeForm = useCallback((key: FormKey) => {
@@ -106,6 +136,11 @@ export function useFluentArrayStateManager<Config extends FormArrayConfig>(
     },
     []
   );
+
+  const resetArray = useCallback(() => {
+    dispatch({ type: "RESET_ARRAY", payload: initialArrayStateRef.current });
+    setInitialStateRefsFromInitialArray();
+  }, [setInitialStateRefsFromInitialArray]);
 
   const setContext = useCallback((key: FormKey, context: object) => {
     dispatch({ type: "SET_CONTEXT", payload: { key, context } });
@@ -204,9 +239,11 @@ export function useFluentArrayStateManager<Config extends FormArrayConfig>(
     formArray: formsAsArrays,
     formConfigHelperRef,
     formArrayConfigHelperRef,
+    initalStateRefs,
+    setInitialArrayRef,
     startSubmittingArray,
     setSubmittingResultForArray,
-    initalStateRefs,
+    resetArray,
     setContext,
     setInitialValuesRef,
     setSubmittingResult,

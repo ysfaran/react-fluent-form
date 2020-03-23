@@ -512,11 +512,48 @@ const firstFormItem = formState[0];
 const formItemWithKeyHello = getFormStateByKey("hello");
 ```
 
+## Resetting array values
+
+With `resetArray` the from array can be resetted. It will either reset to the array passed to `withInitialArray` or to the array set by `setInitialArray`.
+
+```jsx
+const userRoleConfig = creatForm()({
+  username: field.text(),
+  role: field.select()
+}).withInitialArray([
+  {
+    id: 0,
+    username: "user0",
+    role: "admin"
+  }
+]);
+
+const UserRoleFormArray = () => {
+  const { formStates, resetArray, setInitialArray } = useFluentFormArray(
+    userRoleConfig
+  );
+
+  const handleSave = () => {
+    setInitialArray(formStates.map(state => state.values));
+  };
+
+  return (
+    <form>
+      {formArray.map(item => (
+        <UserRoleForm key={item.key} formItem={item} />
+      ))}
+      <button onClick={resetArray}>Reset Form</button>
+      <button onClick={handleSave}>Save Form</button>
+    </form>
+  );
+};
+```
+
 ## Handling form array submission
 
 Form array submission works just equal to single form submission.
 
-```tsx
+```jsx
 const UserRoleFormArray = () => {
   const { formStates, formArray, addForm, handleSubmit } = useFluentFormArray(
     arrayConfig

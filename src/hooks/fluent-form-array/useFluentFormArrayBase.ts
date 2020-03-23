@@ -72,8 +72,10 @@ export function useFluentFormArrayBase<Config extends FormArrayConfig>(
     formArray: mappedFormArray,
     formStates: formArray,
     submitting,
+    setInitialArray: stateManager.setInitialArrayRef,
     addForm: stateManager.addForm,
     removeForm: stateManager.removeForm,
+    resetArray: stateManager.resetArray,
     getFormStateByKey,
     handleSubmit
   };

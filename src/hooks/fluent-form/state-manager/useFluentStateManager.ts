@@ -22,16 +22,9 @@ export function useFluentStateManager<Config extends FormConfig>(
   const formConfigHelperRef = useRef(new FormConfigHelper(config));
   const { current: formConfigHelper } = formConfigHelperRef;
 
-  const { _context } = config;
-
-  const intitalStateRef = useRef<FluentFormState<Values, Errors>>({
-    values: formConfigHelper.getInitialValues(),
-    touched: {},
-    validity: {},
-    errors: {} as Errors,
-    context: _context || {},
-    submitting: false
-  });
+  const intitalStateRef = useRef<FluentFormState<Values, Errors>>(
+    formConfigHelper.getInitialState()
+  );
 
   const [state, dispatch] = useReducer<FluentFormReducer<Values, Errors>>(
     fluentFormReducer,

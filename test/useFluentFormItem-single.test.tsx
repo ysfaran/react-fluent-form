@@ -13,9 +13,11 @@ function createConfigForTest() {
   return createFormArray<UserModel>()({
     username: field.text(),
     email: field.email()
-  }).withValidation({
-    email: yup.string().required()
-  });
+  })
+    .withValidation({
+      email: yup.string().required()
+    })
+    .withInitialArray([{ username: "", email: "" }]);
 }
 function renderFluentFormItemsForTest<
   Config extends FormArrayConfig<UserModel, any, any>
@@ -37,17 +39,20 @@ function renderFluentFormItemsForTest<
     }
   );
 
-  act(() => result.fluentFormArrayRef.current.addForm());
-
   return result;
 }
 
 describe("useFluentFormItem (single)", () => {
   it("adds form item when calling addForm", () => {
-    const { queryByTestId } = renderFluentFormItemsForTest();
+    const {
+      queryByTestId,
+      fluentFormArrayRef
+    } = renderFluentFormItemsForTest();
 
-    expect(queryByTestId("username0")).toBeInTheDocument();
-    expect(queryByTestId("email0")).toBeInTheDocument();
+    act(() => fluentFormArrayRef.current.addForm());
+
+    expect(queryByTestId("username1")).toBeInTheDocument();
+    expect(queryByTestId("email1")).toBeInTheDocument();
   });
 
   it("can remove itself", () => {
@@ -196,6 +201,36 @@ describe("useFluentFormItem (single)", () => {
           email: "new@inital.com"
         }
       });
+    });
+
+    it("updates form array state and form item based on initial array when resetting the form", () => {
+      const arrayConfig = createFormArray<UserModel>()({
+        username: field.text(),
+        email: field.email()
+      }).withInitialArray([{ username: "user0", email: "email0" }]);
+
+      const {
+        fluentFormArrayRef,
+        fluentFormItemsRef,
+        getByTestId
+      } = renderFluentFormItemsForTest(arrayConfig);
+
+      const userInput0 = getByTestId(/username/);
+      const emailInput0 = getByTestId(/email/);
+
+      fireEvent.change(userInput0, { target: { value: "new user0" } });
+      fireEvent.change(emailInput0, { target: { value: "new email0" } });
+
+      act(() => fluentFormItemsRef.current[0].reset());
+
+      const formArrayValues0 = fluentFormArrayRef.current.formStates[0].values;
+      const formItemValues0 = fluentFormItemsRef.current[0].values;
+
+      expect(formArrayValues0).toEqual({
+        username: "user0",
+        email: "email0"
+      });
+      expect(formItemValues0).toEqual(formArrayValues0);
     });
 
     it("updates form array state and form item when setting values manually", () => {

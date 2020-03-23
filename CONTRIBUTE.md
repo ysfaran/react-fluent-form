@@ -27,8 +27,9 @@
      |---------------|---------------------------------------------------------------------------------------------------|
      | `config` | adapting config files outside of `src/` (usually they are in the root folder) |
      | `dev` | changes that only affect developers/contributors of this project (e.g. adapting commitlint rules) |
-     | `form-config` | adapting/adding configuration for form hooks |
-     | `hooks` | adapting/adding exported hooks (e.g. `useFluentForm`) |
+     | `form` | adapting/adding code related to single form (e.g. `useFluentForm`) |
+     | `form-array` | adapting/adding code related to form arrays (e.g. `useFluentFormArray`) |
+     | `form-item` | adapting/adding code related to form items of an array (e.g. `useFluentFormItem`) |
      | `fields` | adapting/adding fields |
      | `typings` | adapting/adding typings |
      | `readme` | adapting `README.md`, should only be used with type `docs` |

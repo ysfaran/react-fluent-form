@@ -62,6 +62,54 @@ describe("FormConfigHelper", () => {
     });
   });
 
+  describe("getInitialState", () => {
+    let formConfig: FormConfig;
+    let formConfigHelper: FormConfigHelper;
+
+    beforeEach(() => {
+      formConfig = new FormConfig({
+        username: field.text("user"),
+        email: field.email(),
+        age: field.number("30")
+      });
+
+      formConfigHelper = new FormConfigHelper(formConfig);
+    });
+
+    it("sets defaults properly", () => {
+      const initialState = formConfigHelper.getInitialState();
+
+      expect(initialState).toEqual({
+        values: { username: "user", email: "", age: "30" },
+        touched: {},
+        validity: {},
+        errors: {},
+        context: {},
+        submitting: false
+      });
+    });
+
+    it("uses initial context from config", () => {
+      formConfig.withContext({ contextValue: 1 });
+      const initialState = formConfigHelper.getInitialState();
+
+      expect(initialState.context).toEqual({ contextValue: 1 });
+    });
+
+    it("prefers passed initial values", () => {
+      const initialState = formConfigHelper.getInitialState({
+        email: "email@test.com",
+        age: "50"
+      });
+
+      expect(initialState.values).toEqual({
+        username: "user",
+        email: "email@test.com",
+        age: "50"
+      });
+    });
+  });
+
   describe("shouldValidateOnChange", () => {
     let formConfig: FormConfig;
     let helper: FormConfigHelper<typeof formConfig>;
