@@ -1,3 +1,10 @@
+## [1.3.0](https://github.com/ysfaran/react-fluent-form/compare/v1.2.5...v1.3.0) (2020-03-23)
+
+
+### Features
+
+* **form-array:** add possibility to set initial values and reset ([7915941](https://github.com/ysfaran/react-fluent-form/commit/7915941b397b6b10e7cc2ca0b510379d526f85a6))
+
 ### [1.2.5](https://github.com/ysfaran/react-fluent-form/compare/v1.2.4...v1.2.5) (2020-03-19)
 
 
