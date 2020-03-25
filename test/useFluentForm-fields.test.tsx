@@ -548,5 +548,37 @@ describe("useFluentForm (fields)", () => {
       expect(result.current.values.age).toBe(30);
       expect(result.current.fields.age.value).toBe(30);
     });
+
+    it("returns default name for props", () => {
+      const formConfig = createForm<AgeModel>()({
+        age: field.raw(5)
+      });
+
+      const { result } = renderHook(() => useFluentForm(formConfig));
+
+      expect(result.current.fields.age.value).toEqual(5);
+      expect(result.current.fields.age.onChange).toEqual(expect.any(Function));
+      expect(result.current.fields.age.onBlur).toEqual(expect.any(Function));
+    });
+
+    it("allow to define custom names for props", () => {
+      const formConfig = createForm<AgeModel>()({
+        age: field
+          .raw(5)
+          .withValueProp("customValue")
+          .withOnChangeProp("customOnChange")
+          .withOnBlurProp("customOnBlur")
+      });
+
+      const { result } = renderHook(() => useFluentForm(formConfig));
+
+      expect(result.current.fields.age.customValue).toEqual(5);
+      expect(result.current.fields.age.customOnChange).toEqual(
+        expect.any(Function)
+      );
+      expect(result.current.fields.age.customOnBlur).toEqual(
+        expect.any(Function)
+      );
+    });
   });
 });

@@ -353,11 +353,20 @@ export interface SelectProps {
 
 // Fields: raw
 
-export interface RawProps<V> {
-  value: V;
-  onChange: (value: V) => void;
-  onBlur: () => void;
-}
+export type ValueProp<V, Name extends string> = { [key in Name]: V };
+export type OnChangeProp<V, Name extends string> = {
+  [key in Name]: (newValue: V) => void;
+};
+export type OnBlurProp<Name extends string> = { [key in Name]: () => void };
+
+export type RawProps<
+  V,
+  ValueName extends string,
+  OnChangeName extends string,
+  OnBlurName extends string
+> = ValueProp<V, ValueName> &
+  OnChangeProp<V, OnChangeName> &
+  OnBlurProp<OnBlurName>;
 
 // -------------------- Validation --------------------
 
