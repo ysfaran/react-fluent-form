@@ -1,3 +1,10 @@
+## [1.4.0](https://github.com/ysfaran/react-fluent-form/compare/v1.3.0...v1.4.0) (2020-03-25)
+
+
+### Features
+
+* **fields:** add option to rename mapped raw properties ([d8df8a7](https://github.com/ysfaran/react-fluent-form/commit/d8df8a7aebbb1e5981e021687445988e0ad315bd))
+
 ## [1.3.0](https://github.com/ysfaran/react-fluent-form/compare/v1.2.5...v1.3.0) (2020-03-23)
 
 
