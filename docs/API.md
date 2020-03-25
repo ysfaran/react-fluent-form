@@ -28,6 +28,8 @@
     - [`number: (initialValue: string = "") => TextField`](#number-initialvalue-string----textfield)
     - [`password: (initialValue: string = "") => TextField`](#password-initialvalue-string----textfield)
     - [`radio: (initialValue: string = "") => RadioField`](#radio-initialvalue-string----radiofield)
+      - [Additional configuration](#additional-configuration)
+      - [Description](#description-2)
     - [`range: (initialValue: string = "") => TextField`](#range-initialvalue-string----textfield)
     - [`search: (initialValue: string = "") => TextField`](#search-initialvalue-string----textfield)
     - [`tel: (initialValue: string = "") => TextField`](#tel-initialvalue-string----textfield)
@@ -37,32 +39,35 @@
     - [`week: (initialValue: string = "") => TextField`](#week-initialvalue-string----textfield)
     - [`textarea: (initialValue: string = "") => TextAreaField`](#textarea-initialvalue-string----textareafield)
     - [`select: (initialValue: string = "") => SelectField`](#select-initialvalue-string----selectfield)
+      - [Description](#description-3)
     - [`raw: <ValueType>(initialValue: ValueType) => RawField`](#raw-valuetypeinitialvalue-valuetype--rawfield)
+      - [Additional configuration](#additional-configuration-1)
+      - [Description](#description-4)
 - [`addField`](#addfield)
   - [Type](#type-2)
   - [Descripiton](#descripiton)
 - [`createForm`](#createform)
   - [Type](#type-3)
-  - [Description](#description-2)
+  - [Description](#description-5)
   - [Generic types](#generic-types-1)
   - [Arguments](#arguments)
   - [Example](#example)
 - [`createFormArray`](#createformarray)
   - [Type](#type-4)
-  - [Description](#description-3)
+  - [Description](#description-6)
   - [Generic types](#generic-types-2)
   - [Arguments](#arguments-1)
   - [Example](#example-1)
 - [`Validator`](#validator)
   - [Type](#type-5)
-  - [Description](#description-4)
+  - [Description](#description-7)
   - [Generic types](#generic-types-3)
   - [Members](#members-2)
     - [`abstract validateField: <K extends keyof ValuesType>(field: K, values: ValuesType, context: object) => Errors[K] | void`](#abstract-validatefield-k-extends-keyof-valuestypefield-k-values-valuestype-context-object--errorsk--void)
     - [`validateAllFields: (values: ValuesType, context: object) => Errors`](#validateallfields-values-valuestype-context-object--errors)
 - [`FormConfig`](#formconfig)
   - [Type](#type-6)
-  - [Description](#description-5)
+  - [Description](#description-8)
   - [Generic types](#generic-types-4)
   - [Members](#members-3)
     - [`validateAfterTouchOnChange: () => FormConfig`](#validateaftertouchonchange---formconfig)
@@ -75,14 +80,14 @@
     - [`withCustomValidator: (validator: Validator) => FormConfig`](#withcustomvalidator-validator-validator--formconfig)
 - [`FormArrayConfig`](#formarrayconfig)
   - [Type](#type-7)
-  - [Description](#description-6)
+  - [Description](#description-9)
   - [Generic types](#generic-types-5)
   - [Members](#members-4)
     - [`withInitialArray: (initialArray: ValuesType[]) => FormArrayConfig`](#withinitialarray-initialarray-valuestype--formarrayconfig)
     - [`withKeyGenerator: (generator: KeyGenerator<ValuesType>) => FormConfig`](#withkeygenerator-generator-keygeneratorvaluestype--formconfig)
 - [`useFluentForm`](#usefluentform)
   - [Type](#type-8)
-  - [Description](#description-7)
+  - [Description](#description-10)
   - [Return type](#return-type)
     - [`values: ValuesType`](#values-valuestype)
     - [`touched: StateTouched`](#touched-statetouched)
@@ -98,7 +103,7 @@
     - [`reset: () => void`](#reset---void)
 - [`useFluentFormArray`](#usefluentformarray)
   - [Type](#type-9)
-  - [Description](#description-8)
+  - [Description](#description-11)
   - [Return type](#return-type-1)
     - [`formArray: UseFluentFormItemArgs[]`](#formarray-usefluentformitemargs)
     - [`formStates: FormArrayStates`](#formstates-formarraystates)
@@ -111,7 +116,7 @@
     - [`resetArray: () => void`](#resetarray---void)
 - [`useFluentFormItem`](#usefluentformitem)
   - [Type](#type-10)
-  - [Description](#description-9)
+  - [Description](#description-12)
   - [Return type](#return-type-2)
     - [`key: string | number`](#key-string--number)
     - [`removeSelf: () => void`](#removeself---void)
@@ -247,10 +252,12 @@ It specifies a member function for each HTML `input` type, `select` and `textare
 
 #### `radio: (initialValue: string = "") => RadioField`
 
-Additional configuration:
+##### Additional configuration
 
 - `name: (value: string) => RadioField`: value for the `name` property passed to `<input />`'s
 - `unselectable: (value = true) => RadioField`: option to unselect a radio option by clicking on it again
+
+##### Description
 
 ```tsx
 const formConfig = createForm()({
@@ -298,6 +305,8 @@ const GenderForm = () => {
 
 #### `select: (initialValue: string = "") => SelectField`
 
+##### Description
+
 ```tsx
 const formConfig = createForm()({
   role: field.select("admin")
@@ -317,14 +326,24 @@ const RolesForm = () => {
 
 #### `raw: <ValueType>(initialValue: ValueType) => RawField`
 
-For components like [react-datepicker](https://www.npmjs.com/package/react-datepicker) it's not necessary to implement a custom field.
+##### Additional configuration
+
+- `withValueProp: (valueProp: string) => void`: name of the `value` property of the component
+- `withOnChangeProp: (onChangeProp: string) => void`: name of the `onChange` property of the component
+- `withOnBlurProp: (onBlurProp: string) => void`: name of the `onBlur` property of the component
+
+##### Description
+
+For components like [`react-datepicker`](https://www.npmjs.com/package/react-datepicker) it's not necessary to implement a custom field.
 `react-fluent-form` comes with a raw field type which works for components with following characteristics:
 
-- it has `value` and a `onChange` prop
-- `value` has the same type as the first parameter of `onChange` handler
-- it optionally has a `onBlur` prop to indicate when the field is touched
+- it has `value`-like and a `onChange`-like prop
+- `value` has the same type as the first parameter of `onChange` handler.  
+- it optionally has a `onBlur`-like prop to indicate when the field is touched
 
-For raw fields it's required to pass an initial value:
+*-like means it must not have the same name, but the same type. E.g. the `value` prop in `react-datepicker` is called `selected`.
+
+For raw fields it's required to pass an initial value, otherwise it will be undefined.
 
 ```jsx
 const formConfig = createForm()({

@@ -235,18 +235,21 @@ If you maybe have your own validation library or you just don't like `yup`, also
 
 ## Using the raw field
 
-For components like [react-datepicker](https://www.npmjs.com/package/react-datepicker) it's not necessary to implement a custom field.
+For components like [`react-datepicker`](https://www.npmjs.com/package/react-datepicker) it's not necessary to implement a custom field.
 `react-fluent-form` comes with a raw field type which works for components with following characteristics:
 
-- it has `value` and a `onChange` prop
+- it has `value`-like and a `onChange`-like prop
 - `value` has the same type as the first parameter of `onChange` handler
-- it optionally has a `onBlur` prop to indicate when the field is touched
+- it optionally has a `onBlur`-like prop to indicate when the field is touched
 
-For raw fields it's required to pass an initial value:
+*-like means it must not have the same name, but the same type. E.g. the `value` prop in `react-datepicker` is called `selected`.
+
+For raw fields it's required to pass an initial value, otherwise it will be undefined.
 
 ```jsx
 const formConfig = createForm()({
-  dateOfBirth: field.raw(new Date())
+  // there is also a withOnChangeProp and withOnBlurProp option!
+  dateOfBirth: field.raw(new Date()).withValueProp("selected")
 });
 
 const MyForm = () => {
@@ -259,7 +262,7 @@ The type of `fields` object would look like this:
 ```ts
 type FieldsType = {
   dateOfBirth: {
-    value: Date;
+    selected: Date;
     onChange: (newValue: Date) => void;
     onBlur: () => void; // will just set the "touched" state to true
   };
