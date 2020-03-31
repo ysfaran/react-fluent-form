@@ -261,11 +261,7 @@ It specifies a member function for each HTML `input` type, `select` and `textare
 
 ```tsx
 const formConfig = createForm()({
-  gender: field
-    .radio()
-    .name("gender")
-    // allows to select nothing
-    .unselectable()
+  gender: field.radio().name("gender").unselectable() // unselectable() allows to select nothing
 });
 
 const GenderForm = () => {
@@ -338,10 +334,10 @@ For components like [`react-datepicker`](https://www.npmjs.com/package/react-dat
 `react-fluent-form` comes with a raw field type which works for components with following characteristics:
 
 - it has `value`-like and a `onChange`-like prop
-- `value` has the same type as the first parameter of `onChange` handler.  
+- `value` has the same type as the first parameter of `onChange` handler.
 - it optionally has a `onBlur`-like prop to indicate when the field is touched
 
-*-like means it must not have the same name, but the same type. E.g. the `value` prop in `react-datepicker` is called `selected`.
+\*-like means it must not have the same name, but the same type. E.g. the `value` prop in `react-datepicker` is called `selected`.
 
 For raw fields it's required to pass an initial value, otherwise it will be undefined.
 
@@ -566,8 +562,7 @@ const formConfig = createForm<UserForm>()({
 
 #### `withContext: (context: object) => FormConfig`
 
-Sets the initial context value. **It needs to be an object of any type**.  
- It's recommend to wrap context values in a `context` field (see `withValidation` below for more details):
+Sets the initial context value. It needs to be an object of any type:
 
 ```ts
 const formConfig = createForm<UserForm>()({
@@ -597,7 +592,7 @@ On top of that also a `yup.Schema` can be returned by a `validate functions` whi
 
 > **IMPORTANT:**  
 > When using `yup validation` other form fields need to be accessed with a leading `$` (here `$lastName`) which usually means the value is coming from the context. In fact other form values are passed as context to the `yup schema` for each field during validation execution.  
-> To clearly seperate context values from field values it's recommened to wrap actual context values in a `context` field (as mentioned in `withContext`)
+> If a context property is named equal to a field property, the **field property will be overriden** in `yup.Schema`s context!
 
 ```ts
 formConfig.withValidation({

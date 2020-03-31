@@ -28,7 +28,7 @@ This library was heavily inspired by [useFormState](https://www.npmjs.com/packag
 
 Check out the full API [here](docs/API.md). It's written for typescript!
 
-# Core Features
+## Core Features
 
 - **Form state handling**: Storing field values and validation state
 - **Fluent API**: Configure forms with fluent API syntax
@@ -36,31 +36,60 @@ Check out the full API [here](docs/API.md). It's written for typescript!
 - **HTML support**: Support for all reasonable HTML `input` types, `textarea` and `select`
 - **Customizable**: Add custom fields, also from third party libraries like [react-select](https://www.npmjs.com/package/react-select) or attach a self-implemented validator
 
-# Installation & Prerequisites
+## Installation & Prerequisites
 
-This library supports react hooks only, so react `v16.8` or greater is required.
+This library supports react hooks only, so react `v16.8` or greater is required.  
+`react-fluent-form` already **comes with typings**, so no other package is needed to run this library with typescript.
 
 ```bash
 npm i react-fluent-form
 ```
 
-# Basic Usage
+## Form State Handling
 
-Following is a simple example for a registration form containing a username, gender and password field:
+Following is a simple example for a registration form containing a `username`, `gender` and `password` field.
+
+### 1. Creating the config
+
+With `createForm` and `field` the basic form configuration can be described:
 
 ```jsx
-import { createForm, field, useFluentForm } from "react-fluent-form";
+import { createForm, field } from "react-fluent-form";
 
 const formConfig = createForm()({
   username: field.text(),
-  gender: field
-    .radio()
-    .name("gender")
-    // allows to select nothing
-    .unselectable(),
+  gender: field.radio().name("gender").unselectable(), // unselectable() allows to select nothing
   password: field.password().validateOnSubmitOnly()
 });
+```
 
+### 2. Initializing the form
+
+Initialize the form with previous `formConfig` using the `useFluentForm` hook:
+
+```jsx
+import { useFluentForm } from "react-fluent-form";
+
+const { values, fields, handleSubmit /* and more.. */ } = useFluentForm(
+  formConfig
+);
+```
+
+The objects `values` and `fields` (and also other objects returned by `useFluentForm`) will contain properties for each field name e.g. `values` could look like:
+
+```js
+{
+  username: "user",
+  gender: "",
+  password: "sg$!sga86"
+}
+```
+
+### 3. Rendering the form
+
+The return value of `useFluentForm` will provide everything required for form state handling (`fields` object) and for form submission (`handleSubmit` function):
+
+```jsx
 function RegistrationForm() {
   const { values, fields, handleSubmit } = useFluentForm(formConfig);
 
@@ -93,7 +122,15 @@ function RegistrationForm() {
 }
 ```
 
-# Validation
+## Validation
+
+`react-fluent-form` comes with a build in validation approach that also enables customization.
+
+### Basic Usage
+
+In this example validation will be added for a `username` and `password` field.
+
+#### Adding validation to config
 
 Using `withValidation` either a `yup.Schema` or a `validate function` can be provided for each field. Providing a `yup.Schema` will result in a `string[]` error type. In contrast to that you can return any type of data when using `validate function`'s:
 
@@ -107,7 +144,31 @@ formConfig.withValidation({
     }
   }
 });
+```
 
+#### Validation properties
+
+`touched`, `validity` and `errors` are properties which are mostly relevant for validation. They are similarirly structured to `values` and `fields`:
+
+```jsx
+const { touched, validity, errors } = useFluentForm(formConfig);
+```
+
+- **`touched`**: stores information about touched state of each field. A field is _touched_ once it had focus and then lost it, so from a technical perspective if the `onBlur` event of an input field was triggert.
+  - example: `{username: true, password: undefined}`
+  - possible values: `true`, `false` or `undefined` (`undefined` means it was not touched yet)
+- **`validity`**: stores information about validation state of each field.
+  - example: `{username: false, password: undefined}` (`undefined` means it was not validated yet).
+  - possible values: `true`, `false` or `undefined` (`undefined` means it was not validated yet)
+- **`errors`**: contains the current errors of each field. In case of an error the evaluation of `yup` schemes will result in a `string[]` type.
+  - example: `{username: ["username is a required field"], password: undefined }`
+  - possible values: `any custom type` or undefined (`undefined` means the field was not validated yet or that it's valid).
+
+#### Displaying errors
+
+In order to properly display error messages (and maybe also success messages) properties `touched`, `validity` and `errors` can be used. To handle validation failures on submission a callback can be provided as second argument of `handleSubmit`:
+
+```jsx
 function RegistrationForm() {
   const {
     values,
@@ -143,24 +204,23 @@ function RegistrationForm() {
 }
 ```
 
-## Validation context
+### Validation context
 
 In some cases it's required to work with values outside of your form.
 This is where `validation context` comes into place.
 
-### Initial context
+#### Initial context
+
+Context always need to be an object:
 
 ```jsx
 formConfig.withContext({
-  // It's recommend to wrap your context values in a "context" field (s. "Conditional validation" section below)
-  context: {
-    x: 1,
-    y: 2
-  }
+  x: 1,
+  y: 2
 });
 ```
 
-### Setting context dynamically
+#### Setting context dynamically
 
 If you want to update your context as soon as your context values have changed, you can take advandage of `useEffect`:
 
@@ -172,7 +232,7 @@ useEffect(() => {
 }, [coordinates]);
 ```
 
-### Triggering validation
+#### Triggering validation
 
 You can trigger validation of all fields on context changes:
 
@@ -180,7 +240,7 @@ You can trigger validation of all fields on context changes:
 formConfig.validateOnContextChange();
 ```
 
-### Accessing context
+#### Accessing context
 
 ```jsx
 formConfig.withValidation({
@@ -194,14 +254,14 @@ formConfig.withValidation({
 });
 ```
 
-## Conditional validation
+### Conditional validation
 
 Often it's necessary to adapt validations for a field based on the values of other fields in your form (and also the context). This can be done via `yup.Schema`'s or via `validate function`'s.  
 It's very important to note that `validate function`'s can also return `yup.Schema`'s conditionally. The returned `yup.Schema` will not be treated as an error type, it will be evaluated, thus the error type will be `string[]`.
 
 > **IMPORTANT:**  
 > When using `yup.Schema`'s other form fields need to be accessed with a leading `$` (here `$lastName`) which usually means the value is comming from the context. In fact other form values are passed as context to the `yup.Schema` instances for each field during validation execution.  
-> To clearly seperate context values from field values it's recommened to wrap actual context values in a `context` field (as mentioned in [Initial context](#validation-context))
+> If a context property is named equal to a field property, the **field property will be overriden** in `yup.Schema`s context!
 
 ```jsx
 formConfig.withValidation({
@@ -225,7 +285,7 @@ formConfig.withValidation({
 });
 ```
 
-# Customization
+## Customization
 
 When working with forms HTML elements are seldom enough to create beatufil and intuitive UI's.
 That's why `react-fluent-form` was build to be customizable, so custom field types can be added.
@@ -233,7 +293,7 @@ In some cases it's enought to use `field.raw` (s. below).
 
 If you maybe have your own validation library or you just don't like `yup`, also a custom validator can be provided.
 
-## Using the raw field
+### Using the raw field
 
 For components like [`react-datepicker`](https://www.npmjs.com/package/react-datepicker) it's not necessary to implement a custom field.
 `react-fluent-form` comes with a raw field type which works for components with following characteristics:
@@ -242,7 +302,7 @@ For components like [`react-datepicker`](https://www.npmjs.com/package/react-dat
 - `value` has the same type as the first parameter of `onChange` handler
 - it optionally has a `onBlur`-like prop to indicate when the field is touched
 
-*-like means it must not have the same name, but the same type. E.g. the `value` prop in `react-datepicker` is called `selected`.
+\*-like means it must not have the same name, but the same type. E.g. the `value` prop in `react-datepicker` is called `selected`.
 
 For raw fields it's required to pass an initial value, otherwise it will be undefined.
 
@@ -269,7 +329,7 @@ type FieldsType = {
 };
 ```
 
-## Adding custom fields
+### Adding custom fields
 
 First of all a new class needs to be implemented which extends `Fields`, the base class of every field. It's required to implement a function called `mapToComponentProps` which receives a parameter with following properties:
 
@@ -327,7 +387,7 @@ const formConfig = createForm()({
 });
 ```
 
-## Adding custom validator
+### Adding custom validator
 
 To add a custom validator a class need to be implemented which extends `Validator`. The only function that needs to be implemented is `validateField`, which is called with following parameters:
 
@@ -373,20 +433,25 @@ const formConfig = createForm()({
 });
 ```
 
-# Form arrays
+## Advanced Topics
+
+- [Form arrays](#form-arrays)
+- More comming soon..
+
+### Form arrays
+
+Form arrays are a rather complicated topic, since you need to be able to dynamically add/remove forms on demand. `react-fluent-form` comes with a build in solution by providing two additional hooks: `useFluentFormArray` and `useFluentFormItem`. Keep following image in mind for examples below:
 
 <img src="https://user-images.githubusercontent.com/13695230/75121837-3efce400-5698-11ea-87ce-692bbed5a72f.png" width="300px" alt="form-array-example" />
 
-Form arrays are a rather complicated topic, since you need to be able to dynamically add/remove forms on demand. `react-fluent-form` comes with a build in solution by providing two additional hooks: `useFluentFormArray` and `useFluentFormItem`
+#### Creating array config
 
-## Creating array config
-
-Like for single forms you also need to create a config for form arrays using `createFormArray`. It returns similar config as `createForm` but with additional configuration properties which are only relevant for form arrays:
+Like for single forms you also need to create a config for form arrays but using `createFormArray` function instead. It returns similar config as `createForm` but with additional configuration properties which are only relevant for form arrays:
 
 - `withInitialArray`: specifiy inital values for the form array
 - `withKeyGenerator`: items inside of the form array should be identifiable, which is why each form item has a unique key. On default the key will be generated by a key counter. To override this behaviour you can use this function to generate a key based on values.
 
-> NOTE: `withKeyGenerator` generates the key just **once** for each item directly when it's added.
+> **NOTE:** `withKeyGenerator` generates the key just **once** for each item directly when it's added.
 
 ```tsx
 const userRoleConfig = creatForm()({
@@ -408,7 +473,7 @@ const userRoleConfig = creatForm()({
   .withKeyGenerator(item => item.id);
 ```
 
-## Decalaring form array
+#### Decalaring form array
 
 With the created array config you have all you need to declare and initialize the form array.
 
@@ -427,7 +492,7 @@ const UserRoleFormArray = () => {
 };
 ```
 
-## Declaring form item
+#### Declaring form item
 
 Form items represent the actual forms inside the form array and can be created via `useFluentFormItem` hook.
 Since react hooks can not be called inside of loops (like `map` in the example above), **a new component for form items needs to be implemented**.
@@ -438,15 +503,9 @@ Since react hooks can not be called inside of loops (like `map` in the example a
 
 ```tsx
 const UserRoleForm = ({ formItem }) => {
-  const {
-    values,
-    errors,
-    fields,
-    key,
-    removeSelf,
-    handleSubmit
-    /* ... */
-  } = useFluentFormItem(formItem);
+  const { removeSelf, handleSubmit /* and more.. */ } = useFluentFormItem(
+    formItem
+  );
 
   return (
     <div>
@@ -467,7 +526,7 @@ const UserRoleForm = ({ formItem }) => {
 };
 ```
 
-## Adding form items
+#### Adding form items
 
 `useFluentFormArray` returns a function - `addForm` - to add new form items. It optionally receives `initialValues` or a key `key`.
 
@@ -491,7 +550,7 @@ addForm({
 });
 ```
 
-## Remove form items
+#### Remove form items
 
 `useFluentFormArray` returns a function - `removeForm` - to remove form items, which requires a `key` as parameter.
 
@@ -502,11 +561,11 @@ removeForm(0);
 removeForm(100);
 ```
 
-## Reading form item state at top level
+#### Reading form item state at top level
 
 `useFluentFormArray` returns `formStates`, which is an array that stores the state of each form item. It can be accessed via index or via a helper function called `getFormStateByKey`.
 
-> NOTE: keys are generally not equal to the index!
+> **NOTE:** keys are generally not equal to the index!
 
 ```tsx
 const { formStates, getFormStateByKey } = useFluentFormArray(arrayConfig);
@@ -515,7 +574,7 @@ const firstFormItem = formState[0];
 const formItemWithKeyHello = getFormStateByKey("hello");
 ```
 
-## Resetting array values
+#### Resetting array values
 
 With `resetArray` the from array can be resetted. It will either reset to the array passed to `withInitialArray` or to the array set by `setInitialArray`.
 
@@ -552,7 +611,7 @@ const UserRoleFormArray = () => {
 };
 ```
 
-## Handling form array submission
+#### Handling form array submission
 
 Form array submission works just equal to single form submission.
 
