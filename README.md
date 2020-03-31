@@ -26,6 +26,8 @@
 
 This library was heavily inspired by [useFormState](https://www.npmjs.com/package/react-use-form-state) and [Formik](https://www.npmjs.com/package/formik), which are great libraries on their own! `react-fluent-form` aimes to provide a different API and additional features.
 
+For a quick introduction you can read this [blog post](https://dev.to/ysfaran/react-fluent-form-how-to-write-forms-with-validation-in-few-steps-56ho)!
+
 Check out the full API [here](docs/API.md). It's written for typescript!
 
 ## Core Features
