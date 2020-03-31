@@ -1,3 +1,12 @@
+### [1.4.1](https://github.com/ysfaran/react-fluent-form/compare/v1.4.0...v1.4.1) (2020-03-31)
+
+
+### Documentation
+
+* **readme:** add link to introductional blog post ([abd79b9](https://github.com/ysfaran/react-fluent-form/commit/abd79b985b2cd3d47959dd6fe53742878c4811a6))
+* **readme:** improve readme ([2977a02](https://github.com/ysfaran/react-fluent-form/commit/2977a020c4092e0016c7a5265235e71ddb21aa9c))
+* rename CONTRIBUTE.md to CONTRIBUTING.md ([30e2ce4](https://github.com/ysfaran/react-fluent-form/commit/30e2ce423f9c2905d4a0888b7725fcbe8902744c))
+
 ## [1.4.0](https://github.com/ysfaran/react-fluent-form/compare/v1.3.0...v1.4.0) (2020-03-25)
 
 
