@@ -1,3 +1,10 @@
+## [1.5.0](https://github.com/ysfaran/react-fluent-form/compare/v1.4.1...v1.5.0) (2020-03-31)
+
+
+### Features
+
+* **form:** add possibility to trigger validation for one or all fields ([d5aa498](https://github.com/ysfaran/react-fluent-form/commit/d5aa498ebef19592a07742ef841ca941b6b37f8b))
+
 ### [1.4.1](https://github.com/ysfaran/react-fluent-form/compare/v1.4.0...v1.4.1) (2020-03-31)
 
 
