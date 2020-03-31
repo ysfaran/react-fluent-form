@@ -350,6 +350,86 @@ describe("useFluentFormItem (multiple)", () => {
       expect(formItemValues2).toEqual(formArrayValues0);
     });
 
+    it("updates errors independently when triggering validation for one field manually", () => {
+      const config = createConfigForTest().withValidation({
+        username: yup.string().required(),
+        email: yup.string().required()
+      });
+
+      const {
+        fluentFormArrayRef,
+        fluentFormItemsRef
+      } = renderFluentFormItemsForTest(config);
+
+      act(() => {
+        fluentFormItemsRef.current[1].validateField("email");
+      });
+
+      const { current: fluentFormArray } = fluentFormArrayRef;
+      const { current: fluentFormItems } = fluentFormItemsRef;
+
+      const formArrayErrors0 = fluentFormArray.formStates[0].errors;
+      const formItemErrors0 = fluentFormItems[0].errors;
+      const formArrayErrors1 = fluentFormArray.formStates[1].errors;
+      const formItemErrors1 = fluentFormItems[1].errors;
+      const formArrayErrors2 = fluentFormArray.formStates[2].errors;
+      const formItemErrors2 = fluentFormItems[2].errors;
+
+      expect(formArrayErrors1).toEqual({
+        username: undefined,
+        email: expect.any(Array)
+      });
+      expect(formItemErrors1).toEqual(formArrayErrors1);
+
+      expect(formArrayErrors0).toEqual({
+        username: undefined,
+        email: undefined
+      });
+      expect(formItemErrors0).toEqual(formArrayErrors0);
+      expect(formArrayErrors2).toEqual(formArrayErrors0);
+      expect(formItemErrors2).toEqual(formArrayErrors0);
+    });
+
+    it("updates errors independently when triggering validation for all fields manually", () => {
+      const config = createConfigForTest().withValidation({
+        username: yup.string().required(),
+        email: yup.string().required()
+      });
+
+      const {
+        fluentFormArrayRef,
+        fluentFormItemsRef
+      } = renderFluentFormItemsForTest(config);
+
+      act(() => {
+        fluentFormItemsRef.current[1].validateAllFields();
+      });
+
+      const { current: fluentFormArray } = fluentFormArrayRef;
+      const { current: fluentFormItems } = fluentFormItemsRef;
+
+      const formArrayErrors0 = fluentFormArray.formStates[0].errors;
+      const formItemErrors0 = fluentFormItems[0].errors;
+      const formArrayErrors1 = fluentFormArray.formStates[1].errors;
+      const formItemErrors1 = fluentFormItems[1].errors;
+      const formArrayErrors2 = fluentFormArray.formStates[2].errors;
+      const formItemErrors2 = fluentFormItems[2].errors;
+
+      expect(formArrayErrors1).toEqual({
+        username: expect.any(Array),
+        email: expect.any(Array)
+      });
+      expect(formItemErrors1).toEqual(formArrayErrors1);
+
+      expect(formArrayErrors0).toEqual({
+        username: undefined,
+        email: undefined
+      });
+      expect(formItemErrors0).toEqual(formArrayErrors0);
+      expect(formArrayErrors2).toEqual(formArrayErrors0);
+      expect(formItemErrors2).toEqual(formArrayErrors0);
+    });
+
     it("updates context independently when setting it manually", () => {
       const {
         fluentFormArrayRef,

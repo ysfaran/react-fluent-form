@@ -354,4 +354,72 @@ describe("useFluentForm (functions)", () => {
       });
     });
   });
+
+  describe("validateField and validateAllFields", () => {
+    it("is able to force validation for all fields", () => {
+      const formConfig = createForm<UserModel>()({
+        username: field.text(),
+        email: field.email()
+      }).withValidation({
+        username: yup.string().required(),
+        email: yup.string().required()
+      });
+
+      const { fluentFormRef } = renderWithFluentForm(
+        formConfig,
+        ({ fluentForm }) => (
+          <>
+            <input {...fluentForm.fields.username} />
+            <input {...fluentForm.fields.email} />
+          </>
+        )
+      );
+
+      let error;
+
+      act(() => {
+        error = fluentFormRef.current.validateField("username");
+      });
+
+      expect(error).toEqual(expect.any(Array));
+
+      expect(fluentFormRef.current.errors).toEqual({
+        username: error,
+        email: undefined
+      });
+    });
+
+    it("is able to force validation for one field", () => {
+      const formConfig = createForm<UserModel>()({
+        username: field.text(),
+        email: field.email()
+      }).withValidation({
+        username: yup.string().required(),
+        email: yup.string().required()
+      });
+
+      const { fluentFormRef } = renderWithFluentForm(
+        formConfig,
+        ({ fluentForm }) => (
+          <>
+            <input {...fluentForm.fields.username} />
+            <input {...fluentForm.fields.email} />
+          </>
+        )
+      );
+
+      let errors;
+
+      act(() => {
+        errors = fluentFormRef.current.validateAllFields();
+      });
+
+      expect(errors).toEqual({
+        username: expect.any(Array),
+        email: expect.any(Array)
+      });
+
+      expect(fluentFormRef.current.errors).toEqual(errors);
+    });
+  });
 });

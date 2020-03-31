@@ -259,6 +259,62 @@ describe("useFluentFormItem (single)", () => {
       expect(queryByDisplayValue("manual@email.com")).toBeInTheDocument();
     });
 
+    it("updates form array state and form item when validating field manually", () => {
+      const config = createConfigForTest().withValidation({
+        username: yup.string().required(),
+        email: yup.string().required()
+      });
+
+      const {
+        fluentFormArrayRef,
+        fluentFormItemsRef
+      } = renderFluentFormItemsForTest(config);
+
+      let error;
+
+      act(() => {
+        error = fluentFormItemsRef.current[0].validateField("email");
+      });
+
+      const formArrayErrors = fluentFormArrayRef.current.formStates[0].errors;
+      const formItemErrors = fluentFormItemsRef.current[0].errors;
+
+      expect(error).toEqual(expect.any(Array));
+      expect(formArrayErrors).toEqual({
+        username: undefined,
+        email: error
+      });
+      expect(formItemErrors).toEqual(formArrayErrors);
+    });
+
+    it("updates form array state and form item when validating all fields manually", () => {
+      const config = createConfigForTest().withValidation({
+        username: yup.string().required(),
+        email: yup.string().required()
+      });
+
+      const {
+        fluentFormArrayRef,
+        fluentFormItemsRef
+      } = renderFluentFormItemsForTest(config);
+
+      let errors;
+
+      act(() => {
+        errors = fluentFormItemsRef.current[0].validateAllFields();
+      });
+
+      const formArrayErrors = fluentFormArrayRef.current.formStates[0].errors;
+      const formItemErrors = fluentFormItemsRef.current[0].errors;
+
+      expect(errors).toEqual({
+        username: expect.any(Array),
+        email: expect.any(Array)
+      });
+      expect(formArrayErrors).toEqual(errors);
+      expect(formItemErrors).toEqual(formArrayErrors);
+    });
+
     it("updates form array state and form item when setting context manually", () => {
       const {
         fluentFormArrayRef,
