@@ -734,6 +734,8 @@ const {
   setInitialValues,
   setContext,
   handleSubmit,
+  validateField,
+  validateAllFields,
   reset
 } = useFluentForm(formConfig);
 ```
@@ -893,6 +895,16 @@ function LoginForm() {
   );
 }
 ```
+
+#### `validateField: <K extends keyof ValuesType>(field: K) => ErrorsType<ValuesType, ErrorType>[K]`
+
+Triggers validation for given field and returns error in case the field is invalid, otherwise `undefined`.  
+It also updates the [errors state](#errors-errorstypevaluestype-errortype) based on the returned error.
+
+#### `validateAllFields: () => ErrorsType<ValuesType, ErrorType>`
+
+Triggers validation for all fields and returns an errors object.  
+It also updates the [errors state](#errors-errorstypevaluestype-errortype) based on the returned errors.
 
 #### `reset: () => void`
 

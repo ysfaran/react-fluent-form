@@ -24,6 +24,10 @@ export interface UseFluentForm<Config extends FormConfig> {
   setInitialValues: (values: Partial<ExtractValuesType<Config>>) => void;
   setContext: (context: object) => void;
   handleSubmit: HandleSubmit;
+  validateField: <K extends keyof ExtractValuesType<Config>>(
+    field: K
+  ) => ExtractErrorsType<Config>[K];
+  validateAllFields: () => ExtractErrorsType<Config>;
   reset: () => void;
 }
 
