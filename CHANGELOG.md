@@ -1,3 +1,10 @@
+### [1.5.1](https://github.com/ysfaran/react-fluent-form/compare/v1.5.0...v1.5.1) (2020-04-24)
+
+
+### Documentation
+
+* **readme:** move docs to external site ([b843b2d](https://github.com/ysfaran/react-fluent-form/commit/b843b2d7b667e18c6332b8b4daee92c9cac262b7))
+
 ## [1.5.0](https://github.com/ysfaran/react-fluent-form/compare/v1.4.1...v1.5.0) (2020-03-31)
 
 
