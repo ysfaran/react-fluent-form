@@ -22,10 +22,14 @@
   <a href="https://github.com/ysfaran/react-fluent-form/blob/master/LICENSE">
     <img src="https://img.shields.io/github/license/ysfaran/react-fluent-form.svg" alt="Licence">
   </a>
+
+  <a href="https://app.netlify.com/sites/elegant-ride-60014b/deploys">
+    <img src="https://api.netlify.com/api/v1/badges/9d010474-f8fc-4b79-b268-c978d81aa1cc/deploy-status" alt="Netlify Status">
+  </a>
 </p>
 
 This library was heavily inspired by [useFormState](https://www.npmjs.com/package/react-use-form-state) and [Formik](https://www.npmjs.com/package/formik), which are great libraries on their own! `react-fluent-form` aimes to provide a different API and additional features.
 
 For a quick introduction you can read this [blog post](https://dev.to/ysfaran/react-fluent-form-how-to-write-forms-with-validation-in-few-steps-56ho)!
 
-Check out the [**official docs**](https://elegant-ride-60014b.netlify.app).
+Check out the [official docs](https://react-fluent-form.com).
