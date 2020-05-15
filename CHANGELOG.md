@@ -1,3 +1,10 @@
+### [1.5.2](https://github.com/ysfaran/react-fluent-form/compare/v1.5.1...v1.5.2) (2020-05-15)
+
+
+### Documentation
+
+* **readme:** use temporary docs url ([b5ecf61](https://github.com/ysfaran/react-fluent-form/commit/b5ecf61e3ee7bd970d2da43ebe45309aaf2e2796))
+
 ### [1.5.1](https://github.com/ysfaran/react-fluent-form/compare/v1.5.0...v1.5.1) (2020-04-24)
 
 
