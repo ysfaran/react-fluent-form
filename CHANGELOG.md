@@ -1,3 +1,10 @@
+### [1.5.3](https://github.com/ysfaran/react-fluent-form/compare/v1.5.2...v1.5.3) (2020-05-15)
+
+
+### Documentation
+
+* **readme:** use pretty production url for docs ([9ac3b48](https://github.com/ysfaran/react-fluent-form/commit/9ac3b48806eec3037a9083158a862f972ea14894))
+
 ### [1.5.2](https://github.com/ysfaran/react-fluent-form/compare/v1.5.1...v1.5.2) (2020-05-15)
 
 
