@@ -28,4 +28,4 @@ This library was heavily inspired by [useFormState](https://www.npmjs.com/packag
 
 For a quick introduction you can read this [blog post](https://dev.to/ysfaran/react-fluent-form-how-to-write-forms-with-validation-in-few-steps-56ho)!
 
-Check out the **official docs** [here](https://ysfaran.github.io/react-fluent-form-docs/).
+Check out the [**official docs**](https://elegant-ride-60014b.netlify.app).
