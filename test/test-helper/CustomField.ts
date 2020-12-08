@@ -9,7 +9,7 @@ export class CustomField extends Field<string, InputPropsValue> {
   public mapToComponentProps: ComponentPropsMapper<string, InputPropsValue> = ({
     value,
     setValue,
-    setTouched
+    setTouched,
   }) => ({
     value,
     onBlur: () => {
@@ -18,6 +18,6 @@ export class CustomField extends Field<string, InputPropsValue> {
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
       setValue(e.target.value);
       setTouched(false);
-    }
+    },
   });
 }

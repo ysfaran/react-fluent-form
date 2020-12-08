@@ -2,7 +2,7 @@ import {
   ComponentPropsMapper,
   SelectProps,
   SetTouched,
-  SetValue
+  SetValue,
 } from "../types";
 import { Field } from "./Field";
 
@@ -26,15 +26,15 @@ export class SelectField extends Field<string, SelectProps> {
   public mapToComponentProps: ComponentPropsMapper<string, SelectProps> = ({
     value,
     setValue,
-    setTouched
+    setTouched,
   }) => ({
     select: {
       value,
       onBlur: this.handleBlur(setTouched),
-      onChange: this.handleChange(setValue)
+      onChange: this.handleChange(setValue),
     },
     option: (value: string) => ({
-      value
-    })
+      value,
+    }),
   });
 }

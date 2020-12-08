@@ -8,7 +8,7 @@ import {
   ExtractValuesType,
   FluentFormReducer,
   FluentFormState,
-  UseFluentStateManager
+  UseFluentStateManager,
 } from "../../../types";
 import { fluentFormReducer } from "./reducer";
 
@@ -38,14 +38,14 @@ export function useFluentStateManager<Config extends FormConfig>(
   const setInitialValuesRef = useCallback((values: Partial<Values>) => {
     intitalStateRef.current.values = {
       ...intitalStateRef.current.values,
-      ...values
+      ...values,
     };
   }, []);
 
   const setSubmittingResult = useCallback((errors: Errors) => {
     dispatch({
       type: "FINISHED_SUBMITTING",
-      payload: { errors: errors }
+      payload: { errors: errors },
     });
   }, []);
 
@@ -60,7 +60,7 @@ export function useFluentStateManager<Config extends FormConfig>(
     <K extends keyof Values>(field: K, error: Errors[K]) => {
       dispatch({
         type: "VALIDATION_FAILURE",
-        payload: { field, error: error }
+        payload: { field, error: error },
       });
     },
     []
@@ -70,7 +70,7 @@ export function useFluentStateManager<Config extends FormConfig>(
     <K extends keyof Values>(field: K) => {
       dispatch({
         type: "VALIDATION_SUCCESS",
-        payload: { field }
+        payload: { field },
       });
     },
     []
@@ -80,7 +80,7 @@ export function useFluentStateManager<Config extends FormConfig>(
     <K extends keyof Values>(field: K, value: Values[K], touched?: boolean) => {
       dispatch({
         type: "VALUE_CHANGE",
-        payload: { field, value, touched }
+        payload: { field, value, touched },
       });
     },
     []
@@ -110,6 +110,6 @@ export function useFluentStateManager<Config extends FormConfig>(
     setValue,
     setValues,
     startSubmitting,
-    reset
+    reset,
   };
 }

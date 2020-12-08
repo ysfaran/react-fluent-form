@@ -1,7 +1,7 @@
 import { Action, ErrorsType, FluentFormState } from "../../../types";
 import {
   deriveValidityFromErrors,
-  generateAllTouchedTrue
+  generateAllTouchedTrue,
 } from "../../../utils/stateUtils";
 
 export type FluentFormActionTypes<
@@ -38,20 +38,20 @@ export const fluentFormReducer = <
     case "SET_VALUES":
       return {
         ...state,
-        values: { ...state.values, ...action.payload.values }
+        values: { ...state.values, ...action.payload.values },
       };
     case "SET_SINGLE_TOUCHED": {
       const { field, touched } = action.payload;
       return {
         ...state,
-        touched: { ...state.touched, [field]: touched }
+        touched: { ...state.touched, [field]: touched },
       };
     }
     case "SET_CONTEXT": {
       const { context } = action.payload;
       return {
         ...state,
-        context
+        context,
       };
     }
     case "VALUE_CHANGE": {
@@ -59,7 +59,7 @@ export const fluentFormReducer = <
       return {
         ...state,
         values: { ...state.values, [field]: value },
-        touched: { ...state.touched, [field]: touched }
+        touched: { ...state.touched, [field]: touched },
       };
     }
     case "VALIDATION_FAILURE": {
@@ -67,7 +67,7 @@ export const fluentFormReducer = <
       return {
         ...state,
         errors: { ...state.errors, [field]: error },
-        validity: { ...state.validity, [field]: false }
+        validity: { ...state.validity, [field]: false },
       };
     }
 
@@ -76,7 +76,7 @@ export const fluentFormReducer = <
       return {
         ...state,
         errors: { ...state.errors, [field]: undefined },
-        validity: { ...state.validity, [field]: true }
+        validity: { ...state.validity, [field]: true },
       };
     }
     case "SUBMITTING": {

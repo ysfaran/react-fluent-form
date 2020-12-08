@@ -3,7 +3,7 @@ import { useCallback, useRef } from "react";
 import {
   HandleSubmit,
   HandleSubmitOptions,
-  UseHandleSubmitArgs
+  UseHandleSubmitArgs,
 } from "../../types";
 import { useEffectIgnoreFirst } from "./useEffectIgnoreFirst";
 
@@ -11,7 +11,7 @@ export const useHandleSubmit = ({
   submitting,
   valid,
   startSubmitting,
-  submitAction
+  submitAction,
 }: UseHandleSubmitArgs) => {
   /* istanbul ignore next */
   const submitSuccessCallbackRef = useRef<Function>(() => undefined);

@@ -27,7 +27,7 @@ export class FormArrayConfigHelper<Config extends FormArrayConfig = any> {
       formArray[key] = {
         key: key,
         sortPosition: i,
-        ...this.formConfigHelper.getInitialState(item)
+        ...this.formConfigHelper.getInitialState(item),
       };
     }
 

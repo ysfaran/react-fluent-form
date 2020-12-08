@@ -15,7 +15,7 @@ describe("FormConfigHelper", () => {
       formConfig = new FormConfig({
         username: field.text("user"),
         email: field.email(),
-        age: field.number("30")
+        age: field.number("30"),
       });
 
       formConfigHelper = new FormConfigHelper(formConfig);
@@ -27,7 +27,7 @@ describe("FormConfigHelper", () => {
       expect(initialValues).toMatchObject({
         username: "user",
         email: "",
-        age: "30"
+        age: "30",
       });
     });
 
@@ -35,7 +35,7 @@ describe("FormConfigHelper", () => {
       formConfig.withInitialValues({
         username: "another-user",
         email: "user@mail.com",
-        age: "25"
+        age: "25",
       });
 
       const initialValues = formConfigHelper.getInitialValues();
@@ -43,13 +43,13 @@ describe("FormConfigHelper", () => {
       expect(initialValues).toMatchObject({
         username: "another-user",
         email: "user@mail.com",
-        age: "25"
+        age: "25",
       });
     });
 
     it("fallbacks to initial values from fields if no value was provided from object", () => {
       formConfig.withInitialValues({
-        age: "25"
+        age: "25",
       });
 
       const initialValues = formConfigHelper.getInitialValues();
@@ -57,7 +57,7 @@ describe("FormConfigHelper", () => {
       expect(initialValues).toMatchObject({
         username: "user",
         email: "",
-        age: "25"
+        age: "25",
       });
     });
   });
@@ -70,7 +70,7 @@ describe("FormConfigHelper", () => {
       formConfig = new FormConfig({
         username: field.text("user"),
         email: field.email(),
-        age: field.number("30")
+        age: field.number("30"),
       });
 
       formConfigHelper = new FormConfigHelper(formConfig);
@@ -85,7 +85,7 @@ describe("FormConfigHelper", () => {
         validity: {},
         errors: {},
         context: {},
-        submitting: false
+        submitting: false,
       });
     });
 
@@ -99,13 +99,13 @@ describe("FormConfigHelper", () => {
     it("prefers passed initial values", () => {
       const initialState = formConfigHelper.getInitialState({
         email: "email@test.com",
-        age: "50"
+        age: "50",
       });
 
       expect(initialState.values).toEqual({
         username: "user",
         email: "email@test.com",
-        age: "50"
+        age: "50",
       });
     });
   });
@@ -117,7 +117,7 @@ describe("FormConfigHelper", () => {
     beforeEach(() => {
       formConfig = new FormConfig({
         username: field.text(""),
-        email: field.text("")
+        email: field.text(""),
       });
 
       helper = new FormConfigHelper(formConfig);
@@ -149,7 +149,7 @@ describe("FormConfigHelper", () => {
       [AfterTouchOnChange, OnChange, undefined, true],
       [OnChange, undefined, false, true],
       [OnChange, OnSubmitOnly, true, false],
-      [OnSubmitOnly, AfterTouchOnChange, true, true]
+      [OnSubmitOnly, AfterTouchOnChange, true, true],
     ])(
       'with global trigger "%p", field trigger "%p" and touched "%p" it returns "%p"',
       (
@@ -173,7 +173,7 @@ describe("FormConfigHelper", () => {
     beforeEach(() => {
       formConfig = new FormConfig({
         username: field.text(""),
-        email: field.text("")
+        email: field.text(""),
       });
 
       helper = new FormConfigHelper(formConfig);
@@ -199,7 +199,7 @@ describe("FormConfigHelper", () => {
       [AfterTouchOnChange, undefined, true, true],
       [AfterTouchOnChange, undefined, false, false],
       [AfterTouchOnChange, OnChange, true, false],
-      [AfterTouchOnChange, OnSubmitOnly, true, false]
+      [AfterTouchOnChange, OnSubmitOnly, true, false],
     ])(
       'with global trigger "%p", field trigger "%p" and touched "%p" it returns "%p"',
       (

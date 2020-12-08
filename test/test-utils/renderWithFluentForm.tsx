@@ -11,7 +11,7 @@ export function renderWithFluentForm<C extends FormConfig>(
   UiComponent: React.FC<UiComponentProps<C>>
 ) {
   const fluentFormRef: FluentFormRef<C> = {
-    current: null as any
+    current: null as any,
   };
 
   const Wrapper = () => {

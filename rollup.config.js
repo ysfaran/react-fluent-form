@@ -7,7 +7,7 @@ export default [
     input: "src/index.ts",
     output: [
       { file: pkg.main, format: "cjs", exports: "named", sourcemap: true },
-      { file: pkg.module, format: "es", exports: "named", sourcemap: true }
+      { file: pkg.module, format: "es", exports: "named", sourcemap: true },
     ],
     external: Object.keys(pkg.devDependencies),
     plugins: [
@@ -15,15 +15,15 @@ export default [
         useTsconfigDeclarationDir: true,
         tsconfigOverride: {
           compilerOptions: {
-            declarationDir: "tmp/dts"
-          }
-        }
-      })
-    ]
+            declarationDir: "tmp/dts",
+          },
+        },
+      }),
+    ],
   },
   {
     input: "tmp/dts/index.d.ts",
     output: { file: "dist/index.d.ts", format: "es" },
-    plugins: [dts()]
-  }
+    plugins: [dts()],
+  },
 ];

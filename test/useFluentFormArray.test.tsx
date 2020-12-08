@@ -14,7 +14,7 @@ describe("useFluentFormArray", () => {
   it("has no form items and form states initially", () => {
     const formConfig = createFormArray<UserModel>()({
       username: field.text(),
-      email: field.email()
+      email: field.email(),
     });
 
     const { result } = renderHook(() => useFluentFormArray(formConfig));
@@ -27,7 +27,7 @@ describe("useFluentFormArray", () => {
     it("can add a form item", async () => {
       const formConfig = createFormArray<UserModel>()({
         username: field.text(),
-        email: field.email()
+        email: field.email(),
       });
 
       const { result } = renderHook(() => useFluentFormArray(formConfig));
@@ -41,41 +41,41 @@ describe("useFluentFormArray", () => {
     it("adds form items after inital array", async () => {
       const formConfig = createFormArray<UserModel>()({
         username: field.text(),
-        email: field.email()
+        email: field.email(),
       }).withInitialArray([
         { username: "username0", email: "email0" },
-        { username: "username1", email: "email1" }
+        { username: "username1", email: "email1" },
       ]);
 
       const { result } = renderHook(() => useFluentFormArray(formConfig));
 
       actHooks(() =>
         result.current.addForm({
-          initialValues: { username: "username2", email: "email2" }
+          initialValues: { username: "username2", email: "email2" },
         })
       );
 
-      expect(result.current.formStates.map(state => state.values)).toEqual([
+      expect(result.current.formStates.map((state) => state.values)).toEqual([
         {
           username: "username0",
-          email: "email0"
+          email: "email0",
         },
         {
           username: "username1",
-          email: "email1"
+          email: "email1",
         },
         {
           username: "username2",
-          email: "email2"
-        }
+          email: "email2",
+        },
       ]);
     });
 
     it("allows to specify key manually", async () => {
       const formConfig = createFormArray<UserModel>()({
         username: field.text(),
-        email: field.email()
-      }).withKeyGenerator(values => values.username);
+        email: field.email(),
+      }).withKeyGenerator((values) => values.username);
 
       const { result } = renderHook(() => useFluentFormArray(formConfig));
 
@@ -87,8 +87,8 @@ describe("useFluentFormArray", () => {
     it("increments key by default and skips existing keys", async () => {
       const formConfig = createFormArray<UserModel>()({
         username: field.text(),
-        email: field.email()
-      }).withKeyGenerator(values => values.username);
+        email: field.email(),
+      }).withKeyGenerator((values) => values.username);
 
       const { result } = renderHook(() => useFluentFormArray(formConfig));
 
@@ -102,19 +102,19 @@ describe("useFluentFormArray", () => {
         result.current.addForm();
       });
 
-      expect(result.current.formStates.map(state => state.key)).toEqual([
+      expect(result.current.formStates.map((state) => state.key)).toEqual([
         0,
         2,
         1,
-        3
+        3,
       ]);
     });
 
     it("it uses key generator to set key value if it is specified", () => {
       const formConfig = createFormArray<UserModel>()({
         username: field.text(),
-        email: field.email()
-      }).withKeyGenerator(values => values.username);
+        email: field.email(),
+      }).withKeyGenerator((values) => values.username);
 
       const { result } = renderHook(() => useFluentFormArray(formConfig));
 
@@ -130,10 +130,10 @@ describe("useFluentFormArray", () => {
     it("initializes state based on config", () => {
       const formConfig = createFormArray<UserModel>()({
         username: field.text("ysfaran"),
-        email: field.email()
+        email: field.email(),
       })
         .withInitialValues({
-          email: "example@email.com"
+          email: "example@email.com",
         })
         .withContext({ contextValue: 0 });
 
@@ -144,42 +144,42 @@ describe("useFluentFormArray", () => {
       expect(result.current.formStates[0]).toMatchObject({
         values: {
           username: "ysfaran",
-          email: "example@email.com"
+          email: "example@email.com",
         },
         touched: {},
         validity: {},
         errors: {},
         context: { contextValue: 0 },
-        submitting: false
+        submitting: false,
       });
     });
 
     it("initializes values while prefering passed initial values", () => {
       const formConfig = createFormArray<UserModel>()({
         username: field.text("ysfaran"),
-        email: field.email()
+        email: field.email(),
       }).withInitialValues({
-        email: "example@email.com"
+        email: "example@email.com",
       });
 
       const { result } = renderHook(() => useFluentFormArray(formConfig));
 
       actHooks(() =>
         result.current.addForm({
-          initialValues: { email: "prefered@email.com" }
+          initialValues: { email: "prefered@email.com" },
         })
       );
 
       expect(result.current.formStates[0].values).toEqual({
         username: "ysfaran",
-        email: "prefered@email.com"
+        email: "prefered@email.com",
       });
     });
 
     it("keeps form items in order as they were added", () => {
       const formConfig = createFormArray<UserModel>()({
         username: field.text(),
-        email: field.email()
+        email: field.email(),
       });
 
       const { result } = renderHook(() => useFluentFormArray(formConfig));
@@ -189,17 +189,17 @@ describe("useFluentFormArray", () => {
       actHooks(() => result.current.addForm({ key: 34 }));
       actHooks(() => result.current.addForm({ key: "b" }));
 
-      expect(result.current.formArray.map(item => item.key)).toEqual([
+      expect(result.current.formArray.map((item) => item.key)).toEqual([
         100,
         "z",
         34,
-        "b"
+        "b",
       ]);
-      expect(result.current.formStates.map(item => item.key)).toEqual([
+      expect(result.current.formStates.map((item) => item.key)).toEqual([
         100,
         "z",
         34,
-        "b"
+        "b",
       ]);
     });
   });
@@ -208,7 +208,7 @@ describe("useFluentFormArray", () => {
     it("can remove a form item", () => {
       const formConfig = createFormArray<UserModel>()({
         username: field.text(),
-        email: field.email()
+        email: field.email(),
       });
 
       const { result } = renderHook(() => useFluentFormArray(formConfig));
@@ -223,7 +223,7 @@ describe("useFluentFormArray", () => {
     it("keeps order when removing form item", () => {
       const formConfig = createFormArray<UserModel>()({
         username: field.text(),
-        email: field.email()
+        email: field.email(),
       });
 
       const { result } = renderHook(() => useFluentFormArray(formConfig));
@@ -235,22 +235,22 @@ describe("useFluentFormArray", () => {
 
       actHooks(() => result.current.removeForm("z"));
 
-      expect(result.current.formArray.map(item => item.key)).toEqual([
+      expect(result.current.formArray.map((item) => item.key)).toEqual([
         100,
         34,
-        "b"
+        "b",
       ]);
-      expect(result.current.formStates.map(item => item.key)).toEqual([
+      expect(result.current.formStates.map((item) => item.key)).toEqual([
         100,
         34,
-        "b"
+        "b",
       ]);
     });
 
     it("does nothing when removing non-existent key", () => {
       const formConfig = createFormArray<UserModel>()({
         username: field.text(),
-        email: field.email()
+        email: field.email(),
       });
 
       const { result } = renderHook(() => useFluentFormArray(formConfig));
@@ -261,15 +261,15 @@ describe("useFluentFormArray", () => {
 
       actHooks(() => result.current.removeForm("non existent key"));
 
-      expect(result.current.formArray.map(item => item.key)).toEqual([
+      expect(result.current.formArray.map((item) => item.key)).toEqual([
         100,
         34,
-        "b"
+        "b",
       ]);
-      expect(result.current.formStates.map(item => item.key)).toEqual([
+      expect(result.current.formStates.map((item) => item.key)).toEqual([
         100,
         34,
-        "b"
+        "b",
       ]);
     });
   });
@@ -278,12 +278,12 @@ describe("useFluentFormArray", () => {
     it("resets array based on config", () => {
       const arrayConfig = createFormArray<UserModel>()({
         username: field.text(),
-        email: field.email()
+        email: field.email(),
       })
         .withValidation({ username: () => "error" })
         .withInitialArray([
           { username: "user0", email: "email0" },
-          { username: "user1", email: "email1" }
+          { username: "user1", email: "email1" },
         ])
         .validateOnChange()
         .withContext({ contextValue: 1 });
@@ -291,7 +291,7 @@ describe("useFluentFormArray", () => {
       const {
         fluentFormArrayRef,
         fluentFormItemsRef,
-        getAllByTestId
+        getAllByTestId,
       } = renderWithFluentFormItems(
         arrayConfig,
         ({ formItem: { key, fields } }) => {
@@ -324,40 +324,40 @@ describe("useFluentFormArray", () => {
           key: 0,
           values: {
             username: "user0",
-            email: "email0"
+            email: "email0",
           },
           touched: {},
           validity: {},
           errors: {},
           submitting: false,
           context: { contextValue: 1 },
-          sortPosition: 0
+          sortPosition: 0,
         },
         {
           key: 1,
           values: {
             username: "user1",
-            email: "email1"
+            email: "email1",
           },
           touched: {},
           validity: {},
           errors: {},
           submitting: false,
           context: { contextValue: 1 },
-          sortPosition: 1
-        }
+          sortPosition: 1,
+        },
       ]);
     });
 
     it("resets array based on manually set initial array", () => {
       const arrayConfig = createFormArray<UserModel>()({
         username: field.text(),
-        email: field.email()
+        email: field.email(),
       })
         .withValidation({ username: () => "error" })
         .withInitialArray([
           { username: "user0", email: "email0" },
-          { username: "user1", email: "email1" }
+          { username: "user1", email: "email1" },
         ])
         .validateOnChange();
 
@@ -374,7 +374,7 @@ describe("useFluentFormArray", () => {
       );
 
       fluentFormArrayRef.current.setInitialArray([
-        { username: "new initial user", email: "new initial email" }
+        { username: "new initial user", email: "new initial email" },
       ]);
 
       const [userInput0, userInput1] = getAllByTestId(/username/);
@@ -392,15 +392,15 @@ describe("useFluentFormArray", () => {
           key: 0,
           values: {
             username: "new initial user",
-            email: "new initial email"
+            email: "new initial email",
           },
           touched: {},
           validity: {},
           errors: {},
           submitting: false,
           context: {},
-          sortPosition: 0
-        }
+          sortPosition: 0,
+        },
       ]);
     });
   });
@@ -409,7 +409,7 @@ describe("useFluentFormArray", () => {
     it("returns form state of form item with provided key", () => {
       const formConfig = createFormArray<UserModel>()({
         username: field.text(),
-        email: field.email()
+        email: field.email(),
       });
 
       const { result } = renderHook(() => useFluentFormArray(formConfig));
@@ -424,7 +424,7 @@ describe("useFluentFormArray", () => {
     it("returns undefined if no form item with provided key was found", () => {
       const formConfig = createFormArray<UserModel>()({
         username: field.text(),
-        email: field.email()
+        email: field.email(),
       });
 
       const { result } = renderHook(() => useFluentFormArray(formConfig));
@@ -447,9 +447,9 @@ describe("useFluentFormArray", () => {
     it("calls success callback when all form items are valid", async () => {
       const formConfig = createFormArray<UserModel>()({
         username: field.text("ysfaran"),
-        email: field.email()
+        email: field.email(),
       }).withValidation({
-        username: yup.string().required()
+        username: yup.string().required(),
       });
 
       const { result } = renderHook(() => useFluentFormArray(formConfig));
@@ -466,7 +466,7 @@ describe("useFluentFormArray", () => {
         {
           values: {
             username: "ysfaran",
-            email: ""
+            email: "",
           },
           key: 0,
           sortPosition: 0,
@@ -474,12 +474,12 @@ describe("useFluentFormArray", () => {
           validity: { username: true, email: true },
           errors: { username: undefined, email: undefined },
           context: {},
-          submitting: false
+          submitting: false,
         },
         {
           values: {
             username: "ysfaran",
-            email: ""
+            email: "",
           },
           key: 1,
           sortPosition: 1,
@@ -487,17 +487,17 @@ describe("useFluentFormArray", () => {
           validity: { username: true, email: true },
           errors: { username: undefined, email: undefined },
           context: {},
-          submitting: false
-        }
+          submitting: false,
+        },
       ]);
     });
 
     it("calls failure callback when form items are invalid", async () => {
       const formConfig = createFormArray<UserModel>()({
         username: field.text(),
-        email: field.email()
+        email: field.email(),
       }).withValidation({
-        username: yup.string().required()
+        username: yup.string().required(),
       });
       const failure = jest.fn();
       const { result } = renderHook(() => useFluentFormArray(formConfig));
@@ -513,7 +513,7 @@ describe("useFluentFormArray", () => {
         {
           values: {
             username: "",
-            email: ""
+            email: "",
           },
           key: 0,
           sortPosition: 0,
@@ -521,12 +521,12 @@ describe("useFluentFormArray", () => {
           validity: { username: false, email: true },
           errors: { username: expect.any(Array), email: undefined },
           context: {},
-          submitting: false
+          submitting: false,
         },
         {
           values: {
             username: "",
-            email: ""
+            email: "",
           },
           key: 1,
           sortPosition: 1,
@@ -534,8 +534,8 @@ describe("useFluentFormArray", () => {
           validity: { username: false, email: true },
           errors: { username: expect.any(Array), email: undefined },
           context: {},
-          submitting: false
-        }
+          submitting: false,
+        },
       ]);
     });
   });

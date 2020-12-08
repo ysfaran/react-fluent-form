@@ -5,7 +5,7 @@ import {
   UseFluentForm,
   UseFluentFormArray,
   UseFluentFormItem,
-  UseFluentFormItemArgs
+  UseFluentFormItemArgs,
 } from "../src/types";
 
 // renderWithFluentForm

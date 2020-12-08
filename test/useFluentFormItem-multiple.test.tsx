@@ -12,9 +12,9 @@ import { RegisterModel, UserModel } from "./types";
 function createConfigForTest() {
   return createFormArray<UserModel>()({
     username: field.text(),
-    email: field.email()
+    email: field.email(),
   }).withValidation({
-    email: yup.string().required()
+    email: yup.string().required(),
   });
 }
 function renderFluentFormItemsForTest<
@@ -70,11 +70,11 @@ describe("useFluentFormItem (multiple)", () => {
       const {
         getByTestId,
         fluentFormArrayRef,
-        fluentFormItemsRef
+        fluentFormItemsRef,
       } = renderFluentFormItemsForTest();
 
       fireEvent.change(getByTestId("username1"), {
-        target: { value: "ysfaran" }
+        target: { value: "ysfaran" },
       });
 
       const { current: fluentFormArray } = fluentFormArrayRef;
@@ -89,13 +89,13 @@ describe("useFluentFormItem (multiple)", () => {
 
       expect(formArrayValues1).toEqual({
         username: "ysfaran",
-        email: ""
+        email: "",
       });
       expect(formItemValues1).toEqual(formArrayValues1);
 
       expect(formArrayValues0).toEqual({
         username: "",
-        email: ""
+        email: "",
       });
       expect(formItemValues0).toEqual(formArrayValues0);
       expect(formArrayValues2).toEqual(formArrayValues0);
@@ -106,7 +106,7 @@ describe("useFluentFormItem (multiple)", () => {
       const {
         getByTestId,
         fluentFormArrayRef,
-        fluentFormItemsRef
+        fluentFormItemsRef,
       } = renderFluentFormItemsForTest();
 
       fireEvent.blur(getByTestId("username1"));
@@ -134,7 +134,7 @@ describe("useFluentFormItem (multiple)", () => {
       const {
         getByTestId,
         fluentFormArrayRef,
-        fluentFormItemsRef
+        fluentFormItemsRef,
       } = renderFluentFormItemsForTest();
 
       fireEvent.blur(getByTestId("email1"));
@@ -159,7 +159,7 @@ describe("useFluentFormItem (multiple)", () => {
       expect(formArrayValidity1).toEqual({ email: false });
       expect(formItemValidity1).toEqual(formArrayValidity1);
       expect(formArrayErrors1).toEqual({
-        email: expect.any(Array)
+        email: expect.any(Array),
       });
       expect(formItemErrors1).toEqual(formArrayErrors1);
 
@@ -177,7 +177,7 @@ describe("useFluentFormItem (multiple)", () => {
       const {
         fluentFormArrayRef,
         fluentFormItemsRef,
-        getByTestId
+        getByTestId,
       } = renderFluentFormItemsForTest();
 
       let { current: fluentFormItems } = fluentFormItemsRef;
@@ -194,16 +194,16 @@ describe("useFluentFormItem (multiple)", () => {
       fireEvent.blur(getByTestId("email2"));
 
       formItem0.setInitialValues({
-        username: "username0"
+        username: "username0",
       });
 
       formItem1.setInitialValues({
-        email: "email1"
+        email: "email1",
       });
 
       formItem2.setInitialValues({
         username: "username2",
-        email: "email2"
+        email: "email2",
       });
 
       act(() => {
@@ -229,8 +229,8 @@ describe("useFluentFormItem (multiple)", () => {
           validity: {},
           values: {
             username: "username0",
-            email: ""
-          }
+            email: "",
+          },
         })
       );
       expect(formItem0).toEqual(expect.objectContaining(formArrayState0));
@@ -241,16 +241,16 @@ describe("useFluentFormItem (multiple)", () => {
           submitting: false,
           touched: {
             email: true,
-            username: true
+            username: true,
           },
           validity: {
             email: false,
-            username: true
+            username: true,
           },
           values: {
             username: "",
-            email: ""
-          }
+            email: "",
+          },
         })
       );
       expect(formItem1).toEqual(expect.objectContaining(formArrayState1));
@@ -263,8 +263,8 @@ describe("useFluentFormItem (multiple)", () => {
           validity: {},
           values: {
             username: "username2",
-            email: "email2"
-          }
+            email: "email2",
+          },
         })
       );
       expect(formItem2).toEqual(expect.objectContaining(formArrayState2));
@@ -273,13 +273,13 @@ describe("useFluentFormItem (multiple)", () => {
     it("resets forms independently when one was initialzied with inital array and the other with addFrom", () => {
       const arrayConfig = createFormArray<UserModel>()({
         username: field.text("initial user"),
-        email: field.email("initial@email.com")
+        email: field.email("initial@email.com"),
       }).withInitialArray([{ username: "user0", email: "email0" }]);
 
       const {
         fluentFormArrayRef,
         fluentFormItemsRef,
-        getAllByTestId
+        getAllByTestId,
       } = renderFluentFormItemsForTest(arrayConfig);
 
       act(() => fluentFormArrayRef.current.addForm());
@@ -302,12 +302,12 @@ describe("useFluentFormItem (multiple)", () => {
 
       expect(formArrayValues0).toEqual({
         username: "user0",
-        email: "email0"
+        email: "email0",
       });
       expect(formItemValues0).toEqual(formArrayValues0);
       expect(formArrayValues1).toEqual({
         username: "initial user",
-        email: "initial@email.com"
+        email: "initial@email.com",
       });
       expect(formItemValues1).toEqual(formArrayValues1);
     });
@@ -315,13 +315,13 @@ describe("useFluentFormItem (multiple)", () => {
     it("updates values independently when setting them manually", () => {
       const {
         fluentFormArrayRef,
-        fluentFormItemsRef
+        fluentFormItemsRef,
       } = renderFluentFormItemsForTest();
 
       act(() => {
         fluentFormItemsRef.current[1].setValues({
           username: "ysfaran",
-          email: "test@email.com"
+          email: "test@email.com",
         });
       });
 
@@ -337,13 +337,13 @@ describe("useFluentFormItem (multiple)", () => {
 
       expect(formArrayValues1).toEqual({
         username: "ysfaran",
-        email: "test@email.com"
+        email: "test@email.com",
       });
       expect(formItemValues1).toEqual(formArrayValues1);
 
       expect(formArrayValues0).toEqual({
         username: "",
-        email: ""
+        email: "",
       });
       expect(formItemValues0).toEqual(formArrayValues0);
       expect(formArrayValues2).toEqual(formArrayValues0);
@@ -353,12 +353,12 @@ describe("useFluentFormItem (multiple)", () => {
     it("updates errors independently when triggering validation for one field manually", () => {
       const config = createConfigForTest().withValidation({
         username: yup.string().required(),
-        email: yup.string().required()
+        email: yup.string().required(),
       });
 
       const {
         fluentFormArrayRef,
-        fluentFormItemsRef
+        fluentFormItemsRef,
       } = renderFluentFormItemsForTest(config);
 
       act(() => {
@@ -377,13 +377,13 @@ describe("useFluentFormItem (multiple)", () => {
 
       expect(formArrayErrors1).toEqual({
         username: undefined,
-        email: expect.any(Array)
+        email: expect.any(Array),
       });
       expect(formItemErrors1).toEqual(formArrayErrors1);
 
       expect(formArrayErrors0).toEqual({
         username: undefined,
-        email: undefined
+        email: undefined,
       });
       expect(formItemErrors0).toEqual(formArrayErrors0);
       expect(formArrayErrors2).toEqual(formArrayErrors0);
@@ -393,12 +393,12 @@ describe("useFluentFormItem (multiple)", () => {
     it("updates errors independently when triggering validation for all fields manually", () => {
       const config = createConfigForTest().withValidation({
         username: yup.string().required(),
-        email: yup.string().required()
+        email: yup.string().required(),
       });
 
       const {
         fluentFormArrayRef,
-        fluentFormItemsRef
+        fluentFormItemsRef,
       } = renderFluentFormItemsForTest(config);
 
       act(() => {
@@ -417,13 +417,13 @@ describe("useFluentFormItem (multiple)", () => {
 
       expect(formArrayErrors1).toEqual({
         username: expect.any(Array),
-        email: expect.any(Array)
+        email: expect.any(Array),
       });
       expect(formItemErrors1).toEqual(formArrayErrors1);
 
       expect(formArrayErrors0).toEqual({
         username: undefined,
-        email: undefined
+        email: undefined,
       });
       expect(formItemErrors0).toEqual(formArrayErrors0);
       expect(formArrayErrors2).toEqual(formArrayErrors0);
@@ -433,12 +433,12 @@ describe("useFluentFormItem (multiple)", () => {
     it("updates context independently when setting it manually", () => {
       const {
         fluentFormArrayRef,
-        fluentFormItemsRef
+        fluentFormItemsRef,
       } = renderFluentFormItemsForTest();
 
       act(() =>
         fluentFormItemsRef.current[1].setContext({
-          contextValue: 1
+          contextValue: 1,
         })
       );
 
@@ -453,7 +453,7 @@ describe("useFluentFormItem (multiple)", () => {
       const formItemContext2 = fluentFormItems[2].context;
 
       expect(formArrayContext1).toEqual({
-        contextValue: 1
+        contextValue: 1,
       });
       expect(formItemContext1).toEqual(formArrayContext1);
 
@@ -506,7 +506,7 @@ describe("useFluentFormItem (multiple)", () => {
       it("calls only success callback always when no validation is present without triggering callbacks for other form items", () => {
         const formConfig = createFormArray<RegisterModel>()({
           username: field.text("ysfaran"),
-          password: field.password("secret")
+          password: field.password("secret"),
         });
 
         const { getByTestId } = renderFluentFormItemsWithSubmit(formConfig);
@@ -527,9 +527,9 @@ describe("useFluentFormItem (multiple)", () => {
       it("calls only failure callback when state is invalid without triggering callbacks for other form items", () => {
         const formConfig = createFormArray<RegisterModel>()({
           username: field.text(),
-          password: field.password("secret")
+          password: field.password("secret"),
         }).withValidation({
-          username: yup.string().required()
+          username: yup.string().required(),
         });
 
         const { getByTestId } = renderFluentFormItemsWithSubmit(formConfig);
@@ -550,7 +550,7 @@ describe("useFluentFormItem (multiple)", () => {
       it("prevents submitting again while other submit process is running without triggering callbacks for other form items", async () => {
         const formConfig = createFormArray<RegisterModel>()({
           username: field.text(),
-          password: field.password()
+          password: field.password(),
         });
 
         const { getByTestId } = renderFluentFormItemsWithSubmit(formConfig);

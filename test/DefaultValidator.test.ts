@@ -9,31 +9,31 @@ describe("DefaultValidator", () => {
   beforeEach(() => {
     testModel = {
       aString: "some-string",
-      aDate: new Date(1970, 1, 1)
+      aDate: new Date(1970, 1, 1),
     };
   });
 
   it("is able to execute validations for all fields (validateAllFields)", () => {
     const validator = new DefaultValidator<TestModel>({
       aString: yup.mixed(),
-      aDate: yup.mixed()
+      aDate: yup.mixed(),
     });
 
     validator.validateField = jest.fn(() => 1) as any;
 
     const result = validator.validateAllFields(testModel, {
-      context: "context"
+      context: "context",
     });
 
     expect(result).toMatchObject({
       aString: 1,
-      aDate: 1
+      aDate: 1,
     });
     expect(validator.validateField).toHaveBeenCalledWith("aString", testModel, {
-      context: "context"
+      context: "context",
     });
     expect(validator.validateField).toHaveBeenCalledWith("aDate", testModel, {
-      context: "context"
+      context: "context",
     });
   });
 
@@ -42,8 +42,8 @@ describe("DefaultValidator", () => {
       const validator = new DefaultValidator<TestModel>({
         aString: yup.string().when("aString", {
           is: () => 1 / 0,
-          then: "erro should be thrown before"
-        })
+          then: "erro should be thrown before",
+        }),
       });
 
       console.warn = jest.fn();
@@ -58,7 +58,7 @@ describe("DefaultValidator", () => {
 
     it("doesn't validate if neither a function or yup schema was provided and logs warning", () => {
       const validator = new DefaultValidator<TestModel>({
-        aString: 1 as any
+        aString: 1 as any,
       });
 
       console.warn = jest.fn();
@@ -79,7 +79,7 @@ describe("DefaultValidator", () => {
 
     it("returns result of yup validation properly", () => {
       const validator = new DefaultValidator<TestModel>({
-        aString: yup.string().min(20)
+        aString: yup.string().min(20),
       });
 
       const result = validator.validateField("aString", testModel);
@@ -91,7 +91,7 @@ describe("DefaultValidator", () => {
       const validator = new DefaultValidator<TestModel>({
         aString: () => {
           return 1;
-        }
+        },
       });
 
       const result = validator.validateField("aString", testModel);
@@ -107,7 +107,7 @@ describe("DefaultValidator", () => {
           } else {
             return yup.string().min(20, "conditional yup.min(20) error");
           }
-        }
+        },
       });
 
       let result = validator.validateField("aString", testModel);
@@ -126,17 +126,17 @@ describe("DefaultValidator", () => {
           if (context.contextValue === 1) {
             return yup.string().min(20);
           }
-        }
+        },
       });
 
       let result = validator.validateField("aString", testModel, {
-        contextValue: 1
+        contextValue: 1,
       });
 
       expect(result).toMatchObject(expect.any(Array));
 
       result = validator.validateField("aString", testModel, {
-        contextValue: 2
+        contextValue: 2,
       });
 
       expect(result).not.toBeDefined();
@@ -146,12 +146,12 @@ describe("DefaultValidator", () => {
       const validator = new DefaultValidator<TestModel>({
         aDate: yup.date().when("$contextValue", {
           is: 1,
-          then: yup.date().min(new Date(2000, 1, 2))
-        })
+          then: yup.date().min(new Date(2000, 1, 2)),
+        }),
       });
 
       let result = validator.validateField("aDate", testModel, {
-        contextValue: 1
+        contextValue: 1,
       });
 
       expect(result).toEqual(expect.any(Array));
@@ -165,8 +165,8 @@ describe("DefaultValidator", () => {
       const validator = new DefaultValidator<TestModel>({
         aDate: yup.date().when("$aString", {
           is: "condition",
-          then: yup.date().min(new Date(2000, 1, 1))
-        })
+          then: yup.date().min(new Date(2000, 1, 1)),
+        }),
       });
 
       let result = validator.validateField("aDate", testModel);

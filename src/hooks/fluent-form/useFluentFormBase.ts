@@ -6,7 +6,7 @@ import {
   ExtractValuesType,
   MappedFields,
   UseFluentForm,
-  UseFluentStateManager
+  UseFluentStateManager,
 } from "../../types";
 import { useHandleSubmit } from "../helper/useHandleSubmit";
 
@@ -29,7 +29,7 @@ export function useFluentFormBase<Config extends FormConfig>(
     setValue,
     setValues,
     startSubmitting,
-    reset
+    reset,
   } = fluentStateManager;
 
   const { _validateOnContextChange } = config;
@@ -47,7 +47,7 @@ export function useFluentFormBase<Config extends FormConfig>(
   );
 
   const validateAllFieldsForUser = useCallback(() => validateAllFields(), [
-    validateAllFields
+    validateAllFields,
   ]);
 
   const setContext = useCallback(
@@ -84,7 +84,7 @@ export function useFluentFormBase<Config extends FormConfig>(
       state.values,
       state.context,
       setValidationFailure,
-      setValidationSuccess
+      setValidationSuccess,
     ]
   );
 
@@ -125,7 +125,7 @@ export function useFluentFormBase<Config extends FormConfig>(
   );
 
   const valid = useMemo(
-    () => Object.values(state.validity).every(validityValue => validityValue),
+    () => Object.values(state.validity).every((validityValue) => validityValue),
     [state.validity]
   );
 
@@ -133,7 +133,7 @@ export function useFluentFormBase<Config extends FormConfig>(
     submitting: state.submitting,
     valid,
     startSubmitting,
-    submitAction: validateAllFields
+    submitAction: validateAllFields,
   });
 
   const mappedFields = useMemo((): MappedFields<Fields> => {
@@ -153,6 +153,6 @@ export function useFluentFormBase<Config extends FormConfig>(
     handleSubmit,
     validateField: validateFieldForUser,
     validateAllFields: validateAllFieldsForUser,
-    reset
+    reset,
   };
 }

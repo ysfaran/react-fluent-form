@@ -19,7 +19,7 @@ describe("useFluentForm", () => {
     const formConfig = new FormConfig({
       username: field.text("user"),
       email: field.email(),
-      age: field.number("30")
+      age: field.number("30"),
     });
 
     formConfig
@@ -32,7 +32,7 @@ describe("useFluentForm", () => {
     expect(current.values).toMatchObject({
       username: "user",
       email: "",
-      age: "25"
+      age: "25",
     });
 
     expect(current.touched).toMatchObject({});
@@ -46,7 +46,7 @@ describe("useFluentForm", () => {
   it("reducer returns current state when action type doesn't match any", () => {
     const currentState = { a: "just anything" } as any;
     const updatedState = fluentFormReducer<any, any, any>(currentState, {
-      type: "NOT_EXISTING_TYPE"
+      type: "NOT_EXISTING_TYPE",
     } as any);
 
     expect(currentState).toBe(updatedState);
@@ -54,7 +54,7 @@ describe("useFluentForm", () => {
 
   describe("addField", () => {
     beforeEach(() => {
-      addField("customField", initialValue => new CustomField(initialValue));
+      addField("customField", (initialValue) => new CustomField(initialValue));
     });
 
     afterEach(() => {
@@ -63,7 +63,7 @@ describe("useFluentForm", () => {
 
     it("allows adding custom fields", async () => {
       const formConfig = createForm<UsernameModel>()({
-        username: (field as any).customField()
+        username: (field as any).customField(),
       });
 
       const { container, fluentFormRef } = renderWithFluentForm(

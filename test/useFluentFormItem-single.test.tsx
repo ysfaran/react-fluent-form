@@ -12,10 +12,10 @@ import { RegisterModel, UserModel } from "./types";
 function createConfigForTest() {
   return createFormArray<UserModel>()({
     username: field.text(),
-    email: field.email()
+    email: field.email(),
   })
     .withValidation({
-      email: yup.string().required()
+      email: yup.string().required(),
     })
     .withInitialArray([{ username: "", email: "" }]);
 }
@@ -46,7 +46,7 @@ describe("useFluentFormItem (single)", () => {
   it("adds form item when calling addForm", () => {
     const {
       queryByTestId,
-      fluentFormArrayRef
+      fluentFormArrayRef,
     } = renderFluentFormItemsForTest();
 
     act(() => fluentFormArrayRef.current.addForm());
@@ -59,7 +59,7 @@ describe("useFluentFormItem (single)", () => {
     const {
       queryByTestId,
       getByTestId,
-      fluentFormArrayRef
+      fluentFormArrayRef,
     } = renderFluentFormItemsForTest();
 
     fireEvent.click(getByTestId("remove0"));
@@ -75,11 +75,11 @@ describe("useFluentFormItem (single)", () => {
       const {
         getByTestId,
         fluentFormArrayRef,
-        fluentFormItemsRef
+        fluentFormItemsRef,
       } = renderFluentFormItemsForTest();
 
       fireEvent.change(getByTestId("username0"), {
-        target: { value: "ysfaran" }
+        target: { value: "ysfaran" },
       });
 
       const formArrayValues = fluentFormArrayRef.current.formStates[0].values;
@@ -87,7 +87,7 @@ describe("useFluentFormItem (single)", () => {
 
       expect(formArrayValues).toMatchObject({
         username: "ysfaran",
-        email: ""
+        email: "",
       });
       expect(formItemValues).toMatchObject(formArrayValues);
     });
@@ -96,7 +96,7 @@ describe("useFluentFormItem (single)", () => {
       const {
         getByTestId,
         fluentFormArrayRef,
-        fluentFormItemsRef
+        fluentFormItemsRef,
       } = renderFluentFormItemsForTest();
 
       fireEvent.blur(getByTestId("username0"));
@@ -105,7 +105,7 @@ describe("useFluentFormItem (single)", () => {
       const formItemTouched = fluentFormItemsRef.current[0].touched;
 
       expect(formArrayTouched).toMatchObject({
-        username: true
+        username: true,
       });
 
       expect(formItemTouched).toMatchObject(formArrayTouched);
@@ -115,7 +115,7 @@ describe("useFluentFormItem (single)", () => {
       const {
         getByTestId,
         fluentFormArrayRef,
-        fluentFormItemsRef
+        fluentFormItemsRef,
       } = renderFluentFormItemsForTest();
 
       fireEvent.blur(getByTestId("email0"));
@@ -128,11 +128,11 @@ describe("useFluentFormItem (single)", () => {
       const formItemErrors = fluentFormItemsRef.current[0].errors;
 
       expect(formArrayValidity).toMatchObject({
-        email: false
+        email: false,
       });
       expect(formItemValidity).toMatchObject(formArrayValidity);
       expect(formArrayErrors).toMatchObject({
-        email: expect.any(Array)
+        email: expect.any(Array),
       });
       expect(formItemErrors).toMatchObject(formArrayErrors);
     });
@@ -141,14 +141,14 @@ describe("useFluentFormItem (single)", () => {
       const {
         getByTestId,
         fluentFormArrayRef,
-        fluentFormItemsRef
+        fluentFormItemsRef,
       } = renderFluentFormItemsForTest();
 
       const userInput = getByTestId("username0");
       const emailInput = getByTestId("email0");
 
       fireEvent.change(userInput, {
-        target: { value: "ysfaran" }
+        target: { value: "ysfaran" },
       });
 
       fireEvent.blur(userInput);
@@ -158,21 +158,21 @@ describe("useFluentFormItem (single)", () => {
       expect(fluentArrayState).toMatchObject({
         errors: {
           username: undefined,
-          email: expect.any(Array)
+          email: expect.any(Array),
         },
         submitting: false,
         touched: {
           username: true,
-          email: true
+          email: true,
         },
         validity: {
           username: true,
-          email: false
+          email: false,
         },
         values: {
           username: "ysfaran",
-          email: ""
-        }
+          email: "",
+        },
       });
 
       expect(fluentFormItemsRef.current[0]).toMatchObject({
@@ -180,12 +180,12 @@ describe("useFluentFormItem (single)", () => {
         submitting: false,
         touched: fluentArrayState.touched,
         validity: fluentArrayState.validity,
-        values: fluentArrayState.values
+        values: fluentArrayState.values,
       });
 
       act(() =>
         fluentFormItemsRef.current[0].setInitialValues({
-          email: "new@inital.com"
+          email: "new@inital.com",
         })
       );
 
@@ -198,21 +198,21 @@ describe("useFluentFormItem (single)", () => {
         validity: {},
         values: {
           username: "",
-          email: "new@inital.com"
-        }
+          email: "new@inital.com",
+        },
       });
     });
 
     it("updates form array state and form item based on initial array when resetting the form", () => {
       const arrayConfig = createFormArray<UserModel>()({
         username: field.text(),
-        email: field.email()
+        email: field.email(),
       }).withInitialArray([{ username: "user0", email: "email0" }]);
 
       const {
         fluentFormArrayRef,
         fluentFormItemsRef,
-        getByTestId
+        getByTestId,
       } = renderFluentFormItemsForTest(arrayConfig);
 
       const userInput0 = getByTestId(/username/);
@@ -228,7 +228,7 @@ describe("useFluentFormItem (single)", () => {
 
       expect(formArrayValues0).toEqual({
         username: "user0",
-        email: "email0"
+        email: "email0",
       });
       expect(formItemValues0).toEqual(formArrayValues0);
     });
@@ -237,13 +237,13 @@ describe("useFluentFormItem (single)", () => {
       const {
         fluentFormArrayRef,
         fluentFormItemsRef,
-        queryByDisplayValue
+        queryByDisplayValue,
       } = renderFluentFormItemsForTest();
 
       act(() =>
         fluentFormItemsRef.current[0].setValues({
           username: "ysfaran",
-          email: "manual@email.com"
+          email: "manual@email.com",
         })
       );
 
@@ -252,7 +252,7 @@ describe("useFluentFormItem (single)", () => {
 
       expect(formArrayValues).toMatchObject({
         username: "ysfaran",
-        email: "manual@email.com"
+        email: "manual@email.com",
       });
       expect(formItemValues).toMatchObject(formArrayValues);
       expect(queryByDisplayValue("ysfaran")).toBeInTheDocument();
@@ -262,12 +262,12 @@ describe("useFluentFormItem (single)", () => {
     it("updates form array state and form item when validating field manually", () => {
       const config = createConfigForTest().withValidation({
         username: yup.string().required(),
-        email: yup.string().required()
+        email: yup.string().required(),
       });
 
       const {
         fluentFormArrayRef,
-        fluentFormItemsRef
+        fluentFormItemsRef,
       } = renderFluentFormItemsForTest(config);
 
       let error;
@@ -282,7 +282,7 @@ describe("useFluentFormItem (single)", () => {
       expect(error).toEqual(expect.any(Array));
       expect(formArrayErrors).toEqual({
         username: undefined,
-        email: error
+        email: error,
       });
       expect(formItemErrors).toEqual(formArrayErrors);
     });
@@ -290,12 +290,12 @@ describe("useFluentFormItem (single)", () => {
     it("updates form array state and form item when validating all fields manually", () => {
       const config = createConfigForTest().withValidation({
         username: yup.string().required(),
-        email: yup.string().required()
+        email: yup.string().required(),
       });
 
       const {
         fluentFormArrayRef,
-        fluentFormItemsRef
+        fluentFormItemsRef,
       } = renderFluentFormItemsForTest(config);
 
       let errors;
@@ -309,7 +309,7 @@ describe("useFluentFormItem (single)", () => {
 
       expect(errors).toEqual({
         username: expect.any(Array),
-        email: expect.any(Array)
+        email: expect.any(Array),
       });
       expect(formArrayErrors).toEqual(errors);
       expect(formItemErrors).toEqual(formArrayErrors);
@@ -318,12 +318,12 @@ describe("useFluentFormItem (single)", () => {
     it("updates form array state and form item when setting context manually", () => {
       const {
         fluentFormArrayRef,
-        fluentFormItemsRef
+        fluentFormItemsRef,
       } = renderFluentFormItemsForTest();
 
       act(() =>
         fluentFormItemsRef.current[0].setContext({
-          contextValue: 1
+          contextValue: 1,
         })
       );
 
@@ -331,7 +331,7 @@ describe("useFluentFormItem (single)", () => {
       const formItemContext = fluentFormItemsRef.current[0].context;
 
       expect(formArrayContext).toMatchObject({
-        contextValue: 1
+        contextValue: 1,
       });
       expect(formItemContext).toMatchObject(formArrayContext);
     });
@@ -374,7 +374,7 @@ describe("useFluentFormItem (single)", () => {
       it("calls only success callback always when no validation is present", () => {
         const formConfig = createFormArray<RegisterModel>()({
           username: field.text("ysfaran"),
-          password: field.password("secret")
+          password: field.password("secret"),
         });
 
         const { getByTestId } = renderFluentFormItemsWithSubmit(formConfig);
@@ -390,9 +390,9 @@ describe("useFluentFormItem (single)", () => {
       it("calls only failure callback when state is invalid", () => {
         const formConfig = createFormArray<RegisterModel>()({
           username: field.text(),
-          password: field.password("secret")
+          password: field.password("secret"),
         }).withValidation({
-          username: yup.string().required()
+          username: yup.string().required(),
         });
 
         const { getByTestId } = renderFluentFormItemsWithSubmit(formConfig);
@@ -408,7 +408,7 @@ describe("useFluentFormItem (single)", () => {
       it("prevents submitting again while other submit process is running", async () => {
         const formConfig = createFormArray<RegisterModel>()({
           username: field.text(),
-          password: field.password()
+          password: field.password(),
         });
 
         const { getByTestId } = renderFluentFormItemsWithSubmit(formConfig);

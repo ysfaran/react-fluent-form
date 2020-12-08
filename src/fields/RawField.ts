@@ -28,7 +28,7 @@ export class RawField<
     ({
       [this.valueProp]: value,
       [this.onBlurProp]: this.handleBlur(setTouched),
-      [this.onChangeProp]: setValue
+      [this.onChangeProp]: setValue,
     } as RawProps<V, ValueName, OnChangeName, OnBlurName>);
 
   public withValueProp = <NewValueName extends string>(
