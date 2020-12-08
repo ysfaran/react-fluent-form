@@ -1,3 +1,16 @@
+### [1.5.4](https://github.com/ysfaran/react-fluent-form/compare/v1.5.3...v1.5.4) (2020-12-08)
+
+
+### Bug Fixes
+
+* **config:** add react and react-dom version ^17.0.1 to peerDependencies ([e18cfec](https://github.com/ysfaran/react-fluent-form/commit/e18cfecacecb838f4c1dcf327e9aabc4ef4e4629))
+
+
+### Documentation
+
+* add code of conduct ([ae40123](https://github.com/ysfaran/react-fluent-form/commit/ae401237bddbe47742b1791f890b19c96004aa35))
+* unify heading sizes in changelog ([a3a7ae5](https://github.com/ysfaran/react-fluent-form/commit/a3a7ae54ce57a72da2567f705b8249d4b29c8813))
+
 ### [1.5.3](https://github.com/ysfaran/react-fluent-form/compare/v1.5.2...v1.5.3) (2020-05-15)
 
 
