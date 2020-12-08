@@ -13,8 +13,8 @@ module.exports = {
         "docs",
         "ci",
         "chore",
-        "build"
-      ]
+        "build",
+      ],
     ],
     "scope-enum": [
       2,
@@ -27,8 +27,8 @@ module.exports = {
         "form-item",
         "fields",
         "typings",
-        "readme"
-      ]
-    ]
-  }
+        "readme",
+      ],
+    ],
+  },
 };

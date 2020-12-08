@@ -5,8 +5,8 @@ module.exports = {
     {
       path: "@semantic-release/git",
       assets: ["package.json", "package-lock.json", "CHANGELOG.md"],
-      message: "Release: ${nextRelease.version}\n\n${nextRelease.notes}"
-    }
+      message: "Release: ${nextRelease.version}\n\n${nextRelease.notes}",
+    },
   ],
   plugins: [
     [
@@ -18,9 +18,9 @@ module.exports = {
           { type: "fix", release: "patch" },
           { type: "perf", release: "patch" },
           { type: "docs", scope: "readme", release: "patch" },
-          { type: "build", release: "patch" }
-        ]
-      }
+          { type: "build", release: "patch" },
+        ],
+      },
     ],
     [
       "@semantic-release/release-notes-generator",
@@ -36,13 +36,13 @@ module.exports = {
             { type: "docs", section: "Documentation" },
             { type: "ci", section: "Continuous Integration", hidden: true },
             { type: "chore", section: "Miscellaneous Chores", hidden: true },
-            { type: "build", section: "Build" }
-          ]
-        }
-      }
+            { type: "build", section: "Build" },
+          ],
+        },
+      },
     ],
     "@semantic-release/npm",
     "@semantic-release/git",
-    "@semantic-release/changelog"
-  ]
+    "@semantic-release/changelog",
+  ],
 };

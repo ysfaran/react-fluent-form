@@ -9,7 +9,7 @@ describe("FormConfigHelper", () => {
   beforeEach(() => {
     formArrayConfig = new FormArrayConfig({
       username: field.text("user"),
-      email: field.email()
+      email: field.email(),
     });
 
     formArrayConfigHelper = new FormArrayConfigHelper(formArrayConfig);
@@ -33,7 +33,7 @@ describe("FormConfigHelper", () => {
     it("extracts initial values from object first", () => {
       const initialArrayActual = [
         { username: "another-user", email: "user@mail.com" },
-        { username: "", email: "" }
+        { username: "", email: "" },
       ];
 
       formArrayConfig.withInitialArray(initialArrayActual);
@@ -49,7 +49,7 @@ describe("FormConfigHelper", () => {
           validity: {},
           errors: {},
           submitting: false,
-          context: {}
+          context: {},
         },
         "1": {
           key: 1,
@@ -59,20 +59,20 @@ describe("FormConfigHelper", () => {
           validity: {},
           errors: {},
           submitting: false,
-          context: {}
-        }
+          context: {},
+        },
       });
     });
 
     it("sets key with key generator if it is specified", () => {
       const initialArrayActual = [
         { username: "user0", email: "" },
-        { username: "user1", email: "" }
+        { username: "user1", email: "" },
       ];
 
       formArrayConfig
         .withInitialArray(initialArrayActual)
-        .withKeyGenerator(values => values.username);
+        .withKeyGenerator((values) => values.username);
 
       const initialArray = formArrayConfigHelper.getInitialArrayValues();
 

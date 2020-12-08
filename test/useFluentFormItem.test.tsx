@@ -5,7 +5,7 @@ describe("useFluentFormItem", () => {
   it("reducer returns current state when action type doesn't match any", () => {
     const currentState = { a: "just anything" } as any;
     const updatedState = fluentFormArrayReducer<any, any, any>(currentState, {
-      type: "NOT_EXISTING_TYPE"
+      type: "NOT_EXISTING_TYPE",
     } as any);
 
     expect(currentState).toBe(updatedState);

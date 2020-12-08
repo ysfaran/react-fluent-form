@@ -2,7 +2,7 @@ import {
   ComponentPropsMapper,
   InputPropsValue,
   SetValue,
-  ValueInputTypes
+  ValueInputTypes,
 } from "../../types";
 import { InputField } from "./InputField";
 
@@ -25,11 +25,11 @@ export class TextField extends InputField<string, InputPropsValue> {
   public mapToComponentProps: ComponentPropsMapper<string, InputPropsValue> = ({
     value,
     setValue,
-    setTouched
+    setTouched,
   }) => ({
     type: this._type,
     value,
     onBlur: this.handleBlur(setTouched),
-    onChange: this.handleChange(setValue)
+    onChange: this.handleChange(setValue),
   });
 }

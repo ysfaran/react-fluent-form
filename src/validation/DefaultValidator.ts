@@ -6,7 +6,7 @@ import {
   ValidateFunction,
   ValidateFunctionArgs,
   ValidateYupSchemaArgs,
-  Validations
+  Validations,
 } from "../types";
 import { isYupSchema } from "../utils/isYupSchema";
 import { Validator } from "./Validator";
@@ -27,7 +27,7 @@ export class DefaultValidator<
     value,
     values,
     validate,
-    context
+    context,
   }: ValidateFunctionArgs<ValuesType, K, E>) {
     const schemaOrResult = validate(value, values, context);
 
@@ -44,7 +44,7 @@ export class DefaultValidator<
     value,
     values,
     schema,
-    context
+    context,
   }: ValidateYupSchemaArgs<ValuesType, K>) {
     try {
       schema.validateSync(value, { context: { ...values, ...context } });
@@ -75,14 +75,14 @@ export class DefaultValidator<
         value,
         values,
         validate: validate as ValidateFunction<ValuesType, K>,
-        context
+        context,
       });
     } else if (isYupSchema(validate)) {
       return this.validateYupSchema({
         value,
         values,
         schema: validate as yup.Schema<any>,
-        context
+        context,
       });
     } else {
       console.warn(

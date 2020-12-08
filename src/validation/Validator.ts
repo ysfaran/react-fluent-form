@@ -16,7 +16,7 @@ export abstract class Validator<
     return fields.reduce(
       (errors, field) => ({
         ...errors,
-        [field]: this.validateField(field, values, context)
+        [field]: this.validateField(field, values, context),
       }),
       {} as Errors
     );

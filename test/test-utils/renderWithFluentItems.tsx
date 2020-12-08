@@ -9,13 +9,13 @@ import {
   FluentFormArrayRef,
   FluentFormItemsRef,
   FormItemsRefSetterProps,
-  UiItemComponentProps
+  UiItemComponentProps,
 } from "../types";
 
 function FormItemsInitializer<C extends FormArrayConfig>({
   formItemArgs,
   formItemsRef,
-  Component
+  Component,
 }: FormItemsRefSetterProps<C>) {
   const formItem = useFluentFormItem(formItemArgs);
   formItemsRef.current[formItemArgs.key] = formItem;
@@ -28,11 +28,11 @@ export function renderWithFluentFormItems<C extends FormArrayConfig>(
   UiItemComponent: React.FC<UiItemComponentProps<C>>
 ) {
   const fluentFormArrayRef: FluentFormArrayRef<C> = {
-    current: null as any
+    current: null as any,
   };
 
   const fluentFormItemsRef: FluentFormItemsRef<C> = {
-    current: {} as any
+    current: {} as any,
   };
 
   const Wrapper = () => {
@@ -41,7 +41,7 @@ export function renderWithFluentFormItems<C extends FormArrayConfig>(
 
     return (
       <>
-        {fluentFormArray.formArray.map(formItem => {
+        {fluentFormArray.formArray.map((formItem) => {
           return (
             <FormItemsInitializer
               key={formItem.key}

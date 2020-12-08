@@ -39,7 +39,7 @@ export { useStateManagerMapper } from "./hooks/helper/useStateManagerMapper";
 export { isYupSchema } from "./utils/isYupSchema";
 export {
   deriveValidityFromErrors,
-  generateAllTouchedTrue
+  generateAllTouchedTrue,
 } from "./utils/stateUtils";
 
 export { DefaultValidator } from "./validation/DefaultValidator";

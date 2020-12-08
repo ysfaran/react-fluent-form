@@ -5,11 +5,11 @@ import {
   FluentFormState,
   FormArrayError,
   FormItem,
-  FormKey
+  FormKey,
 } from "../../../types";
 import {
   deriveValidityFromErrors,
-  generateAllTouchedTrue
+  generateAllTouchedTrue,
 } from "../../../utils/stateUtils";
 
 export type FluentFormArrayActionTypes<
@@ -65,9 +65,9 @@ export const fluentFormArrayReducer = <
           [key]: {
             key,
             sortPosition,
-            ...initialState
-          }
-        }
+            ...initialState,
+          },
+        },
       };
     }
     case "REMOVE_FORM": {
@@ -76,8 +76,8 @@ export const fluentFormArrayReducer = <
       const stateCopy: FluentFormArrayState<ValuesType, E> = {
         ...state,
         formArray: {
-          ...state.formArray
-        }
+          ...state.formArray,
+        },
       };
 
       delete stateCopy.formArray[key];
@@ -87,7 +87,7 @@ export const fluentFormArrayReducer = <
     case "SUBMITTING_ARRAY": {
       return {
         ...state,
-        submitting: true
+        submitting: true,
       };
     }
     case "FINISHED_SUBMITTING_ARRAY": {
@@ -97,9 +97,9 @@ export const fluentFormArrayReducer = <
       const stateCopy: FluentFormArrayState<ValuesType, E> = {
         ...state,
         formArray: {
-          ...state.formArray
+          ...state.formArray,
         },
-        submitting: false
+        submitting: false,
       };
 
       for (const key of keys) {
@@ -115,7 +115,7 @@ export const fluentFormArrayReducer = <
           touched,
           validity,
           errors,
-          submitting: false
+          submitting: false,
         };
       }
 
@@ -136,10 +136,10 @@ export const fluentFormArrayReducer = <
             ...form,
             values: {
               ...form.values,
-              ...values
-            }
-          }
-        }
+              ...values,
+            },
+          },
+        },
       };
     }
     case "SET_SINGLE_TOUCHED": {
@@ -152,9 +152,9 @@ export const fluentFormArrayReducer = <
           ...state.formArray,
           [key]: {
             ...formItem,
-            touched: { ...formItem.touched, [field]: touched }
-          }
-        }
+            touched: { ...formItem.touched, [field]: touched },
+          },
+        },
       };
     }
     case "SET_CONTEXT": {
@@ -167,9 +167,9 @@ export const fluentFormArrayReducer = <
           ...state.formArray,
           [key]: {
             ...form,
-            context
-          }
-        }
+            context,
+          },
+        },
       };
     }
     case "VALUE_CHANGE": {
@@ -182,9 +182,9 @@ export const fluentFormArrayReducer = <
           [key]: {
             ...form,
             values: { ...form.values, [field]: value },
-            touched: { ...form.touched, [field]: touched }
-          }
-        }
+            touched: { ...form.touched, [field]: touched },
+          },
+        },
       };
     }
     case "VALIDATION_FAILURE": {
@@ -197,9 +197,9 @@ export const fluentFormArrayReducer = <
           [key]: {
             ...form,
             errors: { ...form.errors, [field]: error },
-            validity: { ...form.validity, [field]: false }
-          }
-        }
+            validity: { ...form.validity, [field]: false },
+          },
+        },
       };
     }
 
@@ -213,9 +213,9 @@ export const fluentFormArrayReducer = <
           [key]: {
             ...form,
             errors: { ...form.errors, [field]: undefined },
-            validity: { ...form.validity, [field]: true }
-          }
-        }
+            validity: { ...form.validity, [field]: true },
+          },
+        },
       };
     }
     case "SUBMITTING": {
@@ -227,9 +227,9 @@ export const fluentFormArrayReducer = <
           ...state.formArray,
           [key]: {
             ...form,
-            submitting: true
-          }
-        }
+            submitting: true,
+          },
+        },
       };
     }
     case "FINISHED_SUBMITTING": {
@@ -249,9 +249,9 @@ export const fluentFormArrayReducer = <
             touched,
             validity,
             errors,
-            submitting: false
-          }
-        }
+            submitting: false,
+          },
+        },
       };
     }
     case "RESET": {
@@ -262,9 +262,9 @@ export const fluentFormArrayReducer = <
         formArray: {
           ...state.formArray,
           [key]: {
-            ...action.payload
-          }
-        }
+            ...action.payload,
+          },
+        },
       };
     }
     default:

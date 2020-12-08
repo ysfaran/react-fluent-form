@@ -14,7 +14,7 @@ describe("useFluentForm (functions)", () => {
   it("allows setting values manually", () => {
     const formConfig = createForm<UserModel>()({
       username: field.text(),
-      email: field.email()
+      email: field.email(),
     });
 
     const { fluentFormRef, getByDisplayValue } = renderWithFluentForm(
@@ -30,13 +30,13 @@ describe("useFluentForm (functions)", () => {
     act(() => {
       fluentFormRef.current.setValues({
         username: "ysfaran",
-        email: "email@example.com"
+        email: "email@example.com",
       });
     });
 
     expect(fluentFormRef.current.values).toMatchObject({
       username: "ysfaran",
-      email: "email@example.com"
+      email: "email@example.com",
     });
 
     expect(getByDisplayValue("ysfaran")).toBeInTheDocument();
@@ -47,16 +47,13 @@ describe("useFluentForm (functions)", () => {
     it("does not trigger validation by default", () => {
       const formConfig = createForm<UserModel>()({
         username: field.text(),
-        email: field.email()
+        email: field.email(),
       })
         .withValidation({
           email: (_value, _values, context) =>
             context.emailRequired
-              ? yup
-                  .string()
-                  .email()
-                  .required()
-              : yup.string().email()
+              ? yup.string().email().required()
+              : yup.string().email(),
         })
         .validateOnContextChange(false); // for 100% coverage
 
@@ -67,7 +64,7 @@ describe("useFluentForm (functions)", () => {
       });
 
       expect(result.current.context).toMatchObject({
-        emailRequired: true
+        emailRequired: true,
       });
 
       expect(result.current.errors.email).not.toBeDefined();
@@ -76,16 +73,13 @@ describe("useFluentForm (functions)", () => {
     it("does trigger validation if config option is enable", () => {
       const formConfig = createForm<UserModel>()({
         username: field.text(),
-        email: field.email()
+        email: field.email(),
       })
         .withValidation({
           email: (_value, _values, context) =>
             context.emailRequired
-              ? yup
-                  .string()
-                  .email()
-                  .required()
-              : yup.string().email()
+              ? yup.string().email().required()
+              : yup.string().email(),
         })
         .validateOnContextChange();
 
@@ -96,7 +90,7 @@ describe("useFluentForm (functions)", () => {
       });
 
       expect(result.current.context).toMatchObject({
-        emailRequired: true
+        emailRequired: true,
       });
 
       expect(result.current.errors.email).toEqual(expect.any(Array));
@@ -115,14 +109,14 @@ describe("useFluentForm (functions)", () => {
     it("calls stopPropagation and preventDefault function of event by default", () => {
       const formConfig = createForm<RegisterModel>()({
         username: field.text("ysfaran"),
-        password: field.password("secret")
+        password: field.password("secret"),
       });
 
       const { result } = renderHook(() => useFluentForm(formConfig));
 
       const simpleEvent = {
         stopPropagation: jest.fn(),
-        preventDefault: jest.fn()
+        preventDefault: jest.fn(),
       };
 
       actHooks(() => {
@@ -136,20 +130,20 @@ describe("useFluentForm (functions)", () => {
     it("allows disabling of stopPropagation and preventDefault", () => {
       const formConfig = createForm<RegisterModel>()({
         username: field.text("ysfaran"),
-        password: field.password("secret")
+        password: field.password("secret"),
       });
 
       const { result } = renderHook(() => useFluentForm(formConfig));
 
       const simpleEvent = {
         stopPropagation: jest.fn(),
-        preventDefault: jest.fn()
+        preventDefault: jest.fn(),
       };
 
       actHooks(() => {
         result.current.handleSubmit(undefined, undefined, {
           preventDefault: false,
-          stopPropagation: false
+          stopPropagation: false,
         })(simpleEvent);
       });
 
@@ -160,7 +154,7 @@ describe("useFluentForm (functions)", () => {
     it("does not crash with argument that is not an object/event", () => {
       const formConfig = createForm<RegisterModel>()({
         username: field.text("ysfaran"),
-        password: field.password("secret")
+        password: field.password("secret"),
       });
 
       const { result } = renderHook(() => useFluentForm(formConfig));
@@ -173,7 +167,7 @@ describe("useFluentForm (functions)", () => {
     it("calls only success callback always when no validation is present", () => {
       const formConfig = createForm<RegisterModel>()({
         username: field.text("ysfaran"),
-        password: field.password("secret")
+        password: field.password("secret"),
       });
 
       const { container } = renderWithFluentForm(
@@ -196,9 +190,9 @@ describe("useFluentForm (functions)", () => {
     it("calls only failure callback when state is invalid", () => {
       const formConfig = createForm<RegisterModel>()({
         username: field.text(),
-        password: field.password("secret")
+        password: field.password("secret"),
       }).withValidation({
-        username: yup.string().required()
+        username: yup.string().required(),
       });
 
       const { container } = renderWithFluentForm(
@@ -219,7 +213,7 @@ describe("useFluentForm (functions)", () => {
     it("prevents submitting again while other submit process is running", async () => {
       const formConfig = createForm<RegisterModel>()({
         username: field.text(),
-        password: field.password()
+        password: field.password(),
       });
 
       const { result } = renderHook(() => useFluentForm(formConfig));
@@ -236,10 +230,10 @@ describe("useFluentForm (functions)", () => {
       () => {
         const formConfig = createForm<RegisterModel>()({
           username: field.text(),
-          password: field.password("secret").validateOnChange()
+          password: field.password("secret").validateOnChange(),
         }).withValidation({
           username: yup.string().required(),
-          password: yup.string().required()
+          password: yup.string().required(),
         });
 
         const { container, fluentFormRef } = renderWithFluentForm(
@@ -255,17 +249,17 @@ describe("useFluentForm (functions)", () => {
 
         expect(fluentFormRef.current.touched).toMatchObject({
           username: true,
-          password: true
+          password: true,
         });
 
         expect(fluentFormRef.current.validity).toMatchObject({
           username: false,
-          password: true
+          password: true,
         });
 
         expect(fluentFormRef.current.errors).toMatchObject({
           username: expect.any(Array),
-          password: undefined
+          password: undefined,
         });
       };
     });
@@ -275,9 +269,9 @@ describe("useFluentForm (functions)", () => {
     it("is able to reset form", () => {
       const formConfig = createForm<UserModel>()({
         username: field.text(),
-        email: field.email("initial@email.com")
+        email: field.email("initial@email.com"),
       }).withValidation({
-        username: yup.string().required()
+        username: yup.string().required(),
       });
 
       const { container, fluentFormRef } = renderWithFluentForm(
@@ -297,13 +291,13 @@ describe("useFluentForm (functions)", () => {
       act(() => {
         fireEvent.change(userInput, { target: { value: "ysfaran" } });
         fireEvent.change(emailInput, {
-          target: { value: "updated@email.com" }
+          target: { value: "updated@email.com" },
         });
       });
 
       expect(fluentFormRef.current.values).toMatchObject({
         username: "ysfaran",
-        email: "updated@email.com"
+        email: "updated@email.com",
       });
 
       act(() => {
@@ -312,16 +306,16 @@ describe("useFluentForm (functions)", () => {
 
       expect(fluentFormRef.current.values).toMatchObject({
         username: "",
-        email: "initial@email.com"
+        email: "initial@email.com",
       });
     });
 
     it("allows change initial values", () => {
       const formConfig = createForm<UserModel>()({
         username: field.text(),
-        email: field.email("initial@email.com")
+        email: field.email("initial@email.com"),
       }).withValidation({
-        username: yup.string().required()
+        username: yup.string().required(),
       });
 
       const { fluentFormRef, getByDisplayValue } = renderWithFluentForm(
@@ -337,7 +331,7 @@ describe("useFluentForm (functions)", () => {
       act(() => {
         fluentFormRef.current.setInitialValues({
           username: "initial-user",
-          email: "new-initial@email.org"
+          email: "new-initial@email.org",
         });
       });
 
@@ -350,7 +344,7 @@ describe("useFluentForm (functions)", () => {
 
       expect(fluentFormRef.current.values).toMatchObject({
         username: "initial-user",
-        email: "new-initial@email.org"
+        email: "new-initial@email.org",
       });
     });
   });
@@ -359,10 +353,10 @@ describe("useFluentForm (functions)", () => {
     it("is able to force validation for all fields", () => {
       const formConfig = createForm<UserModel>()({
         username: field.text(),
-        email: field.email()
+        email: field.email(),
       }).withValidation({
         username: yup.string().required(),
-        email: yup.string().required()
+        email: yup.string().required(),
       });
 
       const { fluentFormRef } = renderWithFluentForm(
@@ -385,17 +379,17 @@ describe("useFluentForm (functions)", () => {
 
       expect(fluentFormRef.current.errors).toEqual({
         username: error,
-        email: undefined
+        email: undefined,
       });
     });
 
     it("is able to force validation for one field", () => {
       const formConfig = createForm<UserModel>()({
         username: field.text(),
-        email: field.email()
+        email: field.email(),
       }).withValidation({
         username: yup.string().required(),
-        email: yup.string().required()
+        email: yup.string().required(),
       });
 
       const { fluentFormRef } = renderWithFluentForm(
@@ -416,7 +410,7 @@ describe("useFluentForm (functions)", () => {
 
       expect(errors).toEqual({
         username: expect.any(Array),
-        email: expect.any(Array)
+        email: expect.any(Array),
       });
 
       expect(fluentFormRef.current.errors).toEqual(errors);

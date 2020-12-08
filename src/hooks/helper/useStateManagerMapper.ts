@@ -7,7 +7,7 @@ import {
   ExtractValuesType,
   FormKey,
   UseFluentArrayStateManager,
-  UseFluentStateManager
+  UseFluentStateManager,
 } from "../../types";
 
 export function useStateManagerMapper<Config extends FormArrayConfig>(
@@ -26,12 +26,12 @@ export function useStateManagerMapper<Config extends FormArrayConfig>(
     setValue: setValueWithKey,
     setValues: setValuesWithKey,
     startSubmitting: startSubmittingWithKey,
-    reset: resetWithKey
+    reset: resetWithKey,
   } = arrayStateManager;
 
   const state = useMemo(
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    () => formArray.find(formItem => formItem.key === key)!,
+    () => formArray.find((formItem) => formItem.key === key)!,
     [key, formArray]
   );
 
@@ -89,7 +89,7 @@ export function useStateManagerMapper<Config extends FormArrayConfig>(
 
   const startSubmitting = useCallback(() => startSubmittingWithKey(key), [
     key,
-    startSubmittingWithKey
+    startSubmittingWithKey,
   ]);
 
   const reset = useCallback(() => resetWithKey(key), [key, resetWithKey]);
@@ -107,7 +107,7 @@ export function useStateManagerMapper<Config extends FormArrayConfig>(
       setValue,
       setValues,
       startSubmitting,
-      reset
+      reset,
     }),
     [
       formConfigHelperRef,
@@ -121,7 +121,7 @@ export function useStateManagerMapper<Config extends FormArrayConfig>(
       setValue,
       setValues,
       startSubmitting,
-      state
+      state,
     ]
   );
 

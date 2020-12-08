@@ -13,10 +13,10 @@ describe("useFluentForm (validations)", () => {
   it("allows passing custom validator", () => {
     const formConfig = createForm<UserModel>()({
       username: field.text(),
-      email: field.email()
+      email: field.email(),
     }).withCustomValidator(
       new RequiredValidator<UserModel>({
-        username: "required"
+        username: "required",
       })
     );
 
@@ -39,12 +39,12 @@ describe("useFluentForm (validations)", () => {
 
     expect(fluentFormRef.current.validity).toMatchObject({
       username: false,
-      email: true
+      email: true,
     });
 
     expect(fluentFormRef.current.errors).toMatchObject({
       username: expect.any(String),
-      email: undefined
+      email: undefined,
     });
   });
 
@@ -52,14 +52,14 @@ describe("useFluentForm (validations)", () => {
     const renderForm = () => {
       const formConfig = createForm<UserModel>()({
         username: field.text(),
-        email: field.email()
+        email: field.email(),
       }).withValidation({
         username: yup.string().required(),
-        email: email => {
+        email: (email) => {
           if (!email) {
             return "error";
           }
-        }
+        },
       });
 
       return renderWithFluentForm(formConfig, ({ fluentForm }) => (
@@ -94,7 +94,7 @@ describe("useFluentForm (validations)", () => {
 
       expect(fluentFormRef.current.validity).toMatchObject({
         username: false,
-        email: false
+        email: false,
       });
     });
 
@@ -113,7 +113,7 @@ describe("useFluentForm (validations)", () => {
 
       expect(fluentFormRef.current.validity).toMatchObject({
         username: true,
-        email: true
+        email: true,
       });
     });
   });
@@ -122,17 +122,14 @@ describe("useFluentForm (validations)", () => {
     const createFormConfig = () =>
       createForm<UserModel>()({
         username: field.text(),
-        email: field.email().validateOnSubmitOnly()
+        email: field.email().validateOnSubmitOnly(),
       }).withValidation({
-        username: yup
-          .string()
-          .required()
-          .min(10),
-        email: email => {
+        username: yup.string().required().min(10),
+        email: (email) => {
           if (!email || email.length < 10) {
             return "error";
           }
-        }
+        },
       });
 
     let formConfig: ReturnType<typeof createFormConfig>;
@@ -150,7 +147,7 @@ describe("useFluentForm (validations)", () => {
       const usernameInput = container.querySelector("input")!;
 
       fireEvent.change(usernameInput, {
-        target: { value: "abc" }
+        target: { value: "abc" },
       });
 
       expect(fluentFormRef.current.errors.username).not.toBeDefined();
@@ -169,7 +166,7 @@ describe("useFluentForm (validations)", () => {
       );
 
       fireEvent.change(container.querySelector("input")!, {
-        target: { value: "abc" }
+        target: { value: "abc" },
       });
 
       expect(fluentFormRef.current.errors.username).toEqual(expect.any(Array));
@@ -191,7 +188,7 @@ describe("useFluentForm (validations)", () => {
       const usernameInput = container.querySelector("input")!;
 
       fireEvent.change(usernameInput, {
-        target: { value: "abc" }
+        target: { value: "abc" },
       });
 
       fireEvent.blur(usernameInput);
@@ -217,7 +214,7 @@ describe("useFluentForm (validations)", () => {
       const emailInput = container.querySelector("input")!;
 
       fireEvent.change(emailInput, {
-        target: { value: "abc" }
+        target: { value: "abc" },
       });
 
       fireEvent.blur(emailInput);

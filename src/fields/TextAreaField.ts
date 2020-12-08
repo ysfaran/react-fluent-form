@@ -2,7 +2,7 @@ import {
   ComponentPropsMapper,
   SetTouched,
   SetValue,
-  TextAreaProps
+  TextAreaProps,
 } from "../types";
 import { Field } from "./Field";
 
@@ -26,10 +26,10 @@ export class TextAreaField extends Field<string, TextAreaProps> {
   public mapToComponentProps: ComponentPropsMapper<string, TextAreaProps> = ({
     value,
     setValue,
-    setTouched
+    setTouched,
   }) => ({
     value,
     onBlur: this.handleBlur(setTouched),
-    onChange: this.handleChange(setValue)
+    onChange: this.handleChange(setValue),
   });
 }

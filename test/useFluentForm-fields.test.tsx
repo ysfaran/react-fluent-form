@@ -14,14 +14,14 @@ import {
   CommentModel,
   MultiColorModel,
   NameModel,
-  SendEmailModel
+  SendEmailModel,
 } from "./types";
 
 describe("useFluentForm (fields)", () => {
   describe("text", () => {
     it("is by default not touched and empty string", () => {
       const formConfig = createForm<NameModel>()({
-        name: field.text()
+        name: field.text(),
       });
 
       const { fluentFormRef } = renderWithFluentForm(
@@ -34,12 +34,12 @@ describe("useFluentForm (fields)", () => {
 
     it("allows passing initial value", () => {
       const formConfig = createForm<NameModel>()({
-        name: field.text("ysfaran")
+        name: field.text("ysfaran"),
       });
 
       const {
         fluentFormRef,
-        queryByDisplayValue
+        queryByDisplayValue,
       } = renderWithFluentForm(formConfig, ({ fluentForm }) => (
         <input {...fluentForm.fields.name} />
       ));
@@ -51,7 +51,7 @@ describe("useFluentForm (fields)", () => {
 
     it("is touched when blurred", () => {
       const formConfig = createForm<NameModel>()({
-        name: field.text()
+        name: field.text(),
       });
 
       const { container, fluentFormRef } = renderWithFluentForm(
@@ -68,13 +68,13 @@ describe("useFluentForm (fields)", () => {
 
     it("updates state and input value on change", () => {
       const formConfig = createForm<{ name: string }>()({
-        name: field.text()
+        name: field.text(),
       });
 
       const {
         container,
         fluentFormRef,
-        queryByDisplayValue
+        queryByDisplayValue,
       } = renderWithFluentForm(formConfig, ({ fluentForm }) => (
         <input {...fluentForm.fields.name} />
       ));
@@ -90,7 +90,7 @@ describe("useFluentForm (fields)", () => {
   describe("checkbox", () => {
     it("is by default not touched and false", () => {
       const formConfig = createForm<SendEmailModel>()({
-        sendEmail: field.checkbox().type("checkbox") // for 100% coverage
+        sendEmail: field.checkbox().type("checkbox"), // for 100% coverage
       });
 
       const { fluentFormRef } = renderWithFluentForm(
@@ -104,7 +104,7 @@ describe("useFluentForm (fields)", () => {
 
     it("allows passing initial value", () => {
       const formConfig = createForm<SendEmailModel>()({
-        sendEmail: field.checkbox(true)
+        sendEmail: field.checkbox(true),
       });
 
       const { container, fluentFormRef } = renderWithFluentForm(
@@ -121,7 +121,7 @@ describe("useFluentForm (fields)", () => {
 
     it("is touched when blurred", () => {
       const formConfig = createForm<SendEmailModel>()({
-        sendEmail: field.checkbox()
+        sendEmail: field.checkbox(),
       });
 
       const { container, fluentFormRef } = renderWithFluentForm(
@@ -138,7 +138,7 @@ describe("useFluentForm (fields)", () => {
 
     it("updates state and input value on change", () => {
       const formConfig = createForm<SendEmailModel>()({
-        sendEmail: field.checkbox()
+        sendEmail: field.checkbox(),
       });
 
       const { container, fluentFormRef } = renderWithFluentForm(
@@ -161,7 +161,7 @@ describe("useFluentForm (fields)", () => {
           .radio()
           .name("color")
           .type("radio") // for 100% coverage
-          .unselectable(false) // for 100% coverage
+          .unselectable(false), // for 100% coverage
       });
 
       const { fluentFormRef } = renderWithFluentForm(
@@ -181,7 +181,7 @@ describe("useFluentForm (fields)", () => {
 
     it("allows passing initial value", () => {
       const formConfig = createForm<ColorModel>()({
-        color: field.radio("green")
+        color: field.radio("green"),
       });
 
       const { container, fluentFormRef } = renderWithFluentForm(
@@ -204,7 +204,7 @@ describe("useFluentForm (fields)", () => {
 
     it("is touched when any radio button blurres", () => {
       const formConfig = createForm<ColorModel>()({
-        color: field.radio().name("color")
+        color: field.radio().name("color"),
       });
 
       const { container, fluentFormRef } = renderWithFluentForm(
@@ -227,7 +227,7 @@ describe("useFluentForm (fields)", () => {
 
     it("updates state and input checked on change", () => {
       const formConfig = createForm<ColorModel>()({
-        color: field.radio().name("color")
+        color: field.radio().name("color"),
       });
 
       const { container, fluentFormRef } = renderWithFluentForm(
@@ -259,7 +259,7 @@ describe("useFluentForm (fields)", () => {
 
     it("is by default not unselectable", () => {
       const formConfig = createForm<ColorModel>()({
-        color: field.radio().name("color")
+        color: field.radio().name("color"),
       });
 
       const { container, fluentFormRef } = renderWithFluentForm(
@@ -283,10 +283,7 @@ describe("useFluentForm (fields)", () => {
 
     it("can optionally be made unselectable", () => {
       const formConfig = createForm<ColorModel>()({
-        color: field
-          .radio()
-          .name("color")
-          .unselectable()
+        color: field.radio().name("color").unselectable(),
       });
 
       const { container, fluentFormRef } = renderWithFluentForm(
@@ -311,7 +308,7 @@ describe("useFluentForm (fields)", () => {
     it("works with multiple radio button groups", () => {
       const formConfig = createForm<MultiColorModel>()({
         firstColor: field.radio().name("color1"),
-        secondColor: field.radio().name("color2")
+        secondColor: field.radio().name("color2"),
       });
 
       const { container, fluentFormRef } = renderWithFluentForm(
@@ -355,7 +352,7 @@ describe("useFluentForm (fields)", () => {
   describe("select", () => {
     it("is by default not touched and empty string", () => {
       const formConfig = createForm<CarModel>()({
-        brand: field.select()
+        brand: field.select(),
       });
 
       const { fluentFormRef } = renderWithFluentForm(
@@ -375,7 +372,7 @@ describe("useFluentForm (fields)", () => {
 
     it("allows passing initial value", () => {
       const formConfig = createForm<CarModel>()({
-        brand: field.select("BMW")
+        brand: field.select("BMW"),
       });
 
       const { fluentFormRef, queryByDisplayValue } = renderWithFluentForm(
@@ -396,7 +393,7 @@ describe("useFluentForm (fields)", () => {
 
     it("is touched when blurred", () => {
       const formConfig = createForm<CarModel>()({
-        brand: field.select()
+        brand: field.select(),
       });
 
       const { container, fluentFormRef } = renderWithFluentForm(
@@ -419,13 +416,13 @@ describe("useFluentForm (fields)", () => {
 
     it("updates state and input value on change", () => {
       const formConfig = createForm<CarModel>()({
-        brand: field.select()
+        brand: field.select(),
       });
 
       const {
         container,
         fluentFormRef,
-        queryByDisplayValue
+        queryByDisplayValue,
       } = renderWithFluentForm(formConfig, ({ fluentForm }) => (
         <select {...fluentForm.fields.brand.select}>
           <option {...fluentForm.fields.brand.option("BMW")} />
@@ -445,7 +442,7 @@ describe("useFluentForm (fields)", () => {
   describe("textarea", () => {
     it("is by default not touched and empty string", () => {
       const formConfig = createForm<CommentModel>()({
-        comment: field.textarea()
+        comment: field.textarea(),
       });
 
       const { fluentFormRef } = renderWithFluentForm(
@@ -458,12 +455,12 @@ describe("useFluentForm (fields)", () => {
 
     it("allows passing initial value", () => {
       const formConfig = createForm<CommentModel>()({
-        comment: field.textarea("fluent form is cool!")
+        comment: field.textarea("fluent form is cool!"),
       });
 
       const {
         fluentFormRef,
-        queryByDisplayValue
+        queryByDisplayValue,
       } = renderWithFluentForm(formConfig, ({ fluentForm }) => (
         <textarea {...fluentForm.fields.comment} />
       ));
@@ -475,7 +472,7 @@ describe("useFluentForm (fields)", () => {
 
     it("is touched when blurred", () => {
       const formConfig = createForm<CommentModel>()({
-        comment: field.textarea()
+        comment: field.textarea(),
       });
 
       const { container, fluentFormRef } = renderWithFluentForm(
@@ -492,13 +489,13 @@ describe("useFluentForm (fields)", () => {
 
     it("updates state and textarea value on change", () => {
       const formConfig = createForm<{ comment: string }>()({
-        comment: field.textarea()
+        comment: field.textarea(),
       });
 
       const {
         container,
         fluentFormRef,
-        queryByDisplayValue
+        queryByDisplayValue,
       } = renderWithFluentForm(formConfig, ({ fluentForm }) => (
         <textarea {...fluentForm.fields.comment} />
       ));
@@ -514,7 +511,7 @@ describe("useFluentForm (fields)", () => {
   describe("raw", () => {
     it("is by default not touched and allows passing initial value", () => {
       const formConfig = createForm<AgeModel>()({
-        age: field.raw(5)
+        age: field.raw(5),
       });
 
       const { result } = renderHook(() => useFluentForm(formConfig));
@@ -526,7 +523,7 @@ describe("useFluentForm (fields)", () => {
 
     it("is touched when blurred", () => {
       const formConfig = createForm<AgeModel>()({
-        age: field.raw(5)
+        age: field.raw(5),
       });
 
       const { result } = renderHook(() => useFluentForm(formConfig));
@@ -538,7 +535,7 @@ describe("useFluentForm (fields)", () => {
 
     it("updates state and value on change", () => {
       const formConfig = createForm<AgeModel>()({
-        age: field.raw(5)
+        age: field.raw(5),
       });
 
       const { result } = renderHook(() => useFluentForm(formConfig));
@@ -551,7 +548,7 @@ describe("useFluentForm (fields)", () => {
 
     it("returns default name for props", () => {
       const formConfig = createForm<AgeModel>()({
-        age: field.raw(5)
+        age: field.raw(5),
       });
 
       const { result } = renderHook(() => useFluentForm(formConfig));
@@ -567,7 +564,7 @@ describe("useFluentForm (fields)", () => {
           .raw(5)
           .withValueProp("customValue")
           .withOnChangeProp("customOnChange")
-          .withOnBlurProp("customOnBlur")
+          .withOnBlurProp("customOnBlur"),
       });
 
       const { result } = renderHook(() => useFluentForm(formConfig));

@@ -2,7 +2,7 @@ import {
   ComponentPropsMapper,
   InputPropsRadioGenerator,
   RadioInputType,
-  SetValue
+  SetValue,
 } from "../../types";
 import { InputField } from "./InputField";
 
@@ -55,6 +55,6 @@ export class RadioField extends InputField<string, InputPropsRadioGenerator> {
     value: radioInputValue,
     onBlur: this.handleBlur(setTouched),
     onChange: this.handleChange(setValue),
-    onClick: this.handleClick(setValue, value)
+    onClick: this.handleClick(setValue, value),
   });
 }

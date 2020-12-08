@@ -2,7 +2,7 @@ import {
   CheckboxInputType,
   ComponentPropsMapper,
   InputPropsChecked,
-  SetValue
+  SetValue,
 } from "../../types";
 import { InputField } from "./InputField";
 
@@ -31,7 +31,7 @@ export class CheckboxField extends InputField<boolean, InputPropsChecked> {
       type: this._type,
       checked,
       onBlur: this.handleBlur(setTouched),
-      onChange: this.handleChange(setValue)
+      onChange: this.handleChange(setValue),
     };
   };
 }

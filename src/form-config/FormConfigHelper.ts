@@ -4,7 +4,7 @@ import {
   ExtractFieldsType,
   ExtractValuesType,
   FluentFormState,
-  MappedFields
+  MappedFields,
 } from "../types";
 import { FormConfig } from "./FormConfig";
 
@@ -24,7 +24,7 @@ export class FormConfigHelper<Config extends FormConfig = any> {
       validity: {},
       errors: {} as ExtractErrorsType<Config>,
       context: this.formConfig._context || {},
-      submitting: false
+      submitting: false,
     };
   }
 
@@ -55,7 +55,7 @@ export class FormConfigHelper<Config extends FormConfig = any> {
         field,
         {
           ...values,
-          [field]: value
+          [field]: value,
         },
         context
       );
@@ -100,8 +100,8 @@ export class FormConfigHelper<Config extends FormConfig = any> {
           [key]: this.formConfig._fields[key].mapToComponentProps({
             value: values[key],
             setValue: setValueForField,
-            setTouched: setTouchedForField
-          })
+            setTouched: setTouchedForField,
+          }),
         };
       },
       {} as MappedFields<Fields>
@@ -152,7 +152,7 @@ export class FormConfigHelper<Config extends FormConfig = any> {
     return keys.reduce((initialValues, key) => {
       return {
         ...initialValues,
-        [key]: this.formConfig._fields[key]._initialValue
+        [key]: this.formConfig._fields[key]._initialValue,
       };
     }, {} as ExtractValuesType<Config>);
   }

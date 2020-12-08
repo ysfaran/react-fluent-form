@@ -14,7 +14,7 @@ import {
   FluentFormState,
   FormArrayError,
   FormKey,
-  UseFluentArrayStateManager
+  UseFluentArrayStateManager,
 } from "../../../types";
 import { fluentFormArrayReducer } from "./reducer";
 
@@ -36,7 +36,7 @@ export function useFluentArrayStateManager<Config extends FormArrayConfig>(
 
   const initialArrayStateRef = useRef<FluentFormArrayState<Values, Errors>>({
     submitting: false,
-    formArray: initalFormArrayValues
+    formArray: initalFormArrayValues,
   });
 
   const [state, dispatch] = useReducer<FluentFormArrayReducer<Values, Errors>>(
@@ -108,8 +108,8 @@ export function useFluentArrayStateManager<Config extends FormArrayConfig>(
         payload: {
           key,
           sortPosition: sortPositionCountRef.current++,
-          initialState
-        }
+          initialState,
+        },
       });
     },
     [_generateKey, formConfigHelper, getUniqueKey]
@@ -119,7 +119,7 @@ export function useFluentArrayStateManager<Config extends FormArrayConfig>(
     delete initalStateRefs.current[key];
     dispatch({
       type: "REMOVE_FORM",
-      payload: { key }
+      payload: { key },
     });
   }, []);
 
@@ -131,7 +131,7 @@ export function useFluentArrayStateManager<Config extends FormArrayConfig>(
     (formArrayErrors: FormArrayError<Errors>) => {
       dispatch({
         type: "FINISHED_SUBMITTING_ARRAY",
-        payload: { formArrayErrors }
+        payload: { formArrayErrors },
       });
     },
     []
@@ -150,7 +150,7 @@ export function useFluentArrayStateManager<Config extends FormArrayConfig>(
     (key: FormKey, values: Partial<Values>) => {
       initalStateRefs.current[key].values = {
         ...initalStateRefs.current[key].values,
-        ...values
+        ...values,
       };
     },
     []
@@ -159,7 +159,7 @@ export function useFluentArrayStateManager<Config extends FormArrayConfig>(
   const setSubmittingResult = useCallback((key: FormKey, errors: Errors) => {
     dispatch({
       type: "FINISHED_SUBMITTING",
-      payload: { key, errors: errors }
+      payload: { key, errors: errors },
     });
   }, []);
 
@@ -167,7 +167,7 @@ export function useFluentArrayStateManager<Config extends FormArrayConfig>(
     <K extends keyof Fields>(key: FormKey, field: K, touched: boolean) => {
       dispatch({
         type: "SET_SINGLE_TOUCHED",
-        payload: { key, field, touched }
+        payload: { key, field, touched },
       });
     },
     []
@@ -177,7 +177,7 @@ export function useFluentArrayStateManager<Config extends FormArrayConfig>(
     <K extends keyof Values>(key: FormKey, field: K, error: Errors[K]) => {
       dispatch({
         type: "VALIDATION_FAILURE",
-        payload: { key, field, error: error }
+        payload: { key, field, error: error },
       });
     },
     []
@@ -187,7 +187,7 @@ export function useFluentArrayStateManager<Config extends FormArrayConfig>(
     <K extends keyof Values>(key: FormKey, field: K) => {
       dispatch({
         type: "VALIDATION_SUCCESS",
-        payload: { key, field }
+        payload: { key, field },
       });
     },
     []
@@ -202,7 +202,7 @@ export function useFluentArrayStateManager<Config extends FormArrayConfig>(
     ) => {
       dispatch({
         type: "VALUE_CHANGE",
-        payload: { key, field, value, touched }
+        payload: { key, field, value, touched },
       });
     },
     []
@@ -220,7 +220,7 @@ export function useFluentArrayStateManager<Config extends FormArrayConfig>(
     (key: FormKey) => {
       dispatch({
         type: "RESET",
-        payload: { ...state.formArray[key], ...initalStateRefs.current[key] }
+        payload: { ...state.formArray[key], ...initalStateRefs.current[key] },
       });
     },
     [state.formArray]
@@ -255,6 +255,6 @@ export function useFluentArrayStateManager<Config extends FormArrayConfig>(
     startSubmitting,
     reset,
     addForm,
-    removeForm
+    removeForm,
   };
 }
