@@ -1,0 +1,25 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - "*"
+      - "/*"
+      - "**"
+      - "!master"
+
+jobs:
+  Build_Test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+      - run: npm install
+      - run: npm run build:package
+      - run: npm run test:package
+      - name: Coveralls
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+        run: npm run coveralls

@@ -42,7 +42,7 @@ describe("DefaultValidator", () => {
       const validator = new DefaultValidator<TestModel>({
         aString: yup.string().when("aString", {
           is: () => 1 / 0,
-          then: "erro should be thrown before",
+          then: "error should be thrown before" as any,
         }),
       });
 

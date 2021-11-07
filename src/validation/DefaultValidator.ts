@@ -31,9 +31,9 @@ export class DefaultValidator<
   }: ValidateFunctionArgs<ValuesType, K, E>) {
     const schemaOrResult = validate(value, values, context);
 
-    const schema = schemaOrResult as yup.Schema<any>;
+    const schema = schemaOrResult as yup.AnySchema;
 
-    if (schema && schema.validateSync) {
+    if (isYupSchema(schema)) {
       return this.validateYupSchema({ value, values, schema, context });
     } else {
       return schemaOrResult as E | undefined;
@@ -48,7 +48,7 @@ export class DefaultValidator<
   }: ValidateYupSchemaArgs<ValuesType, K>) {
     try {
       schema.validateSync(value, { context: { ...values, ...context } });
-    } catch (err) {
+    } catch (err: any) {
       if (err.name === "ValidationError") {
         return err.errors;
       } else {
@@ -81,12 +81,12 @@ export class DefaultValidator<
       return this.validateYupSchema({
         value,
         values,
-        schema: validate as yup.Schema<any>,
+        schema: validate as yup.AnySchema,
         context,
       });
     } else {
       console.warn(
-        `Expected validation of type function or yup.Schema, but received type: ${typeof validate})`,
+        `Expected validation of type function or yup.AnySchema, but received type: ${typeof validate})`,
         validate
       );
     }
