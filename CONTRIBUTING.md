@@ -19,7 +19,7 @@
      | `refactor` | refactoring code (should never contain features or bug fixes!) | |
      | `perf` | changes that improve the performance | `PATCH` |
      | `docs` | markdown file changes | `PATCH`, when scope is `readme` |
-     | `ci` | fixing or improving CI/CD (e.g. adapting `.travis.yml` ) | |
+     | `ci` | fixing or improving CI/CD (e.g. adapting files in `.github/workflows/` ) | |
      | `chore` | no production code changes, which can not be described with types like `ci` or `build` (e.g. adapting `.gitignore` or adding new script to `package.json` ) | |
      | `build` | changes that affect the build (e.g. adapting `rollup.config.js` or adding/removing dependencies) | `PATCH` |
    - Allowed scopes:
