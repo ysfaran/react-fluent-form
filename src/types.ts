@@ -385,11 +385,11 @@ export type ValidateFunction<
   value: ValuesType[K],
   values: ValuesType,
   context: Context
-) => yup.Schema<any> | Error | undefined;
+) => yup.AnySchema | Error | undefined;
 
 export type Validations<ValuesType> = {
   [K in keyof ValuesType]?:
-    | yup.Schema<any>
+    | yup.AnySchema
     | ValidateFunction<ValuesType, K, unknown>;
 };
 
@@ -401,19 +401,19 @@ export type DefaultError<
 };
 
 export type DefaultValidationReturnType<
-  VF extends yup.Schema<any> | ValidateFunction<any, any> | undefined
-> = VF extends yup.Schema<any>
+  VF extends yup.AnySchema | ValidateFunction<any, any> | undefined
+> = VF extends yup.AnySchema
   ? string[]
   : VF extends ValidateFunction<any, any, infer E>
-  ? E extends yup.Schema<any>
-    ? string[] | Exclude<E, yup.Schema<any>>
+  ? E extends yup.AnySchema
+    ? string[] | Exclude<E, yup.AnySchema>
     : E
   : never;
 
 export interface ValidateYupSchemaArgs<ValuesType, K extends keyof ValuesType> {
   value: ValuesType[K];
   values: ValuesType;
-  schema: yup.Schema<any>;
+  schema: yup.AnySchema;
   context: object;
 }
 
