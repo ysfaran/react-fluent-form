@@ -1,3 +1,15 @@
+## [1.6.0](https://github.com/ysfaran/react-fluent-form/compare/v1.5.4...v1.6.0) (2021-11-07)
+
+
+### Features
+
+* **typings:** update yup types ([7efb239](https://github.com/ysfaran/react-fluent-form/commit/7efb239c3fe490d074b58672cdadd34f75d18eed))
+
+
+### Bug Fixes
+
+* **config:** fix vulnerabilities ([4dbe084](https://github.com/ysfaran/react-fluent-form/commit/4dbe084fa848e876a6ec373d2bdebd524dbeec23))
+
 ### [1.5.4](https://github.com/ysfaran/react-fluent-form/compare/v1.5.3...v1.5.4) (2020-12-08)
 
 
