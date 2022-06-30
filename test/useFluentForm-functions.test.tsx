@@ -2,7 +2,7 @@ import React from "react";
 import * as yup from "yup";
 
 import { act, fireEvent } from "@testing-library/react";
-import { act as actHooks, renderHook } from "@testing-library/react-hooks";
+import { act as actHooks, renderHook } from "@testing-library/react";
 
 import { field } from "../src/fields/FieldCreatorInstance";
 import { createForm } from "../src/form-config/FormCreators";

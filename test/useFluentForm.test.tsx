@@ -1,7 +1,7 @@
 import React from "react";
 
 import { fireEvent } from "@testing-library/react";
-import { renderHook } from "@testing-library/react-hooks";
+import { renderHook } from "@testing-library/react";
 
 import { addField } from "../src/configuration/addField";
 import { FieldCreator } from "../src/fields/FieldCreator";
