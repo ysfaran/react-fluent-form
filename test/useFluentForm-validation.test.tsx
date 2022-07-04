@@ -214,7 +214,7 @@ describe("useFluentForm (validations)", () => {
       const emailInput = container.querySelector("input")!;
 
       fireEvent.change(emailInput, {
-        target: { value: "abc" },
+        target: { value: "a@a.io" },
       });
 
       fireEvent.blur(emailInput);
