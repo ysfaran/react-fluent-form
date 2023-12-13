@@ -1,4 +1,4 @@
-import * as yup from "yup";
+import type * as yup from "yup";
 
 import {
   DefaultError,
@@ -13,7 +13,7 @@ import { Validator } from "./Validator";
 
 export class DefaultValidator<
   ValuesType extends object,
-  V extends Validations<ValuesType> = Validations<ValuesType>
+  V extends Validations<ValuesType> = Validations<ValuesType>,
 > extends Validator<ValuesType, DefaultError<ValuesType, V>> {
   protected validations: V;
 
@@ -54,7 +54,7 @@ export class DefaultValidator<
       } else {
         console.warn(
           "yup validation threw an error which isn't of type ValidationError:",
-          err
+          err,
         );
       }
     }
@@ -63,7 +63,7 @@ export class DefaultValidator<
   public validateField<K extends keyof ValuesType>(
     field: K,
     values: ValuesType,
-    context: object = {}
+    context: object = {},
   ): DefaultValidationReturnType<V[K]> | void {
     const validate = this.validations[field];
     const value = values[field];
@@ -87,7 +87,7 @@ export class DefaultValidator<
     } else {
       console.warn(
         `Expected validation of type function or yup.AnySchema, but received type: ${typeof validate})`,
-        validate
+        validate,
       );
     }
   }

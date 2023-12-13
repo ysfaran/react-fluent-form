@@ -146,7 +146,7 @@ describe("DefaultValidator", () => {
       const validator = new DefaultValidator<TestModel>({
         aDate: yup.date().when("$contextValue", {
           is: 1,
-          then: yup.date().min(new Date(2000, 1, 2)),
+          then: (schema) => schema.min(new Date(2000, 1, 2)),
         }),
       });
 
@@ -165,7 +165,7 @@ describe("DefaultValidator", () => {
       const validator = new DefaultValidator<TestModel>({
         aDate: yup.date().when("$aString", {
           is: "condition",
-          then: yup.date().min(new Date(2000, 1, 1)),
+          then: (schema) => schema.min(new Date(2000, 1, 2)),
         }),
       });
 
