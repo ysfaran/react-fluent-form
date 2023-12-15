@@ -13,6 +13,7 @@ export default [
     plugins: [
       typescript({
         useTsconfigDeclarationDir: true,
+        tsconfig: "tsconfig.package.json",
         tsconfigOverride: {
           compilerOptions: {
             declarationDir: "tmp/dts",

@@ -1,15 +1,15 @@
-import type * as yup from "yup";
-
 import {
   DefaultError,
   DefaultValidationReturnType,
-  ValidateFunction,
   ValidateFunctionArgs,
   ValidateYupSchemaArgs,
+  ValidateZodSchemaArgs,
   Validations,
 } from "../types";
 import { isYupSchema } from "../utils/isYupSchema";
 import { Validator } from "./Validator";
+import { isZodSchema } from "../utils/isZodSchema";
+import { isValidateFunction } from "../utils/isValidateFunction";
 
 export class DefaultValidator<
   ValuesType extends object,
@@ -31,10 +31,15 @@ export class DefaultValidator<
   }: ValidateFunctionArgs<ValuesType, K, E>) {
     const schemaOrResult = validate(value, values, context);
 
-    const schema = schemaOrResult as yup.AnySchema;
-
-    if (isYupSchema(schema)) {
-      return this.validateYupSchema({ value, values, schema, context });
+    if (isYupSchema(schemaOrResult)) {
+      return this.validateYupSchema({
+        value,
+        values,
+        schema: schemaOrResult,
+        context,
+      });
+    } else if (isZodSchema(schemaOrResult)) {
+      return this.validateZodSchema({ value, schema: schemaOrResult });
     } else {
       return schemaOrResult as E | undefined;
     }
@@ -60,6 +65,17 @@ export class DefaultValidator<
     }
   }
 
+  protected validateZodSchema<K extends keyof ValuesType>({
+    value,
+    schema,
+  }: ValidateZodSchemaArgs<ValuesType, K>) {
+    const result = schema.safeParse(value);
+
+    if (!result.success) {
+      return result.error;
+    }
+  }
+
   public validateField<K extends keyof ValuesType>(
     field: K,
     values: ValuesType,
@@ -70,23 +86,28 @@ export class DefaultValidator<
 
     if (!validate) return;
 
-    if (typeof validate === "function") {
+    if (isValidateFunction(validate)) {
       return this.validateFunction({
         value,
         values,
-        validate: validate as ValidateFunction<ValuesType, K>,
+        validate: validate,
         context,
       });
+    } else if (isZodSchema(validate)) {
+      return this.validateZodSchema({
+        value,
+        schema: validate,
+      }) as DefaultValidationReturnType<V[K]>; // no idea why this assertion is needed;
     } else if (isYupSchema(validate)) {
       return this.validateYupSchema({
         value,
         values,
-        schema: validate as yup.AnySchema,
+        schema: validate,
         context,
       });
     } else {
       console.warn(
-        `Expected validation of type function or yup.AnySchema, but received type: ${typeof validate})`,
+        `Expected validation of type function, yup.AnySchema or z.Schema, but received type: ${typeof validate})`,
         validate,
       );
     }

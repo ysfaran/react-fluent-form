@@ -1,5 +1,6 @@
 import React, { Reducer } from "react";
 import * as yup from "yup";
+import { z } from "zod";
 
 import { ValidationTrigger } from "./constants/validationTrigger";
 import { Field } from "./fields/Field";
@@ -39,8 +40,8 @@ export type StateValidity<ValuesType> = {
 export type StateTouched<ValuesType> = {
   [K in keyof ValuesType]?: boolean;
 };
-export type ErrorsType<ValuesType extends object, Error = any> = {
-  [K in keyof ValuesType]?: Error;
+export type ErrorsType<ValuesType extends object, E = any> = {
+  [K in keyof ValuesType]?: E;
 };
 
 export interface FluentFormState<
@@ -382,11 +383,12 @@ export type ValidateFunction<
   value: ValuesType[K],
   values: ValuesType,
   context: Context,
-) => yup.AnySchema | Error | undefined;
+) => yup.AnySchema | z.Schema | Error | undefined;
 
 export type Validations<ValuesType> = {
   [K in keyof ValuesType]?:
     | yup.AnySchema
+    | z.Schema
     | ValidateFunction<ValuesType, K, unknown>;
 };
 
@@ -398,20 +400,29 @@ export type DefaultError<
 };
 
 export type DefaultValidationReturnType<
-  VF extends yup.AnySchema | ValidateFunction<any, any> | undefined,
+  VF extends yup.AnySchema | ValidateFunction<any, any> | z.Schema | undefined,
 > = VF extends yup.AnySchema
   ? string[]
-  : VF extends ValidateFunction<any, any, infer E>
-    ? E extends yup.AnySchema
-      ? string[] | Exclude<E, yup.AnySchema>
-      : E
-    : never;
+  : VF extends z.Schema<any, any, infer ZodInput>
+    ? z.ZodError<ZodInput>
+    : VF extends ValidateFunction<any, any, infer E>
+      ? E extends yup.AnySchema
+        ? string[] | Exclude<E, yup.AnySchema>
+        : E extends z.Schema<any, any, infer ZodInput>
+          ? z.ZodError<ZodInput>
+          : E
+      : never;
 
 export interface ValidateYupSchemaArgs<ValuesType, K extends keyof ValuesType> {
   value: ValuesType[K];
   values: ValuesType;
   schema: yup.AnySchema;
   context: object;
+}
+
+export interface ValidateZodSchemaArgs<ValuesType, K extends keyof ValuesType> {
+  value: ValuesType[K];
+  schema: z.ZodSchema<any, any, ValuesType[K]>;
 }
 
 export interface ValidateFunctionArgs<

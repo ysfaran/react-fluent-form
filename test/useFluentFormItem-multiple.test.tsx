@@ -8,13 +8,16 @@ import { FormArrayConfig } from "../src/form-config/FormArrayConfig";
 import { createFormArray } from "../src/form-config/FormCreators";
 import { renderWithFluentFormItems } from "./test-utils/renderWithFluentItems";
 import { RegisterModel, UserModel } from "./types";
+import { ZodError, z } from "zod";
 
 function createConfigForTest() {
   return createFormArray<UserModel>()({
     username: field.text(),
     email: field.email(),
+    password: field.password(),
   }).withValidation({
     email: yup.string().required(),
+    password: z.string().min(1),
   });
 }
 function renderFluentFormItemsForTest<
@@ -29,6 +32,7 @@ function renderFluentFormItemsForTest<
         <>
           <input data-testid={"username" + key} {...fields.username} />
           <input data-testid={"email" + key} {...fields.email} />
+          <input data-testid={"password" + key} {...fields.password} />
           <button data-testid={"remove" + key} onClick={removeSelf}>
             Remove
           </button>
@@ -87,12 +91,14 @@ describe("useFluentFormItem (multiple)", () => {
       expect(formArrayValues1).toEqual({
         username: "ysfaran",
         email: "",
+        password: "",
       });
       expect(formItemValues1).toEqual(formArrayValues1);
 
       expect(formArrayValues0).toEqual({
         username: "",
         email: "",
+        password: "",
       });
       expect(formItemValues0).toEqual(formArrayValues0);
       expect(formArrayValues2).toEqual(formArrayValues0);
@@ -218,6 +224,7 @@ describe("useFluentFormItem (multiple)", () => {
           values: {
             username: "username0",
             email: "",
+            password: "",
           },
         }),
       );
@@ -238,6 +245,7 @@ describe("useFluentFormItem (multiple)", () => {
           values: {
             username: "",
             email: "",
+            password: "",
           },
         }),
       );
@@ -252,6 +260,7 @@ describe("useFluentFormItem (multiple)", () => {
           values: {
             username: "username2",
             email: "email2",
+            password: "",
           },
         }),
       );
@@ -262,7 +271,10 @@ describe("useFluentFormItem (multiple)", () => {
       const arrayConfig = createFormArray<UserModel>()({
         username: field.text("initial user"),
         email: field.email("initial@email.com"),
-      }).withInitialArray([{ username: "user0", email: "email0" }]);
+        password: field.password(),
+      }).withInitialArray([
+        { username: "user0", email: "email0", password: "" },
+      ]);
 
       const { fluentFormArrayRef, fluentFormItemsRef, getAllByTestId } =
         renderFluentFormItemsForTest(arrayConfig);
@@ -271,11 +283,14 @@ describe("useFluentFormItem (multiple)", () => {
 
       const [userInput0, userInput1] = getAllByTestId(/username/);
       const [emailInput0, emailInput1] = getAllByTestId(/email/);
+      const [passwordInput0, passwordInput1] = getAllByTestId(/password/);
 
       fireEvent.change(userInput0, { target: { value: "new user0" } });
       fireEvent.change(emailInput0, { target: { value: "new email0" } });
+      fireEvent.change(passwordInput0, { target: { value: "new password0" } });
       fireEvent.change(userInput1, { target: { value: "new user1" } });
       fireEvent.change(emailInput1, { target: { value: "new email1" } });
+      fireEvent.change(passwordInput1, { target: { value: "new password1" } });
 
       act(() => fluentFormItemsRef.current[0].reset());
       act(() => fluentFormItemsRef.current[1].reset());
@@ -288,11 +303,13 @@ describe("useFluentFormItem (multiple)", () => {
       expect(formArrayValues0).toEqual({
         username: "user0",
         email: "email0",
+        password: "",
       });
       expect(formItemValues0).toEqual(formArrayValues0);
       expect(formArrayValues1).toEqual({
         username: "initial user",
         email: "initial@email.com",
+        password: "",
       });
       expect(formItemValues1).toEqual(formArrayValues1);
     });
@@ -321,12 +338,14 @@ describe("useFluentFormItem (multiple)", () => {
       expect(formArrayValues1).toEqual({
         username: "ysfaran",
         email: "test@email.com",
+        password: "",
       });
       expect(formItemValues1).toEqual(formArrayValues1);
 
       expect(formArrayValues0).toEqual({
         username: "",
         email: "",
+        password: "",
       });
       expect(formItemValues0).toEqual(formArrayValues0);
       expect(formArrayValues2).toEqual(formArrayValues0);
@@ -336,7 +355,7 @@ describe("useFluentFormItem (multiple)", () => {
     it("updates errors independently when triggering validation for one field manually", () => {
       const config = createConfigForTest().withValidation({
         username: yup.string().required(),
-        email: yup.string().required(),
+        email: z.string().email(),
       });
 
       const { fluentFormArrayRef, fluentFormItemsRef } =
@@ -358,7 +377,7 @@ describe("useFluentFormItem (multiple)", () => {
 
       expect(formArrayErrors1).toEqual({
         username: undefined,
-        email: expect.any(Array),
+        email: expect.any(ZodError),
       });
       expect(formItemErrors1).toEqual(formArrayErrors1);
 
@@ -374,7 +393,7 @@ describe("useFluentFormItem (multiple)", () => {
     it("updates errors independently when triggering validation for all fields manually", () => {
       const config = createConfigForTest().withValidation({
         username: yup.string().required(),
-        email: yup.string().required(),
+        email: z.string().email(),
       });
 
       const { fluentFormArrayRef, fluentFormItemsRef } =
@@ -396,7 +415,7 @@ describe("useFluentFormItem (multiple)", () => {
 
       expect(formArrayErrors1).toEqual({
         username: expect.any(Array),
-        email: expect.any(Array),
+        email: expect.any(ZodError),
       });
       expect(formItemErrors1).toEqual(formArrayErrors1);
 
@@ -507,6 +526,7 @@ describe("useFluentFormItem (multiple)", () => {
           password: field.password("secret"),
         }).withValidation({
           username: yup.string().required(),
+          password: z.string().min(8),
         });
 
         const { getByTestId } = renderFluentFormItemsWithSubmit(formConfig);

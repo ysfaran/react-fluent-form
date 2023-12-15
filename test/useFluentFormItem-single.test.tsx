@@ -8,16 +8,19 @@ import { FormArrayConfig } from "../src/form-config/FormArrayConfig";
 import { createFormArray } from "../src/form-config/FormCreators";
 import { renderWithFluentFormItems } from "./test-utils/renderWithFluentItems";
 import { RegisterModel, UserModel } from "./types";
+import { ZodError, z } from "zod";
 
 function createConfigForTest() {
   return createFormArray<UserModel>()({
     username: field.text(),
     email: field.email(),
+    password: field.password(),
   })
     .withValidation({
       email: yup.string().required(),
+      password: z.string().min(1),
     })
-    .withInitialArray([{ username: "", email: "" }]);
+    .withInitialArray([{ username: "", email: "", password: "" }]);
 }
 function renderFluentFormItemsForTest<
   Config extends FormArrayConfig<UserModel, any, any>,
@@ -31,6 +34,7 @@ function renderFluentFormItemsForTest<
         <>
           <input data-testid={"username" + key} {...fields.username} />
           <input data-testid={"email" + key} {...fields.email} />
+          <input data-testid={"password" + key} {...fields.password} />
           <button data-testid={"remove" + key} onClick={removeSelf}>
             Remove
           </button>
@@ -190,16 +194,21 @@ describe("useFluentFormItem (single)", () => {
       const arrayConfig = createFormArray<UserModel>()({
         username: field.text(),
         email: field.email(),
-      }).withInitialArray([{ username: "user0", email: "email0" }]);
+        password: field.password(),
+      }).withInitialArray([
+        { username: "user0", email: "email0", password: "" },
+      ]);
 
       const { fluentFormArrayRef, fluentFormItemsRef, getByTestId } =
         renderFluentFormItemsForTest(arrayConfig);
 
       const userInput0 = getByTestId(/username/);
       const emailInput0 = getByTestId(/email/);
+      const passwordInput0 = getByTestId(/password/);
 
       fireEvent.change(userInput0, { target: { value: "new user0" } });
       fireEvent.change(emailInput0, { target: { value: "new email0" } });
+      fireEvent.change(passwordInput0, { target: { value: "new password0" } });
 
       act(() => fluentFormItemsRef.current[0].reset());
 
@@ -209,6 +218,7 @@ describe("useFluentFormItem (single)", () => {
       expect(formArrayValues0).toEqual({
         username: "user0",
         email: "email0",
+        password: "",
       });
       expect(formItemValues0).toEqual(formArrayValues0);
     });
@@ -239,7 +249,7 @@ describe("useFluentFormItem (single)", () => {
     it("updates form array state and form item when validating field manually", () => {
       const config = createConfigForTest().withValidation({
         username: yup.string().required(),
-        email: yup.string().required(),
+        email: z.string().email(),
       });
 
       const { fluentFormArrayRef, fluentFormItemsRef } =
@@ -254,7 +264,7 @@ describe("useFluentFormItem (single)", () => {
       const formArrayErrors = fluentFormArrayRef.current.formStates[0].errors;
       const formItemErrors = fluentFormItemsRef.current[0].errors;
 
-      expect(error).toEqual(expect.any(Array));
+      expect(error).toEqual(expect.any(ZodError));
       expect(formArrayErrors).toEqual({
         username: undefined,
         email: error,
@@ -265,7 +275,7 @@ describe("useFluentFormItem (single)", () => {
     it("updates form array state and form item when validating all fields manually", () => {
       const config = createConfigForTest().withValidation({
         username: yup.string().required(),
-        email: yup.string().required(),
+        email: z.string().email(),
       });
 
       const { fluentFormArrayRef, fluentFormItemsRef } =
@@ -282,7 +292,7 @@ describe("useFluentFormItem (single)", () => {
 
       expect(errors).toEqual({
         username: expect.any(Array),
-        email: expect.any(Array),
+        email: expect.any(ZodError),
       });
       expect(formArrayErrors).toEqual(errors);
       expect(formItemErrors).toEqual(formArrayErrors);

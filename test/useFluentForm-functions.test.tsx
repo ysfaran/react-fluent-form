@@ -9,12 +9,14 @@ import { createForm } from "../src/form-config/FormCreators";
 import { useFluentForm } from "../src/hooks/fluent-form/useFluentForm";
 import { renderWithFluentForm } from "./test-utils/renderWithFluentForm";
 import { RegisterModel, UserModel } from "./types";
+import { z, ZodError } from "zod";
 
 describe("useFluentForm (functions)", () => {
   it("allows setting values manually", () => {
     const formConfig = createForm<UserModel>()({
       username: field.text(),
       email: field.email(),
+      password: field.password(),
     });
 
     const { fluentFormRef, getByDisplayValue } = renderWithFluentForm(
@@ -23,6 +25,7 @@ describe("useFluentForm (functions)", () => {
         <>
           <input {...fluentForm.fields.username} />
           <input {...fluentForm.fields.email} />
+          <input {...fluentForm.fields.password} />
         </>
       ),
     );
@@ -31,12 +34,14 @@ describe("useFluentForm (functions)", () => {
       fluentFormRef.current.setValues({
         username: "ysfaran",
         email: "email@example.com",
+        password: "1234",
       });
     });
 
     expect(fluentFormRef.current.values).toMatchObject({
       username: "ysfaran",
       email: "email@example.com",
+      password: "1234",
     });
 
     expect(getByDisplayValue("ysfaran")).toBeInTheDocument();
@@ -48,23 +53,30 @@ describe("useFluentForm (functions)", () => {
       const formConfig = createForm<UserModel>()({
         username: field.text(),
         email: field.email(),
+        password: field.password(),
       })
         .withValidation({
           email: (_value, _values, context) =>
             context.emailRequired
               ? yup.string().email().required()
               : yup.string().email(),
+          password: (_value, _values, context) =>
+            context.passwordRequired ? z.string().min(8) : z.string(),
         })
         .validateOnContextChange(false); // for 100% coverage
 
       const { result } = renderHook(() => useFluentForm(formConfig));
 
       actHooks(() => {
-        result.current.setContext({ emailRequired: true });
+        result.current.setContext({
+          emailRequired: true,
+          passwordRequired: true,
+        });
       });
 
       expect(result.current.context).toMatchObject({
         emailRequired: true,
+        passwordRequired: true,
       });
 
       expect(result.current.errors.email).not.toBeDefined();
@@ -74,23 +86,30 @@ describe("useFluentForm (functions)", () => {
       const formConfig = createForm<UserModel>()({
         username: field.text(),
         email: field.email(),
+        password: field.password(),
       })
         .withValidation({
           email: (_value, _values, context) =>
             context.emailRequired
               ? yup.string().email().required()
               : yup.string().email(),
+          password: (_value, _values, context) =>
+            context.passwordRequired ? z.string().min(8) : z.string(),
         })
         .validateOnContextChange();
 
       const { result } = renderHook(() => useFluentForm(formConfig));
 
       actHooks(() => {
-        result.current.setContext({ emailRequired: true });
+        result.current.setContext({
+          emailRequired: true,
+          passwordRequired: true,
+        });
       });
 
       expect(result.current.context).toMatchObject({
         emailRequired: true,
+        passwordRequired: true,
       });
 
       expect(result.current.errors.email).toEqual(expect.any(Array));
@@ -233,7 +252,7 @@ describe("useFluentForm (functions)", () => {
           password: field.password("secret").validateOnChange(),
         }).withValidation({
           username: yup.string().required(),
-          password: yup.string().required(),
+          password: z.string().min(8),
         });
 
         const { container, fluentFormRef } = renderWithFluentForm(
@@ -270,6 +289,7 @@ describe("useFluentForm (functions)", () => {
       const formConfig = createForm<UserModel>()({
         username: field.text(),
         email: field.email("initial@email.com"),
+        password: field.password(),
       }).withValidation({
         username: yup.string().required(),
       });
@@ -280,6 +300,7 @@ describe("useFluentForm (functions)", () => {
           <>
             <input {...fluentForm.fields.username} />
             <input {...fluentForm.fields.email} />
+            <input {...fluentForm.fields.password} />
           </>
         ),
       );
@@ -298,6 +319,7 @@ describe("useFluentForm (functions)", () => {
       expect(fluentFormRef.current.values).toMatchObject({
         username: "ysfaran",
         email: "updated@email.com",
+        password: "",
       });
 
       act(() => {
@@ -314,6 +336,7 @@ describe("useFluentForm (functions)", () => {
       const formConfig = createForm<UserModel>()({
         username: field.text(),
         email: field.email("initial@email.com"),
+        password: field.password(),
       }).withValidation({
         username: yup.string().required(),
       });
@@ -324,6 +347,7 @@ describe("useFluentForm (functions)", () => {
           <>
             <input {...fluentForm.fields.username} />
             <input {...fluentForm.fields.email} />
+            <input {...fluentForm.fields.password} />
           </>
         ),
       );
@@ -332,6 +356,7 @@ describe("useFluentForm (functions)", () => {
         fluentFormRef.current.setInitialValues({
           username: "initial-user",
           email: "new-initial@email.org",
+          password: "initial-password",
         });
       });
 
@@ -341,10 +366,12 @@ describe("useFluentForm (functions)", () => {
 
       expect(getByDisplayValue("initial-user")).toBeInTheDocument();
       expect(getByDisplayValue("new-initial@email.org")).toBeInTheDocument();
+      expect(getByDisplayValue("initial-password")).toBeInTheDocument();
 
       expect(fluentFormRef.current.values).toMatchObject({
         username: "initial-user",
         email: "new-initial@email.org",
+        password: "initial-password",
       });
     });
   });
@@ -354,9 +381,11 @@ describe("useFluentForm (functions)", () => {
       const formConfig = createForm<UserModel>()({
         username: field.text(),
         email: field.email(),
+        password: field.password(),
       }).withValidation({
         username: yup.string().required(),
         email: yup.string().required(),
+        password: z.string().min(1),
       });
 
       const { fluentFormRef } = renderWithFluentForm(
@@ -365,21 +394,31 @@ describe("useFluentForm (functions)", () => {
           <>
             <input {...fluentForm.fields.username} />
             <input {...fluentForm.fields.email} />
+            <input {...fluentForm.fields.password} />
           </>
         ),
       );
 
-      let error;
+      let yupError;
 
       act(() => {
-        error = fluentFormRef.current.validateField("username");
+        yupError = fluentFormRef.current.validateField("username");
       });
 
-      expect(error).toEqual(expect.any(Array));
+      expect(yupError).toEqual(expect.any(Array));
+
+      let zodError;
+
+      act(() => {
+        zodError = fluentFormRef.current.validateField("password");
+      });
+
+      expect(zodError).toEqual(expect.any(ZodError));
 
       expect(fluentFormRef.current.errors).toEqual({
-        username: error,
+        username: yupError,
         email: undefined,
+        password: zodError,
       });
     });
 
@@ -387,9 +426,11 @@ describe("useFluentForm (functions)", () => {
       const formConfig = createForm<UserModel>()({
         username: field.text(),
         email: field.email(),
+        password: field.password(),
       }).withValidation({
         username: yup.string().required(),
         email: yup.string().required(),
+        password: z.string().min(1),
       });
 
       const { fluentFormRef } = renderWithFluentForm(
@@ -398,6 +439,7 @@ describe("useFluentForm (functions)", () => {
           <>
             <input {...fluentForm.fields.username} />
             <input {...fluentForm.fields.email} />
+            <input {...fluentForm.fields.password} />
           </>
         ),
       );
@@ -411,6 +453,7 @@ describe("useFluentForm (functions)", () => {
       expect(errors).toEqual({
         username: expect.any(Array),
         email: expect.any(Array),
+        password: expect.any(ZodError),
       });
 
       expect(fluentFormRef.current.errors).toEqual(errors);

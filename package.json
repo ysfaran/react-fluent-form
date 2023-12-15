@@ -36,10 +36,14 @@
   "peerDependencies": {
     "react": "^16.8.0 || ^17.0.1 || ^18.2.0",
     "react-dom": "^16.8.0 || ^17.0.1 || ^18.2.0",
-    "yup": "^0.32.11 || ^1.3.2"
+    "yup": "^0.32.11 || ^1.3.2",
+    "zod": "^3.22.4"
   },
   "peerDependenciesMeta": {
     "yup": {
+      "optional": true
+    },
+    "zod": {
       "optional": true
     }
   },
@@ -83,7 +87,8 @@
     "rollup-plugin-typescript2": "^0.36.0",
     "ts-jest": "^29.1.1",
     "typescript": "^5.3.3",
-    "yup": "^1.3.2"
+    "yup": "^1.3.2",
+    "zod": "^3.22.4"
   },
   "keywords": [
     "react",
