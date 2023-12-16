@@ -4,7 +4,7 @@ import { useFluentStateManager } from "./state-manager/useFluentStateManager";
 import { useFluentFormBase } from "./useFluentFormBase";
 
 export function useFluentForm<Config extends FormConfig>(
-  config: Config
+  config: Config,
 ): UseFluentForm<Config> {
   const stateManager = useFluentStateManager(config);
 

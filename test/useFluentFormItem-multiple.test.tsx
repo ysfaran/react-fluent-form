@@ -18,7 +18,7 @@ function createConfigForTest() {
   });
 }
 function renderFluentFormItemsForTest<
-  Config extends FormArrayConfig<UserModel, any, any>
+  Config extends FormArrayConfig<UserModel, any, any>,
 >(config?: Config) {
   const formConfig = config ? config : createConfigForTest();
 
@@ -34,7 +34,7 @@ function renderFluentFormItemsForTest<
           </button>
         </>
       );
-    }
+    },
   );
 
   act(() => result.fluentFormArrayRef.current.addForm());
@@ -67,11 +67,8 @@ describe("useFluentFormItem (multiple)", () => {
 
   describe("No cross-form-items influence on state updates", () => {
     it("updates values independently", () => {
-      const {
-        getByTestId,
-        fluentFormArrayRef,
-        fluentFormItemsRef,
-      } = renderFluentFormItemsForTest();
+      const { getByTestId, fluentFormArrayRef, fluentFormItemsRef } =
+        renderFluentFormItemsForTest();
 
       fireEvent.change(getByTestId("username1"), {
         target: { value: "ysfaran" },
@@ -103,11 +100,8 @@ describe("useFluentFormItem (multiple)", () => {
     });
 
     it("updates touched independently", () => {
-      const {
-        getByTestId,
-        fluentFormArrayRef,
-        fluentFormItemsRef,
-      } = renderFluentFormItemsForTest();
+      const { getByTestId, fluentFormArrayRef, fluentFormItemsRef } =
+        renderFluentFormItemsForTest();
 
       fireEvent.blur(getByTestId("username1"));
 
@@ -131,11 +125,8 @@ describe("useFluentFormItem (multiple)", () => {
     });
 
     it("it updates validity and errors independently", () => {
-      const {
-        getByTestId,
-        fluentFormArrayRef,
-        fluentFormItemsRef,
-      } = renderFluentFormItemsForTest();
+      const { getByTestId, fluentFormArrayRef, fluentFormItemsRef } =
+        renderFluentFormItemsForTest();
 
       fireEvent.blur(getByTestId("email1"));
 
@@ -174,11 +165,8 @@ describe("useFluentFormItem (multiple)", () => {
     });
 
     it("resets forms independently", () => {
-      const {
-        fluentFormArrayRef,
-        fluentFormItemsRef,
-        getByTestId,
-      } = renderFluentFormItemsForTest();
+      const { fluentFormArrayRef, fluentFormItemsRef, getByTestId } =
+        renderFluentFormItemsForTest();
 
       let { current: fluentFormItems } = fluentFormItemsRef;
 
@@ -231,7 +219,7 @@ describe("useFluentFormItem (multiple)", () => {
             username: "username0",
             email: "",
           },
-        })
+        }),
       );
       expect(formItem0).toEqual(expect.objectContaining(formArrayState0));
 
@@ -251,7 +239,7 @@ describe("useFluentFormItem (multiple)", () => {
             username: "",
             email: "",
           },
-        })
+        }),
       );
       expect(formItem1).toEqual(expect.objectContaining(formArrayState1));
 
@@ -265,7 +253,7 @@ describe("useFluentFormItem (multiple)", () => {
             username: "username2",
             email: "email2",
           },
-        })
+        }),
       );
       expect(formItem2).toEqual(expect.objectContaining(formArrayState2));
     });
@@ -276,11 +264,8 @@ describe("useFluentFormItem (multiple)", () => {
         email: field.email("initial@email.com"),
       }).withInitialArray([{ username: "user0", email: "email0" }]);
 
-      const {
-        fluentFormArrayRef,
-        fluentFormItemsRef,
-        getAllByTestId,
-      } = renderFluentFormItemsForTest(arrayConfig);
+      const { fluentFormArrayRef, fluentFormItemsRef, getAllByTestId } =
+        renderFluentFormItemsForTest(arrayConfig);
 
       act(() => fluentFormArrayRef.current.addForm());
 
@@ -313,10 +298,8 @@ describe("useFluentFormItem (multiple)", () => {
     });
 
     it("updates values independently when setting them manually", () => {
-      const {
-        fluentFormArrayRef,
-        fluentFormItemsRef,
-      } = renderFluentFormItemsForTest();
+      const { fluentFormArrayRef, fluentFormItemsRef } =
+        renderFluentFormItemsForTest();
 
       act(() => {
         fluentFormItemsRef.current[1].setValues({
@@ -356,10 +339,8 @@ describe("useFluentFormItem (multiple)", () => {
         email: yup.string().required(),
       });
 
-      const {
-        fluentFormArrayRef,
-        fluentFormItemsRef,
-      } = renderFluentFormItemsForTest(config);
+      const { fluentFormArrayRef, fluentFormItemsRef } =
+        renderFluentFormItemsForTest(config);
 
       act(() => {
         fluentFormItemsRef.current[1].validateField("email");
@@ -396,10 +377,8 @@ describe("useFluentFormItem (multiple)", () => {
         email: yup.string().required(),
       });
 
-      const {
-        fluentFormArrayRef,
-        fluentFormItemsRef,
-      } = renderFluentFormItemsForTest(config);
+      const { fluentFormArrayRef, fluentFormItemsRef } =
+        renderFluentFormItemsForTest(config);
 
       act(() => {
         fluentFormItemsRef.current[1].validateAllFields();
@@ -431,15 +410,13 @@ describe("useFluentFormItem (multiple)", () => {
     });
 
     it("updates context independently when setting it manually", () => {
-      const {
-        fluentFormArrayRef,
-        fluentFormItemsRef,
-      } = renderFluentFormItemsForTest();
+      const { fluentFormArrayRef, fluentFormItemsRef } =
+        renderFluentFormItemsForTest();
 
       act(() =>
         fluentFormItemsRef.current[1].setContext({
           contextValue: 1,
-        })
+        }),
       );
 
       const { current: fluentFormArray } = fluentFormArrayRef;
@@ -473,7 +450,7 @@ describe("useFluentFormItem (multiple)", () => {
       });
 
       function renderFluentFormItemsWithSubmit<
-        Config extends FormArrayConfig<RegisterModel, any, any>
+        Config extends FormArrayConfig<RegisterModel, any, any>,
       >(formConfig: Config) {
         const result = renderWithFluentFormItems(
           formConfig,
@@ -486,14 +463,14 @@ describe("useFluentFormItem (multiple)", () => {
                   data-testid={"submit" + key}
                   onClick={handleSubmit(
                     successCallbacks[key as number],
-                    failureCallbacks[key as number]
+                    failureCallbacks[key as number],
                   )}
                 >
                   Submit
                 </button>
               </>
             );
-          }
+          },
         );
 
         act(() => result.fluentFormArrayRef.current.addForm());

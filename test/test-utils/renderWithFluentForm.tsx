@@ -8,7 +8,7 @@ import { FluentFormRef, UiComponentProps } from "../types";
 
 export function renderWithFluentForm<C extends FormConfig>(
   config: C,
-  UiComponent: React.FC<UiComponentProps<C>>
+  UiComponent: React.FC<UiComponentProps<C>>,
 ) {
   const fluentFormRef: FluentFormRef<C> = {
     current: null as any,

@@ -15,7 +15,7 @@ import {
 export type FluentFormArrayActionTypes<
   ValuesType extends object,
   K extends keyof ValuesType,
-  E extends ErrorsType<ValuesType>
+  E extends ErrorsType<ValuesType>,
 > =
   | Action<
       "ADD_FORM",
@@ -49,10 +49,10 @@ export type FluentFormArrayActionTypes<
 export const fluentFormArrayReducer = <
   ValuesType extends object,
   K extends keyof ValuesType,
-  E extends ErrorsType<ValuesType>
+  E extends ErrorsType<ValuesType>,
 >(
   state: FluentFormArrayState<ValuesType, E>,
-  action: FluentFormArrayActionTypes<ValuesType, K, E>
+  action: FluentFormArrayActionTypes<ValuesType, K, E>,
 ): FluentFormArrayState<ValuesType, E> => {
   switch (action.type) {
     case "ADD_FORM": {

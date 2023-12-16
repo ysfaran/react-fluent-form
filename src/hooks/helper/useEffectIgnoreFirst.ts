@@ -2,7 +2,7 @@ import { DependencyList, EffectCallback, useEffect, useRef } from "react";
 
 export const useEffectIgnoreFirst = (
   effect: EffectCallback,
-  deps?: DependencyList | undefined
+  deps?: DependencyList | undefined,
 ) => {
   const didMountRef = useRef(false);
 

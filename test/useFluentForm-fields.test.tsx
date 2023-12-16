@@ -26,7 +26,7 @@ describe("useFluentForm (fields)", () => {
 
       const { fluentFormRef } = renderWithFluentForm(
         formConfig,
-        ({ fluentForm }) => <input {...fluentForm.fields.name} />
+        ({ fluentForm }) => <input {...fluentForm.fields.name} />,
       );
       expect(fluentFormRef.current.values.name).toBe("");
       expect(fluentFormRef.current.touched.name).toBeFalsy();
@@ -37,12 +37,10 @@ describe("useFluentForm (fields)", () => {
         name: field.text("ysfaran"),
       });
 
-      const {
-        fluentFormRef,
-        queryByDisplayValue,
-      } = renderWithFluentForm(formConfig, ({ fluentForm }) => (
-        <input {...fluentForm.fields.name} />
-      ));
+      const { fluentFormRef, queryByDisplayValue } = renderWithFluentForm(
+        formConfig,
+        ({ fluentForm }) => <input {...fluentForm.fields.name} />,
+      );
 
       expect(fluentFormRef.current.values.name).toBe("ysfaran");
       expect(fluentFormRef.current.touched.name).toBeFalsy();
@@ -56,7 +54,7 @@ describe("useFluentForm (fields)", () => {
 
       const { container, fluentFormRef } = renderWithFluentForm(
         formConfig,
-        ({ fluentForm }) => <input {...fluentForm.fields.name} />
+        ({ fluentForm }) => <input {...fluentForm.fields.name} />,
       );
 
       const input = container.querySelector("input")!;
@@ -71,13 +69,10 @@ describe("useFluentForm (fields)", () => {
         name: field.text(),
       });
 
-      const {
-        container,
-        fluentFormRef,
-        queryByDisplayValue,
-      } = renderWithFluentForm(formConfig, ({ fluentForm }) => (
-        <input {...fluentForm.fields.name} />
-      ));
+      const { container, fluentFormRef, queryByDisplayValue } =
+        renderWithFluentForm(formConfig, ({ fluentForm }) => (
+          <input {...fluentForm.fields.name} />
+        ));
       const input = container.querySelector("input")!;
 
       fireEvent.change(input, { target: { value: "ysfaran" } });
@@ -95,7 +90,7 @@ describe("useFluentForm (fields)", () => {
 
       const { fluentFormRef } = renderWithFluentForm(
         formConfig,
-        ({ fluentForm }) => <input {...fluentForm.fields.sendEmail} />
+        ({ fluentForm }) => <input {...fluentForm.fields.sendEmail} />,
       );
 
       expect(fluentFormRef.current.values.sendEmail).toBeFalsy();
@@ -109,7 +104,7 @@ describe("useFluentForm (fields)", () => {
 
       const { container, fluentFormRef } = renderWithFluentForm(
         formConfig,
-        ({ fluentForm }) => <input {...fluentForm.fields.sendEmail} />
+        ({ fluentForm }) => <input {...fluentForm.fields.sendEmail} />,
       );
 
       const input = container.querySelector("input")!;
@@ -126,7 +121,7 @@ describe("useFluentForm (fields)", () => {
 
       const { container, fluentFormRef } = renderWithFluentForm(
         formConfig,
-        ({ fluentForm }) => <input {...fluentForm.fields.sendEmail} />
+        ({ fluentForm }) => <input {...fluentForm.fields.sendEmail} />,
       );
 
       const input = container.querySelector("input")!;
@@ -143,7 +138,7 @@ describe("useFluentForm (fields)", () => {
 
       const { container, fluentFormRef } = renderWithFluentForm(
         formConfig,
-        ({ fluentForm }) => <input {...fluentForm.fields.sendEmail} />
+        ({ fluentForm }) => <input {...fluentForm.fields.sendEmail} />,
       );
       const input = container.querySelector("input")!;
 
@@ -172,7 +167,7 @@ describe("useFluentForm (fields)", () => {
             <input {...fluentForm.fields.color("green")} />
             <input {...fluentForm.fields.color("blue")} />
           </>
-        )
+        ),
       );
 
       expect(fluentFormRef.current.values.color).toBe("");
@@ -192,7 +187,7 @@ describe("useFluentForm (fields)", () => {
             <input {...fluentForm.fields.color("green")} />
             <input {...fluentForm.fields.color("blue")} />
           </>
-        )
+        ),
       );
 
       const inputs = container.querySelectorAll("input");
@@ -215,7 +210,7 @@ describe("useFluentForm (fields)", () => {
             <input {...fluentForm.fields.color("green")} />
             <input {...fluentForm.fields.color("blue")} />
           </>
-        )
+        ),
       );
 
       const inputs = container.querySelectorAll("input");
@@ -238,7 +233,7 @@ describe("useFluentForm (fields)", () => {
             <input {...fluentForm.fields.color("green")} />
             <input {...fluentForm.fields.color("blue")} />
           </>
-        )
+        ),
       );
       const inputs = container.querySelectorAll("input");
 
@@ -270,7 +265,7 @@ describe("useFluentForm (fields)", () => {
             <input {...fluentForm.fields.color("green")} />
             <input {...fluentForm.fields.color("blue")} />
           </>
-        )
+        ),
       );
 
       const inputs = container.querySelectorAll("input");
@@ -294,7 +289,7 @@ describe("useFluentForm (fields)", () => {
             <input {...fluentForm.fields.color("green")} />
             <input {...fluentForm.fields.color("blue")} />
           </>
-        )
+        ),
       );
 
       const inputs = container.querySelectorAll("input");
@@ -322,7 +317,7 @@ describe("useFluentForm (fields)", () => {
             <input {...fluentForm.fields.secondColor("green")} />
             <input {...fluentForm.fields.secondColor("blue")} />
           </>
-        )
+        ),
       );
 
       expect(fluentFormRef.current.values.firstColor).toBe("");
@@ -363,7 +358,7 @@ describe("useFluentForm (fields)", () => {
             <option {...fluentForm.fields.brand.option("Mercedes")} />
             <option {...fluentForm.fields.brand.option("Audi")} />
           </select>
-        )
+        ),
       );
 
       expect(fluentFormRef.current.values.brand).toBe("");
@@ -383,7 +378,7 @@ describe("useFluentForm (fields)", () => {
             <option {...fluentForm.fields.brand.option("Mercedes")} />
             <option {...fluentForm.fields.brand.option("Audi")} />
           </select>
-        )
+        ),
       );
 
       expect(fluentFormRef.current.values.brand).toBe("BMW");
@@ -404,7 +399,7 @@ describe("useFluentForm (fields)", () => {
             <option {...fluentForm.fields.brand.option("Mercedes")} />
             <option {...fluentForm.fields.brand.option("Audi")} />
           </select>
-        )
+        ),
       );
 
       const select = container.querySelector("select")!;
@@ -419,17 +414,14 @@ describe("useFluentForm (fields)", () => {
         brand: field.select(),
       });
 
-      const {
-        container,
-        fluentFormRef,
-        queryByDisplayValue,
-      } = renderWithFluentForm(formConfig, ({ fluentForm }) => (
-        <select {...fluentForm.fields.brand.select}>
-          <option {...fluentForm.fields.brand.option("BMW")} />
-          <option {...fluentForm.fields.brand.option("Mercedes")} />
-          <option {...fluentForm.fields.brand.option("Audi")} />
-        </select>
-      ));
+      const { container, fluentFormRef, queryByDisplayValue } =
+        renderWithFluentForm(formConfig, ({ fluentForm }) => (
+          <select {...fluentForm.fields.brand.select}>
+            <option {...fluentForm.fields.brand.option("BMW")} />
+            <option {...fluentForm.fields.brand.option("Mercedes")} />
+            <option {...fluentForm.fields.brand.option("Audi")} />
+          </select>
+        ));
       const select = container.querySelector("select")!;
 
       fireEvent.change(select, { target: { value: "BMW" } });
@@ -447,7 +439,7 @@ describe("useFluentForm (fields)", () => {
 
       const { fluentFormRef } = renderWithFluentForm(
         formConfig,
-        ({ fluentForm }) => <textarea {...fluentForm.fields.comment} />
+        ({ fluentForm }) => <textarea {...fluentForm.fields.comment} />,
       );
       expect(fluentFormRef.current.values.comment).toBe("");
       expect(fluentFormRef.current.touched.comment).toBeFalsy();
@@ -458,12 +450,10 @@ describe("useFluentForm (fields)", () => {
         comment: field.textarea("fluent form is cool!"),
       });
 
-      const {
-        fluentFormRef,
-        queryByDisplayValue,
-      } = renderWithFluentForm(formConfig, ({ fluentForm }) => (
-        <textarea {...fluentForm.fields.comment} />
-      ));
+      const { fluentFormRef, queryByDisplayValue } = renderWithFluentForm(
+        formConfig,
+        ({ fluentForm }) => <textarea {...fluentForm.fields.comment} />,
+      );
 
       expect(fluentFormRef.current.values.comment).toBe("fluent form is cool!");
       expect(fluentFormRef.current.touched.comment).toBeFalsy();
@@ -477,7 +467,7 @@ describe("useFluentForm (fields)", () => {
 
       const { container, fluentFormRef } = renderWithFluentForm(
         formConfig,
-        ({ fluentForm }) => <textarea {...fluentForm.fields.comment} />
+        ({ fluentForm }) => <textarea {...fluentForm.fields.comment} />,
       );
 
       const textarea = container.querySelector("textarea")!;
@@ -492,13 +482,10 @@ describe("useFluentForm (fields)", () => {
         comment: field.textarea(),
       });
 
-      const {
-        container,
-        fluentFormRef,
-        queryByDisplayValue,
-      } = renderWithFluentForm(formConfig, ({ fluentForm }) => (
-        <textarea {...fluentForm.fields.comment} />
-      ));
+      const { container, fluentFormRef, queryByDisplayValue } =
+        renderWithFluentForm(formConfig, ({ fluentForm }) => (
+          <textarea {...fluentForm.fields.comment} />
+        ));
       const textarea = container.querySelector("textarea")!;
 
       fireEvent.change(textarea, { target: { value: "fluent form is cool!" } });
@@ -571,10 +558,10 @@ describe("useFluentForm (fields)", () => {
 
       expect(result.current.fields.age.customValue).toEqual(5);
       expect(result.current.fields.age.customOnChange).toEqual(
-        expect.any(Function)
+        expect.any(Function),
       );
       expect(result.current.fields.age.customOnBlur).toEqual(
-        expect.any(Function)
+        expect.any(Function),
       );
     });
   });

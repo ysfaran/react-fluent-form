@@ -24,7 +24,7 @@ describe("useFluentForm (functions)", () => {
           <input {...fluentForm.fields.username} />
           <input {...fluentForm.fields.email} />
         </>
-      )
+      ),
     );
 
     act(() => {
@@ -176,7 +176,7 @@ describe("useFluentForm (functions)", () => {
           <form onSubmit={fluentForm.handleSubmit(success, failure)}>
             <button type="submit">Submit</button>
           </form>
-        )
+        ),
       );
 
       act(() => {
@@ -201,7 +201,7 @@ describe("useFluentForm (functions)", () => {
           <form onSubmit={fluentForm.handleSubmit(success, failure)}>
             <button type="submit">Submit</button>
           </form>
-        )
+        ),
       );
 
       fireEvent.click(container.querySelector("button")!);
@@ -242,7 +242,7 @@ describe("useFluentForm (functions)", () => {
             <form onSubmit={fluentForm.handleSubmit()}>
               <button type="submit">Submit</button>
             </form>
-          )
+          ),
         );
 
         fireEvent.click(container.querySelector("button")!);
@@ -281,11 +281,11 @@ describe("useFluentForm (functions)", () => {
             <input {...fluentForm.fields.username} />
             <input {...fluentForm.fields.email} />
           </>
-        )
+        ),
       );
 
       const [userInput, emailInput] = Array.from(
-        container.querySelectorAll("input")
+        container.querySelectorAll("input"),
       );
 
       act(() => {
@@ -325,7 +325,7 @@ describe("useFluentForm (functions)", () => {
             <input {...fluentForm.fields.username} />
             <input {...fluentForm.fields.email} />
           </>
-        )
+        ),
       );
 
       act(() => {
@@ -366,7 +366,7 @@ describe("useFluentForm (functions)", () => {
             <input {...fluentForm.fields.username} />
             <input {...fluentForm.fields.email} />
           </>
-        )
+        ),
       );
 
       let error;
@@ -399,7 +399,7 @@ describe("useFluentForm (functions)", () => {
             <input {...fluentForm.fields.username} />
             <input {...fluentForm.fields.email} />
           </>
-        )
+        ),
       );
 
       let errors;

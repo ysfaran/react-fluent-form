@@ -52,7 +52,7 @@ describe("useFluentFormArray", () => {
       actHooks(() =>
         result.current.addForm({
           initialValues: { username: "username2", email: "email2" },
-        })
+        }),
       );
 
       expect(result.current.formStates.map((state) => state.values)).toEqual([
@@ -103,10 +103,7 @@ describe("useFluentFormArray", () => {
       });
 
       expect(result.current.formStates.map((state) => state.key)).toEqual([
-        0,
-        2,
-        1,
-        3,
+        0, 2, 1, 3,
       ]);
     });
 
@@ -167,7 +164,7 @@ describe("useFluentFormArray", () => {
       actHooks(() =>
         result.current.addForm({
           initialValues: { email: "prefered@email.com" },
-        })
+        }),
       );
 
       expect(result.current.formStates[0].values).toEqual({
@@ -288,21 +285,18 @@ describe("useFluentFormArray", () => {
         .validateOnChange()
         .withContext({ contextValue: 1 });
 
-      const {
-        fluentFormArrayRef,
-        fluentFormItemsRef,
-        getAllByTestId,
-      } = renderWithFluentFormItems(
-        arrayConfig,
-        ({ formItem: { key, fields } }) => {
-          return (
-            <>
-              <input data-testid={"username" + key} {...fields.username} />
-              <input data-testid={"email" + key} {...fields.email} />
-            </>
-          );
-        }
-      );
+      const { fluentFormArrayRef, fluentFormItemsRef, getAllByTestId } =
+        renderWithFluentFormItems(
+          arrayConfig,
+          ({ formItem: { key, fields } }) => {
+            return (
+              <>
+                <input data-testid={"username" + key} {...fields.username} />
+                <input data-testid={"email" + key} {...fields.email} />
+              </>
+            );
+          },
+        );
       const [userInput0, userInput1] = getAllByTestId(/username/);
       const [emailInput0, emailInput1] = getAllByTestId(/email/);
 
@@ -312,10 +306,10 @@ describe("useFluentFormArray", () => {
       fireEvent.change(emailInput1, { target: { value: "new email1" } });
 
       act(() =>
-        fluentFormItemsRef.current[0].setContext({ contextValue: 999 })
+        fluentFormItemsRef.current[0].setContext({ contextValue: 999 }),
       );
       act(() =>
-        fluentFormItemsRef.current[1].setContext({ contextValue: 222 })
+        fluentFormItemsRef.current[1].setContext({ contextValue: 222 }),
       );
       act(() => fluentFormArrayRef.current.resetArray());
 
@@ -370,7 +364,7 @@ describe("useFluentFormArray", () => {
               <input data-testid={"email" + key} {...fields.email} />
             </>
           );
-        }
+        },
       );
 
       fluentFormArrayRef.current.setInitialArray([

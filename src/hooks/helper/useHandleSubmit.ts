@@ -38,7 +38,7 @@ export const useHandleSubmit = ({
     (
       success: Function = () => undefined,
       failure: Function = () => undefined,
-      options: HandleSubmitOptions = {}
+      options: HandleSubmitOptions = {},
     ) => {
       submitSuccessCallbackRef.current = success;
       submitFailureCallback.current = failure;
@@ -61,7 +61,7 @@ export const useHandleSubmit = ({
         }
       };
     },
-    [startSubmitting]
+    [startSubmitting],
   );
 
   return handleSubmit;

@@ -17,7 +17,7 @@ describe("useFluentForm (validations)", () => {
     }).withCustomValidator(
       new RequiredValidator<UserModel>({
         username: "required",
-      })
+      }),
     );
 
     const { fluentFormRef, container } = renderWithFluentForm(
@@ -27,11 +27,11 @@ describe("useFluentForm (validations)", () => {
           <input {...fluentForm.fields.username} />
           <input {...fluentForm.fields.email} />
         </>
-      )
+      ),
     );
 
     const [usernameInput, emailInput] = Array.from(
-      container.querySelectorAll("input")
+      container.querySelectorAll("input"),
     );
 
     fireEvent.blur(usernameInput);
@@ -86,7 +86,7 @@ describe("useFluentForm (validations)", () => {
       const { fluentFormRef, container } = renderedForm;
 
       const [usernameInput, emailInput] = Array.from(
-        container.querySelectorAll("input")
+        container.querySelectorAll("input"),
       );
 
       fireEvent.blur(usernameInput);
@@ -102,7 +102,7 @@ describe("useFluentForm (validations)", () => {
       const { fluentFormRef, container } = renderedForm;
 
       const [usernameInput, emailInput] = Array.from(
-        container.querySelectorAll("input")
+        container.querySelectorAll("input"),
       );
 
       fireEvent.change(usernameInput, { target: { value: "abc" } });
@@ -141,7 +141,7 @@ describe("useFluentForm (validations)", () => {
     it("validates after on blur by default", () => {
       const { fluentFormRef, container } = renderWithFluentForm(
         formConfig,
-        ({ fluentForm }) => <input {...fluentForm.fields.username} />
+        ({ fluentForm }) => <input {...fluentForm.fields.username} />,
       );
 
       const usernameInput = container.querySelector("input")!;
@@ -162,7 +162,7 @@ describe("useFluentForm (validations)", () => {
 
       const { fluentFormRef, container } = renderWithFluentForm(
         formConfig,
-        ({ fluentForm }) => <input {...fluentForm.fields.username} />
+        ({ fluentForm }) => <input {...fluentForm.fields.username} />,
       );
 
       fireEvent.change(container.querySelector("input")!, {
@@ -182,7 +182,7 @@ describe("useFluentForm (validations)", () => {
             <input {...fluentForm.fields.username} />
             <button type="submit">Submit</button>
           </form>
-        )
+        ),
       );
 
       const usernameInput = container.querySelector("input")!;
@@ -208,7 +208,7 @@ describe("useFluentForm (validations)", () => {
             <input {...fluentForm.fields.email} />
             <button type="submit">Submit</button>
           </form>
-        )
+        ),
       );
 
       const emailInput = container.querySelector("input")!;

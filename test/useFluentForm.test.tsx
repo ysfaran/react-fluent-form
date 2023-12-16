@@ -68,7 +68,7 @@ describe("useFluentForm", () => {
 
       const { container, fluentFormRef } = renderWithFluentForm(
         formConfig,
-        ({ fluentForm }) => <input {...fluentForm.fields.username} />
+        ({ fluentForm }) => <input {...fluentForm.fields.username} />,
       );
 
       const input = container.querySelector("input")!;

@@ -4,7 +4,7 @@ import { useFluentArrayStateManager } from "./state-manager/useFluentArrayStateM
 import { useFluentFormArrayBase } from "./useFluentFormArrayBase";
 
 export function useFluentFormArray<Config extends FormArrayConfig>(
-  config: Config
+  config: Config,
 ): UseFluentFormArray<Config> {
   const stateManager = useFluentArrayStateManager<Config>(config);
 

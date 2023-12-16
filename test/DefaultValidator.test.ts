@@ -52,7 +52,7 @@ describe("DefaultValidator", () => {
 
       expect(console.warn).toHaveBeenCalledWith(
         expect.any(String),
-        expect.any(Error)
+        expect.any(Error),
       );
     });
 

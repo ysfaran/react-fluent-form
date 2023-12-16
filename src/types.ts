@@ -25,7 +25,7 @@ export interface UseFluentForm<Config extends FormConfig> {
   setContext: (context: object) => void;
   handleSubmit: HandleSubmit;
   validateField: <K extends keyof ExtractValuesType<Config>>(
-    field: K
+    field: K,
   ) => ExtractErrorsType<Config>[K];
   validateAllFields: () => ExtractErrorsType<Config>;
   reset: () => void;
@@ -45,7 +45,7 @@ export type ErrorsType<ValuesType extends object, Error = any> = {
 
 export interface FluentFormState<
   ValuesType extends object,
-  Errors extends ErrorsType<ValuesType>
+  Errors extends ErrorsType<ValuesType>,
 > {
   values: ValuesType;
   touched: StateTouched<ValuesType>;
@@ -59,7 +59,7 @@ export interface FluentFormState<
 
 export type FluentFormReducer<
   ValuesType extends object,
-  Errors extends ErrorsType<ValuesType>
+  Errors extends ErrorsType<ValuesType>,
 > = Reducer<
   FluentFormState<ValuesType, Errors>,
   FluentFormActionTypes<ValuesType, keyof ValuesType, Errors>
@@ -80,19 +80,19 @@ export interface UseFluentStateManager<Config extends FormConfig> {
   setSubmittingResult: (errors: ExtractErrorsType<Config>) => void;
   setTouched: <K extends keyof ExtractFieldsType<Config>>(
     field: K,
-    touched: boolean
+    touched: boolean,
   ) => void;
   setValidationFailure: <K extends keyof ExtractValuesType<Config>>(
     field: K,
-    error: ExtractErrorsType<Config>
+    error: ExtractErrorsType<Config>,
   ) => void;
   setValidationSuccess: <K extends keyof ExtractValuesType<Config>>(
-    field: K
+    field: K,
   ) => void;
   setValue: <K extends keyof ExtractValuesType<Config>>(
     field: K,
     value: ExtractValuesType<Config>[K],
-    touched?: boolean
+    touched?: boolean,
   ) => void;
   setValues: (values: Partial<ExtractValuesType<Config>>) => void;
   startSubmitting: () => void;
@@ -103,7 +103,7 @@ export interface UseFluentStateManager<Config extends FormConfig> {
 
 export type FormArrayStates<
   T extends object,
-  E extends ErrorsType<any, any>
+  E extends ErrorsType<any, any>,
 > = FormItem<T, E>[];
 
 export interface UseFluentFormArray<Config extends FormArrayConfig> {
@@ -118,7 +118,7 @@ export interface UseFluentFormArray<Config extends FormArrayConfig> {
   removeForm: (key: FormKey) => void;
   resetArray: () => void;
   getFormStateByKey: (
-    key: FormKey
+    key: FormKey,
   ) =>
     | FormItem<ExtractValuesType<Config>, ExtractErrorsType<Config>>
     | undefined;
@@ -147,7 +147,7 @@ export type FluentFormInitialStates<Config extends FormConfig> = {
 
 export type FluentFormArrayReducer<
   ValuesType extends object,
-  Errors extends ErrorsType<ValuesType>
+  Errors extends ErrorsType<ValuesType>,
 > = Reducer<
   FluentFormArrayState<ValuesType, Errors>,
   FluentFormArrayActionTypes<ValuesType, keyof ValuesType, Errors>
@@ -188,38 +188,38 @@ export interface UseFluentArrayStateManager<Config extends FormArrayConfig> {
   setInitialArrayRef: (initalArray: ExtractValuesType<Config>[]) => void;
   startSubmittingArray: () => void;
   setSubmittingResultForArray: (
-    errors: FormArrayError<ExtractErrorsType<Config>>
+    errors: FormArrayError<ExtractErrorsType<Config>>,
   ) => void;
 
   resetArray: () => void;
   setContext: (key: FormKey, context: object) => void;
   setInitialValuesRef: (
     key: FormKey,
-    values: Partial<ExtractValuesType<Config>>
+    values: Partial<ExtractValuesType<Config>>,
   ) => void;
   setSubmittingResult: (
     key: FormKey,
-    errors: ExtractErrorsType<Config>
+    errors: ExtractErrorsType<Config>,
   ) => void;
   setTouched: <K extends keyof ExtractFieldsType<Config>>(
     key: FormKey,
     field: K,
-    touched: boolean
+    touched: boolean,
   ) => void;
   setValidationFailure: <K extends keyof ExtractValuesType<Config>>(
     key: FormKey,
     field: K,
-    error: ExtractErrorsType<Config>[K]
+    error: ExtractErrorsType<Config>[K],
   ) => void;
   setValidationSuccess: <K extends keyof ExtractValuesType<Config>>(
     key: FormKey,
-    field: K
+    field: K,
   ) => void;
   setValue: <K extends keyof ExtractValuesType<Config>>(
     key: FormKey,
     field: K,
     value: ExtractValuesType<Config>[K],
-    touched?: boolean
+    touched?: boolean,
   ) => void;
   setValues: (key: FormKey, values: Partial<ExtractValuesType<Config>>) => void;
   startSubmitting: (key: FormKey) => void;
@@ -238,7 +238,7 @@ export interface AddFormArgs<ValuesType extends object> {
 }
 
 export type AddForm<ValuesType extends object> = (
-  args?: AddFormArgs<ValuesType>
+  args?: AddFormArgs<ValuesType>,
 ) => void;
 
 // -------------------- FormConfig & FormArrayConfig --------------------
@@ -255,17 +255,14 @@ export interface ShouldValidateOnBlurArgs {
   touchedNow: boolean | undefined;
 }
 
-export type ExtractFieldsType<
-  Config extends FormConfig
-> = Config extends FormConfig<any, infer FieldsType> ? FieldsType : never;
+export type ExtractFieldsType<Config extends FormConfig> =
+  Config extends FormConfig<any, infer FieldsType> ? FieldsType : never;
 
-export type ExtractValuesType<
-  Config extends FormConfig
-> = Config extends FormConfig<infer ValuesType> ? ValuesType : never;
+export type ExtractValuesType<Config extends FormConfig> =
+  Config extends FormConfig<infer ValuesType> ? ValuesType : never;
 
-export type ExtractErrorsType<
-  Config extends FormConfig
-> = Config extends FormConfig<any, any, infer Error> ? Error : never;
+export type ExtractErrorsType<Config extends FormConfig> =
+  Config extends FormConfig<any, any, infer Error> ? Error : never;
 
 export type KeyGenerator<ValuesType> = (value: ValuesType) => FormKey;
 
@@ -284,7 +281,7 @@ export interface ComponentPropsMapperArgs<V> {
 }
 
 export type ComponentPropsMapper<V, Props> = (
-  args: ComponentPropsMapperArgs<V>
+  args: ComponentPropsMapperArgs<V>,
 ) => Props;
 
 export type MappedFields<F extends Fields> = {
@@ -367,7 +364,7 @@ export type RawProps<
   V,
   ValueName extends string,
   OnChangeName extends string,
-  OnBlurName extends string
+  OnBlurName extends string,
 > = ValueProp<V, ValueName> &
   OnChangeProp<V, OnChangeName> &
   OnBlurProp<OnBlurName>;
@@ -380,11 +377,11 @@ export type ValidateFunction<
   ValuesType,
   K extends keyof ValuesType,
   Error = unknown,
-  Context extends object = any
+  Context extends object = any,
 > = (
   value: ValuesType[K],
   values: ValuesType,
-  context: Context
+  context: Context,
 ) => yup.AnySchema | Error | undefined;
 
 export type Validations<ValuesType> = {
@@ -395,20 +392,20 @@ export type Validations<ValuesType> = {
 
 export type DefaultError<
   ValuesType extends object,
-  V extends Validations<ValuesType>
+  V extends Validations<ValuesType>,
 > = {
   [K in keyof ValuesType]?: DefaultValidationReturnType<V[K]>;
 };
 
 export type DefaultValidationReturnType<
-  VF extends yup.AnySchema | ValidateFunction<any, any> | undefined
+  VF extends yup.AnySchema | ValidateFunction<any, any> | undefined,
 > = VF extends yup.AnySchema
   ? string[]
   : VF extends ValidateFunction<any, any, infer E>
-  ? E extends yup.AnySchema
-    ? string[] | Exclude<E, yup.AnySchema>
-    : E
-  : never;
+    ? E extends yup.AnySchema
+      ? string[] | Exclude<E, yup.AnySchema>
+      : E
+    : never;
 
 export interface ValidateYupSchemaArgs<ValuesType, K extends keyof ValuesType> {
   value: ValuesType[K];
@@ -420,7 +417,7 @@ export interface ValidateYupSchemaArgs<ValuesType, K extends keyof ValuesType> {
 export interface ValidateFunctionArgs<
   ValuesType,
   K extends keyof ValuesType,
-  Error
+  Error,
 > {
   value: ValuesType[K];
   values: ValuesType;
@@ -438,7 +435,7 @@ export interface HandleSubmitOptions {
 export type HandleSubmit = (
   success?: Function,
   failure?: Function,
-  options?: HandleSubmitOptions
+  options?: HandleSubmitOptions,
 ) => (e?: any) => void;
 
 export interface UseHandleSubmitArgs {

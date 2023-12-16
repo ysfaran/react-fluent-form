@@ -20,7 +20,7 @@ function createConfigForTest() {
     .withInitialArray([{ username: "", email: "" }]);
 }
 function renderFluentFormItemsForTest<
-  Config extends FormArrayConfig<UserModel, any, any>
+  Config extends FormArrayConfig<UserModel, any, any>,
 >(config?: Config) {
   const formConfig = config ? config : createConfigForTest();
 
@@ -36,7 +36,7 @@ function renderFluentFormItemsForTest<
           </button>
         </>
       );
-    }
+    },
   );
 
   return result;
@@ -44,10 +44,8 @@ function renderFluentFormItemsForTest<
 
 describe("useFluentFormItem (single)", () => {
   it("adds form item when calling addForm", () => {
-    const {
-      queryByTestId,
-      fluentFormArrayRef,
-    } = renderFluentFormItemsForTest();
+    const { queryByTestId, fluentFormArrayRef } =
+      renderFluentFormItemsForTest();
 
     act(() => fluentFormArrayRef.current.addForm());
 
@@ -56,11 +54,8 @@ describe("useFluentFormItem (single)", () => {
   });
 
   it("can remove itself", () => {
-    const {
-      queryByTestId,
-      getByTestId,
-      fluentFormArrayRef,
-    } = renderFluentFormItemsForTest();
+    const { queryByTestId, getByTestId, fluentFormArrayRef } =
+      renderFluentFormItemsForTest();
 
     fireEvent.click(getByTestId("remove0"));
 
@@ -72,11 +67,8 @@ describe("useFluentFormItem (single)", () => {
 
   describe("single item updates", () => {
     it("updates form array state and form item when updating a value", () => {
-      const {
-        getByTestId,
-        fluentFormArrayRef,
-        fluentFormItemsRef,
-      } = renderFluentFormItemsForTest();
+      const { getByTestId, fluentFormArrayRef, fluentFormItemsRef } =
+        renderFluentFormItemsForTest();
 
       fireEvent.change(getByTestId("username0"), {
         target: { value: "ysfaran" },
@@ -93,11 +85,8 @@ describe("useFluentFormItem (single)", () => {
     });
 
     it("updates form array state and form item when touching a field", () => {
-      const {
-        getByTestId,
-        fluentFormArrayRef,
-        fluentFormItemsRef,
-      } = renderFluentFormItemsForTest();
+      const { getByTestId, fluentFormArrayRef, fluentFormItemsRef } =
+        renderFluentFormItemsForTest();
 
       fireEvent.blur(getByTestId("username0"));
 
@@ -112,11 +101,8 @@ describe("useFluentFormItem (single)", () => {
     });
 
     it("updates form array state and form item when validation was triggered", () => {
-      const {
-        getByTestId,
-        fluentFormArrayRef,
-        fluentFormItemsRef,
-      } = renderFluentFormItemsForTest();
+      const { getByTestId, fluentFormArrayRef, fluentFormItemsRef } =
+        renderFluentFormItemsForTest();
 
       fireEvent.blur(getByTestId("email0"));
 
@@ -138,11 +124,8 @@ describe("useFluentFormItem (single)", () => {
     });
 
     it("updates form array state and form item when resetting the form", () => {
-      const {
-        getByTestId,
-        fluentFormArrayRef,
-        fluentFormItemsRef,
-      } = renderFluentFormItemsForTest();
+      const { getByTestId, fluentFormArrayRef, fluentFormItemsRef } =
+        renderFluentFormItemsForTest();
 
       const userInput = getByTestId("username0");
       const emailInput = getByTestId("email0");
@@ -186,7 +169,7 @@ describe("useFluentFormItem (single)", () => {
       act(() =>
         fluentFormItemsRef.current[0].setInitialValues({
           email: "new@inital.com",
-        })
+        }),
       );
 
       act(() => fluentFormItemsRef.current[0].reset());
@@ -209,11 +192,8 @@ describe("useFluentFormItem (single)", () => {
         email: field.email(),
       }).withInitialArray([{ username: "user0", email: "email0" }]);
 
-      const {
-        fluentFormArrayRef,
-        fluentFormItemsRef,
-        getByTestId,
-      } = renderFluentFormItemsForTest(arrayConfig);
+      const { fluentFormArrayRef, fluentFormItemsRef, getByTestId } =
+        renderFluentFormItemsForTest(arrayConfig);
 
       const userInput0 = getByTestId(/username/);
       const emailInput0 = getByTestId(/email/);
@@ -234,17 +214,14 @@ describe("useFluentFormItem (single)", () => {
     });
 
     it("updates form array state and form item when setting values manually", () => {
-      const {
-        fluentFormArrayRef,
-        fluentFormItemsRef,
-        queryByDisplayValue,
-      } = renderFluentFormItemsForTest();
+      const { fluentFormArrayRef, fluentFormItemsRef, queryByDisplayValue } =
+        renderFluentFormItemsForTest();
 
       act(() =>
         fluentFormItemsRef.current[0].setValues({
           username: "ysfaran",
           email: "manual@email.com",
-        })
+        }),
       );
 
       const formArrayValues = fluentFormArrayRef.current.formStates[0].values;
@@ -265,10 +242,8 @@ describe("useFluentFormItem (single)", () => {
         email: yup.string().required(),
       });
 
-      const {
-        fluentFormArrayRef,
-        fluentFormItemsRef,
-      } = renderFluentFormItemsForTest(config);
+      const { fluentFormArrayRef, fluentFormItemsRef } =
+        renderFluentFormItemsForTest(config);
 
       let error;
 
@@ -293,10 +268,8 @@ describe("useFluentFormItem (single)", () => {
         email: yup.string().required(),
       });
 
-      const {
-        fluentFormArrayRef,
-        fluentFormItemsRef,
-      } = renderFluentFormItemsForTest(config);
+      const { fluentFormArrayRef, fluentFormItemsRef } =
+        renderFluentFormItemsForTest(config);
 
       let errors;
 
@@ -316,15 +289,13 @@ describe("useFluentFormItem (single)", () => {
     });
 
     it("updates form array state and form item when setting context manually", () => {
-      const {
-        fluentFormArrayRef,
-        fluentFormItemsRef,
-      } = renderFluentFormItemsForTest();
+      const { fluentFormArrayRef, fluentFormItemsRef } =
+        renderFluentFormItemsForTest();
 
       act(() =>
         fluentFormItemsRef.current[0].setContext({
           contextValue: 1,
-        })
+        }),
       );
 
       const formArrayContext = fluentFormArrayRef.current.formStates[0].context;
@@ -346,7 +317,7 @@ describe("useFluentFormItem (single)", () => {
       });
 
       function renderFluentFormItemsWithSubmit<
-        Config extends FormArrayConfig<RegisterModel, any, any>
+        Config extends FormArrayConfig<RegisterModel, any, any>,
       >(formConfig: Config) {
         const result = renderWithFluentFormItems(
           formConfig,
@@ -363,7 +334,7 @@ describe("useFluentFormItem (single)", () => {
                 </button>
               </>
             );
-          }
+          },
         );
 
         act(() => result.fluentFormArrayRef.current.addForm());

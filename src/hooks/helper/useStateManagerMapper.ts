@@ -12,7 +12,7 @@ import {
 
 export function useStateManagerMapper<Config extends FormArrayConfig>(
   key: FormKey,
-  arrayStateManager: UseFluentArrayStateManager<Config>
+  arrayStateManager: UseFluentArrayStateManager<Config>,
 ): UseFluentStateManager<Config> {
   const {
     formArray,
@@ -32,65 +32,65 @@ export function useStateManagerMapper<Config extends FormArrayConfig>(
   const state = useMemo(
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     () => formArray.find((formItem) => formItem.key === key)!,
-    [key, formArray]
+    [key, formArray],
   );
 
   const setContext = useCallback(
     (context: object) => setContextWithKey(key, context),
-    [key, setContextWithKey]
+    [key, setContextWithKey],
   );
 
   const setInitialValuesRef = useCallback(
     (values: Partial<ExtractValuesType<Config>>) =>
       setInitialValuesRefWithKey(key, values),
-    [key, setInitialValuesRefWithKey]
+    [key, setInitialValuesRefWithKey],
   );
 
   const setSubmittingResult = useCallback(
     (errors: ExtractErrorsType<Config>) =>
       setSubmittingResultWithKey(key, errors),
-    [key, setSubmittingResultWithKey]
+    [key, setSubmittingResultWithKey],
   );
 
   const setTouched = useCallback(
     <K extends keyof ExtractFieldsType<Config>>(field: K, touched: boolean) =>
       setTouchedWithKey(key, field, touched),
-    [key, setTouchedWithKey]
+    [key, setTouchedWithKey],
   );
 
   const setValidationFailure = useCallback(
     <K extends keyof ExtractValuesType<Config>>(
       field: K,
-      error: ExtractErrorsType<Config>
+      error: ExtractErrorsType<Config>,
     ) => setValidationFailureWithKey(key, field, error),
-    [key, setValidationFailureWithKey]
+    [key, setValidationFailureWithKey],
   );
 
   const setValidationSuccess = useCallback(
     <K extends keyof ExtractValuesType<Config>>(field: K) =>
       setValidationSuccessWithKey(key, field),
-    [key, setValidationSuccessWithKey]
+    [key, setValidationSuccessWithKey],
   );
 
   const setValue = useCallback(
     <K extends keyof ExtractValuesType<Config>>(
       field: K,
       value: ExtractValuesType<Config>[K],
-      touched?: boolean
+      touched?: boolean,
     ) => setValueWithKey(key, field, value, touched),
-    [key, setValueWithKey]
+    [key, setValueWithKey],
   );
 
   const setValues = useCallback(
     (values: Partial<ExtractValuesType<Config>>) =>
       setValuesWithKey(key, values),
-    [key, setValuesWithKey]
+    [key, setValuesWithKey],
   );
 
-  const startSubmitting = useCallback(() => startSubmittingWithKey(key), [
-    key,
-    startSubmittingWithKey,
-  ]);
+  const startSubmitting = useCallback(
+    () => startSubmittingWithKey(key),
+    [key, startSubmittingWithKey],
+  );
 
   const reset = useCallback(() => resetWithKey(key), [key, resetWithKey]);
 
@@ -122,7 +122,7 @@ export function useStateManagerMapper<Config extends FormArrayConfig>(
       setValues,
       startSubmitting,
       state,
-    ]
+    ],
   );
 
   return fluentStateManager;

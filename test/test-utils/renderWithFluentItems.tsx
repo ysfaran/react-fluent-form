@@ -25,7 +25,7 @@ function FormItemsInitializer<C extends FormArrayConfig>({
 
 export function renderWithFluentFormItems<C extends FormArrayConfig>(
   config: C,
-  UiItemComponent: React.FC<UiItemComponentProps<C>>
+  UiItemComponent: React.FC<UiItemComponentProps<C>>,
 ) {
   const fluentFormArrayRef: FluentFormArrayRef<C> = {
     current: null as any,
