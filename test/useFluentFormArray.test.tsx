@@ -9,12 +9,14 @@ import { createFormArray } from "../src/form-config/FormCreators";
 import { useFluentFormArray } from "../src/hooks/fluent-form-array/useFluentFormArray";
 import { renderWithFluentFormItems } from "./test-utils/renderWithFluentItems";
 import { UserModel } from "./types";
+import { z, ZodError } from "zod";
 
 describe("useFluentFormArray", () => {
   it("has no form items and form states initially", () => {
     const formConfig = createFormArray<UserModel>()({
       username: field.text(),
       email: field.email(),
+      password: field.password(),
     });
 
     const { result } = renderHook(() => useFluentFormArray(formConfig));
@@ -28,6 +30,7 @@ describe("useFluentFormArray", () => {
       const formConfig = createFormArray<UserModel>()({
         username: field.text(),
         email: field.email(),
+        password: field.password(),
       });
 
       const { result } = renderHook(() => useFluentFormArray(formConfig));
@@ -42,9 +45,10 @@ describe("useFluentFormArray", () => {
       const formConfig = createFormArray<UserModel>()({
         username: field.text(),
         email: field.email(),
+        password: field.password(),
       }).withInitialArray([
-        { username: "username0", email: "email0" },
-        { username: "username1", email: "email1" },
+        { username: "username0", email: "email0", password: "" },
+        { username: "username1", email: "email1", password: "" },
       ]);
 
       const { result } = renderHook(() => useFluentFormArray(formConfig));
@@ -52,21 +56,24 @@ describe("useFluentFormArray", () => {
       actHooks(() =>
         result.current.addForm({
           initialValues: { username: "username2", email: "email2" },
-        })
+        }),
       );
 
       expect(result.current.formStates.map((state) => state.values)).toEqual([
         {
           username: "username0",
           email: "email0",
+          password: "",
         },
         {
           username: "username1",
           email: "email1",
+          password: "",
         },
         {
           username: "username2",
           email: "email2",
+          password: "",
         },
       ]);
     });
@@ -75,6 +82,7 @@ describe("useFluentFormArray", () => {
       const formConfig = createFormArray<UserModel>()({
         username: field.text(),
         email: field.email(),
+        password: field.password(),
       }).withKeyGenerator((values) => values.username);
 
       const { result } = renderHook(() => useFluentFormArray(formConfig));
@@ -88,6 +96,7 @@ describe("useFluentFormArray", () => {
       const formConfig = createFormArray<UserModel>()({
         username: field.text(),
         email: field.email(),
+        password: field.password(),
       }).withKeyGenerator((values) => values.username);
 
       const { result } = renderHook(() => useFluentFormArray(formConfig));
@@ -103,10 +112,7 @@ describe("useFluentFormArray", () => {
       });
 
       expect(result.current.formStates.map((state) => state.key)).toEqual([
-        0,
-        2,
-        1,
-        3,
+        0, 2, 1, 3,
       ]);
     });
 
@@ -114,6 +120,7 @@ describe("useFluentFormArray", () => {
       const formConfig = createFormArray<UserModel>()({
         username: field.text(),
         email: field.email(),
+        password: field.password(),
       }).withKeyGenerator((values) => values.username);
 
       const { result } = renderHook(() => useFluentFormArray(formConfig));
@@ -131,6 +138,7 @@ describe("useFluentFormArray", () => {
       const formConfig = createFormArray<UserModel>()({
         username: field.text("ysfaran"),
         email: field.email(),
+        password: field.password(),
       })
         .withInitialValues({
           email: "example@email.com",
@@ -145,6 +153,7 @@ describe("useFluentFormArray", () => {
         values: {
           username: "ysfaran",
           email: "example@email.com",
+          password: "",
         },
         touched: {},
         validity: {},
@@ -158,6 +167,7 @@ describe("useFluentFormArray", () => {
       const formConfig = createFormArray<UserModel>()({
         username: field.text("ysfaran"),
         email: field.email(),
+        password: field.password(),
       }).withInitialValues({
         email: "example@email.com",
       });
@@ -167,12 +177,13 @@ describe("useFluentFormArray", () => {
       actHooks(() =>
         result.current.addForm({
           initialValues: { email: "prefered@email.com" },
-        })
+        }),
       );
 
       expect(result.current.formStates[0].values).toEqual({
         username: "ysfaran",
         email: "prefered@email.com",
+        password: "",
       });
     });
 
@@ -180,6 +191,7 @@ describe("useFluentFormArray", () => {
       const formConfig = createFormArray<UserModel>()({
         username: field.text(),
         email: field.email(),
+        password: field.password(),
       });
 
       const { result } = renderHook(() => useFluentFormArray(formConfig));
@@ -209,6 +221,7 @@ describe("useFluentFormArray", () => {
       const formConfig = createFormArray<UserModel>()({
         username: field.text(),
         email: field.email(),
+        password: field.password(),
       });
 
       const { result } = renderHook(() => useFluentFormArray(formConfig));
@@ -224,6 +237,7 @@ describe("useFluentFormArray", () => {
       const formConfig = createFormArray<UserModel>()({
         username: field.text(),
         email: field.email(),
+        password: field.password(),
       });
 
       const { result } = renderHook(() => useFluentFormArray(formConfig));
@@ -251,6 +265,7 @@ describe("useFluentFormArray", () => {
       const formConfig = createFormArray<UserModel>()({
         username: field.text(),
         email: field.email(),
+        password: field.password(),
       });
 
       const { result } = renderHook(() => useFluentFormArray(formConfig));
@@ -279,43 +294,45 @@ describe("useFluentFormArray", () => {
       const arrayConfig = createFormArray<UserModel>()({
         username: field.text(),
         email: field.email(),
+        password: field.password(),
       })
         .withValidation({ username: () => "error" })
         .withInitialArray([
-          { username: "user0", email: "email0" },
-          { username: "user1", email: "email1" },
+          { username: "user0", email: "email0", password: "" },
+          { username: "user1", email: "email1", password: "" },
         ])
         .validateOnChange()
         .withContext({ contextValue: 1 });
 
-      const {
-        fluentFormArrayRef,
-        fluentFormItemsRef,
-        getAllByTestId,
-      } = renderWithFluentFormItems(
-        arrayConfig,
-        ({ formItem: { key, fields } }) => {
-          return (
-            <>
-              <input data-testid={"username" + key} {...fields.username} />
-              <input data-testid={"email" + key} {...fields.email} />
-            </>
-          );
-        }
-      );
+      const { fluentFormArrayRef, fluentFormItemsRef, getAllByTestId } =
+        renderWithFluentFormItems(
+          arrayConfig,
+          ({ formItem: { key, fields } }) => {
+            return (
+              <>
+                <input data-testid={"username" + key} {...fields.username} />
+                <input data-testid={"email" + key} {...fields.email} />
+                <input data-testid={"password" + key} {...fields.password} />
+              </>
+            );
+          },
+        );
       const [userInput0, userInput1] = getAllByTestId(/username/);
       const [emailInput0, emailInput1] = getAllByTestId(/email/);
+      const [passwordInput0, passwordInput1] = getAllByTestId(/password/);
 
       fireEvent.change(userInput0, { target: { value: "new user0" } });
       fireEvent.change(userInput1, { target: { value: "new user1" } });
       fireEvent.change(emailInput0, { target: { value: "new email0" } });
       fireEvent.change(emailInput1, { target: { value: "new email1" } });
+      fireEvent.change(passwordInput0, { target: { value: "new password0" } });
+      fireEvent.change(passwordInput1, { target: { value: "new password1" } });
 
       act(() =>
-        fluentFormItemsRef.current[0].setContext({ contextValue: 999 })
+        fluentFormItemsRef.current[0].setContext({ contextValue: 999 }),
       );
       act(() =>
-        fluentFormItemsRef.current[1].setContext({ contextValue: 222 })
+        fluentFormItemsRef.current[1].setContext({ contextValue: 222 }),
       );
       act(() => fluentFormArrayRef.current.resetArray());
 
@@ -325,6 +342,7 @@ describe("useFluentFormArray", () => {
           values: {
             username: "user0",
             email: "email0",
+            password: "",
           },
           touched: {},
           validity: {},
@@ -338,6 +356,7 @@ describe("useFluentFormArray", () => {
           values: {
             username: "user1",
             email: "email1",
+            password: "",
           },
           touched: {},
           validity: {},
@@ -353,11 +372,12 @@ describe("useFluentFormArray", () => {
       const arrayConfig = createFormArray<UserModel>()({
         username: field.text(),
         email: field.email(),
+        password: field.password(),
       })
         .withValidation({ username: () => "error" })
         .withInitialArray([
-          { username: "user0", email: "email0" },
-          { username: "user1", email: "email1" },
+          { username: "user0", email: "email0", password: "" },
+          { username: "user1", email: "email1", password: "" },
         ])
         .validateOnChange();
 
@@ -368,22 +388,30 @@ describe("useFluentFormArray", () => {
             <>
               <input data-testid={"username" + key} {...fields.username} />
               <input data-testid={"email" + key} {...fields.email} />
+              <input data-testid={"password" + key} {...fields.password} />
             </>
           );
-        }
+        },
       );
 
       fluentFormArrayRef.current.setInitialArray([
-        { username: "new initial user", email: "new initial email" },
+        {
+          username: "new initial user",
+          email: "new initial email",
+          password: "123",
+        },
       ]);
 
       const [userInput0, userInput1] = getAllByTestId(/username/);
       const [emailInput0, emailInput1] = getAllByTestId(/email/);
+      const [passwordInput0, passwordInput1] = getAllByTestId(/password/);
 
       fireEvent.change(userInput0, { target: { value: "new user0" } });
       fireEvent.change(userInput1, { target: { value: "new user1" } });
       fireEvent.change(emailInput0, { target: { value: "new email0" } });
       fireEvent.change(emailInput1, { target: { value: "new email1" } });
+      fireEvent.change(passwordInput0, { target: { value: "new password0" } });
+      fireEvent.change(passwordInput1, { target: { value: "new password1" } });
 
       act(() => fluentFormArrayRef.current.resetArray());
 
@@ -393,6 +421,7 @@ describe("useFluentFormArray", () => {
           values: {
             username: "new initial user",
             email: "new initial email",
+            password: "123",
           },
           touched: {},
           validity: {},
@@ -410,6 +439,7 @@ describe("useFluentFormArray", () => {
       const formConfig = createFormArray<UserModel>()({
         username: field.text(),
         email: field.email(),
+        password: field.password(),
       });
 
       const { result } = renderHook(() => useFluentFormArray(formConfig));
@@ -425,6 +455,7 @@ describe("useFluentFormArray", () => {
       const formConfig = createFormArray<UserModel>()({
         username: field.text(),
         email: field.email(),
+        password: field.password(),
       });
 
       const { result } = renderHook(() => useFluentFormArray(formConfig));
@@ -448,8 +479,10 @@ describe("useFluentFormArray", () => {
       const formConfig = createFormArray<UserModel>()({
         username: field.text("ysfaran"),
         email: field.email(),
+        password: field.password("1"),
       }).withValidation({
         username: yup.string().required(),
+        password: z.string().min(1),
       });
 
       const { result } = renderHook(() => useFluentFormArray(formConfig));
@@ -467,12 +500,17 @@ describe("useFluentFormArray", () => {
           values: {
             username: "ysfaran",
             email: "",
+            password: "1",
           },
           key: 0,
           sortPosition: 0,
-          touched: { username: true, email: true },
-          validity: { username: true, email: true },
-          errors: { username: undefined, email: undefined },
+          touched: { username: true, email: true, password: true },
+          validity: { username: true, email: true, password: true },
+          errors: {
+            username: undefined,
+            email: undefined,
+            password: undefined,
+          },
           context: {},
           submitting: false,
         },
@@ -480,12 +518,17 @@ describe("useFluentFormArray", () => {
           values: {
             username: "ysfaran",
             email: "",
+            password: "1",
           },
           key: 1,
           sortPosition: 1,
-          touched: { username: true, email: true },
-          validity: { username: true, email: true },
-          errors: { username: undefined, email: undefined },
+          touched: { username: true, email: true, password: true },
+          validity: { username: true, email: true, password: true },
+          errors: {
+            username: undefined,
+            email: undefined,
+            password: undefined,
+          },
           context: {},
           submitting: false,
         },
@@ -496,8 +539,10 @@ describe("useFluentFormArray", () => {
       const formConfig = createFormArray<UserModel>()({
         username: field.text(),
         email: field.email(),
+        password: field.password(),
       }).withValidation({
         username: yup.string().required(),
+        password: z.string().min(1),
       });
       const failure = jest.fn();
       const { result } = renderHook(() => useFluentFormArray(formConfig));
@@ -514,12 +559,17 @@ describe("useFluentFormArray", () => {
           values: {
             username: "",
             email: "",
+            password: "",
           },
           key: 0,
           sortPosition: 0,
-          touched: { username: true, email: true },
-          validity: { username: false, email: true },
-          errors: { username: expect.any(Array), email: undefined },
+          touched: { username: true, email: true, password: true },
+          validity: { username: false, email: true, password: false },
+          errors: {
+            username: expect.any(Array),
+            email: undefined,
+            password: expect.any(ZodError),
+          },
           context: {},
           submitting: false,
         },
@@ -527,12 +577,17 @@ describe("useFluentFormArray", () => {
           values: {
             username: "",
             email: "",
+            password: "",
           },
           key: 1,
           sortPosition: 1,
-          touched: { username: true, email: true },
-          validity: { username: false, email: true },
-          errors: { username: expect.any(Array), email: undefined },
+          touched: { username: true, email: true, password: true },
+          validity: { username: false, email: true, password: false },
+          errors: {
+            username: expect.any(Array),
+            email: undefined,
+            password: expect.any(ZodError),
+          },
           context: {},
           submitting: false,
         },

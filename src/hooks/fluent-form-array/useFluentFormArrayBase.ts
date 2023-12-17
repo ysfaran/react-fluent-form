@@ -12,7 +12,7 @@ import { useHandleSubmit } from "../helper/useHandleSubmit";
 
 export function useFluentFormArrayBase<Config extends FormArrayConfig>(
   config: Config,
-  stateManager: UseFluentArrayStateManager<Config>
+  stateManager: UseFluentArrayStateManager<Config>,
 ): UseFluentFormArray<Config> {
   type Errors = ExtractErrorsType<Config>;
 
@@ -28,12 +28,11 @@ export function useFluentFormArrayBase<Config extends FormArrayConfig>(
     const formArrayErrors: FormArrayError<Errors> = {};
 
     for (const formItem of formArray) {
-      formArrayErrors[
-        formItem.key
-      ] = formConfigHelperRef.current.getValidationResultForAllFields(
-        formItem.values,
-        formItem.context
-      );
+      formArrayErrors[formItem.key] =
+        formConfigHelperRef.current.getValidationResultForAllFields(
+          formItem.values,
+          formItem.context,
+        );
     }
     setSubmittingResultForArray(formArrayErrors);
   }, [formConfigHelperRef, formArray, setSubmittingResultForArray]);
@@ -41,9 +40,9 @@ export function useFluentFormArrayBase<Config extends FormArrayConfig>(
   const valid = useMemo(
     () =>
       formArray.every((form) =>
-        Object.values(form.validity).every((validityValue) => validityValue)
+        Object.values(form.validity).every((validityValue) => validityValue),
       ),
-    [formArray]
+    [formArray],
   );
 
   const handleSubmit = useHandleSubmit({
@@ -60,12 +59,12 @@ export function useFluentFormArrayBase<Config extends FormArrayConfig>(
         stateManager,
         config,
       })),
-    [stateManager, config]
+    [stateManager, config],
   );
 
   const getFormStateByKey = useCallback(
     (key: FormKey) => formArray.find((formItem) => formItem.key === key),
-    [formArray]
+    [formArray],
   );
 
   return {

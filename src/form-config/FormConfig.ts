@@ -6,7 +6,7 @@ import { Validator } from "../validation/Validator";
 export class FormConfig<
   ValuesType extends object = any,
   F extends Fields<ValuesType> = Fields<any>,
-  E extends ErrorsType<ValuesType> = any
+  E extends ErrorsType<ValuesType> = any,
 > {
   public _fields: F;
   public _initialValues: Partial<ValuesType> = {};
@@ -46,14 +46,14 @@ export class FormConfig<
   }
 
   public withValidation<V extends Validations<ValuesType>>(
-    validations: V
+    validations: V,
   ): this & FormConfig<ValuesType, F, DefaultError<ValuesType, V>> {
     this._validator = new DefaultValidator(validations) as any;
     return this;
   }
 
   public withCustomValidator<V extends Validator<ValuesType, any>>(
-    validator: V
+    validator: V,
   ): this & FormConfig<ValuesType, F, ErrorsType<ValuesType, any>> {
     this._validator = validator as any;
     // TODO improve return type

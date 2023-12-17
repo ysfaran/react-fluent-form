@@ -23,15 +23,13 @@ export class CheckboxField extends InputField<boolean, InputPropsChecked> {
     };
   };
 
-  public mapToComponentProps: ComponentPropsMapper<
-    boolean,
-    InputPropsChecked
-  > = ({ value: checked, setValue, setTouched }) => {
-    return {
-      type: this._type,
-      checked,
-      onBlur: this.handleBlur(setTouched),
-      onChange: this.handleChange(setValue),
+  public mapToComponentProps: ComponentPropsMapper<boolean, InputPropsChecked> =
+    ({ value: checked, setValue, setTouched }) => {
+      return {
+        type: this._type,
+        checked,
+        onBlur: this.handleBlur(setTouched),
+        onChange: this.handleChange(setValue),
+      };
     };
-  };
 }

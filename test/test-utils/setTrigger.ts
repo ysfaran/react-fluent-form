@@ -4,7 +4,7 @@ import { FormConfig } from "../../src/form-config/FormConfig";
 
 export function setTrigger(
   configOrField: FormConfig | Field<any, any>,
-  validationTrigger?: ValidationTrigger
+  validationTrigger?: ValidationTrigger,
 ) {
   switch (validationTrigger) {
     case ValidationTrigger.AfterTouchOnChange:

@@ -59,6 +59,7 @@ export type RegisterModel = {
 export type UserModel = {
   username: string;
   email: string;
+  password: string;
 };
 
 export type SendEmailModel = {

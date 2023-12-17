@@ -15,7 +15,7 @@ export class RequiredValidator<T extends object> extends Validator<
 
   public validateField<K extends keyof T>(
     field: K,
-    values: T
+    values: T,
   ): void | "field is required" {
     if (this.requiredFields[field] && !values[field]) {
       return "field is required";

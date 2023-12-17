@@ -13,7 +13,7 @@ export class FormArrayConfigHelper<Config extends FormArrayConfig = any> {
 
   public getInitialArrayValues = (
     initialArray: ExtractValuesType<Config>[] = this.formArrayConfig
-      ._initialArray
+      ._initialArray,
   ): FormArrayState<ExtractValuesType<Config>, ExtractErrorsType<Config>> => {
     type Errors = ExtractErrorsType<Config>;
 

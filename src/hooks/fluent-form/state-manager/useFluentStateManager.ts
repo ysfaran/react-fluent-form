@@ -13,7 +13,7 @@ import {
 import { fluentFormReducer } from "./reducer";
 
 export function useFluentStateManager<Config extends FormConfig>(
-  config: Config
+  config: Config,
 ): UseFluentStateManager<Config> {
   type Values = ExtractValuesType<Config>;
   type Fields = ExtractFieldsType<Config>;
@@ -23,12 +23,12 @@ export function useFluentStateManager<Config extends FormConfig>(
   const { current: formConfigHelper } = formConfigHelperRef;
 
   const intitalStateRef = useRef<FluentFormState<Values, Errors>>(
-    formConfigHelper.getInitialState()
+    formConfigHelper.getInitialState(),
   );
 
   const [state, dispatch] = useReducer<FluentFormReducer<Values, Errors>>(
     fluentFormReducer,
-    intitalStateRef.current
+    intitalStateRef.current,
   );
 
   const setContext = useCallback((context: object) => {
@@ -53,7 +53,7 @@ export function useFluentStateManager<Config extends FormConfig>(
     <K extends keyof Fields>(field: K, touched: boolean) => {
       dispatch({ type: "SET_SINGLE_TOUCHED", payload: { field, touched } });
     },
-    []
+    [],
   );
 
   const setValidationFailure = useCallback(
@@ -63,7 +63,7 @@ export function useFluentStateManager<Config extends FormConfig>(
         payload: { field, error: error },
       });
     },
-    []
+    [],
   );
 
   const setValidationSuccess = useCallback(
@@ -73,7 +73,7 @@ export function useFluentStateManager<Config extends FormConfig>(
         payload: { field },
       });
     },
-    []
+    [],
   );
 
   const setValue = useCallback(
@@ -83,7 +83,7 @@ export function useFluentStateManager<Config extends FormConfig>(
         payload: { field, value, touched },
       });
     },
-    []
+    [],
   );
 
   const setValues = useCallback((values: Partial<Values>) => {

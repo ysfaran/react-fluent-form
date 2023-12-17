@@ -12,7 +12,7 @@ import { useHandleSubmit } from "../helper/useHandleSubmit";
 
 export function useFluentFormBase<Config extends FormConfig>(
   config: Config,
-  fluentStateManager: UseFluentStateManager<Config>
+  fluentStateManager: UseFluentStateManager<Config>,
 ): UseFluentForm<Config> {
   type Values = ExtractValuesType<Config>;
   type Fields = ExtractFieldsType<Config>;
@@ -38,17 +38,18 @@ export function useFluentFormBase<Config extends FormConfig>(
     (context = state.context) => {
       const errors = formConfigHelper.getValidationResultForAllFields(
         state.values,
-        context
+        context,
       );
       setSubmittingResult(errors);
       return errors;
     },
-    [formConfigHelper, setSubmittingResult, state.values, state.context]
+    [formConfigHelper, setSubmittingResult, state.values, state.context],
   );
 
-  const validateAllFieldsForUser = useCallback(() => validateAllFields(), [
-    validateAllFields,
-  ]);
+  const validateAllFieldsForUser = useCallback(
+    () => validateAllFields(),
+    [validateAllFields],
+  );
 
   const setContext = useCallback(
     (context: object) => {
@@ -57,19 +58,19 @@ export function useFluentFormBase<Config extends FormConfig>(
         validateAllFields(context);
       }
     },
-    [setContextState, validateAllFields, _validateOnContextChange]
+    [setContextState, validateAllFields, _validateOnContextChange],
   );
 
   const validateField = useCallback(
     <K extends keyof Values>(
       field: K,
-      value: Values[K] = state.values[field]
+      value: Values[K] = state.values[field],
     ) => {
       const error = formConfigHelper.getValidationResultForField(
         field,
         value,
         state.values,
-        state.context
+        state.context,
       );
       if (error !== undefined) {
         setValidationFailure(field, error);
@@ -85,19 +86,19 @@ export function useFluentFormBase<Config extends FormConfig>(
       state.context,
       setValidationFailure,
       setValidationSuccess,
-    ]
+    ],
   );
 
   const validateFieldForUser = useCallback(
     <K extends keyof Values>(field: K) => validateField(field),
-    [validateField]
+    [validateField],
   );
 
   const handleChange = useCallback(
     <K extends keyof Values>(field: K, value: Values[K]) => {
       const triggerValidation = formConfigHelper.shouldValidateOnChange(
         field,
-        state.touched[field]
+        state.touched[field],
       );
 
       setValue(field, value, triggerValidation || undefined);
@@ -106,7 +107,7 @@ export function useFluentFormBase<Config extends FormConfig>(
         validateField(field, value);
       }
     },
-    [formConfigHelper, setValue, state.touched, validateField]
+    [formConfigHelper, setValue, state.touched, validateField],
   );
 
   const handleTouched = useCallback(
@@ -121,12 +122,12 @@ export function useFluentFormBase<Config extends FormConfig>(
         validateField(field, state.values[field]);
       }
     },
-    [formConfigHelper, setTouched, state.touched, state.values, validateField]
+    [formConfigHelper, setTouched, state.touched, state.values, validateField],
   );
 
   const valid = useMemo(
     () => Object.values(state.validity).every((validityValue) => validityValue),
-    [state.validity]
+    [state.validity],
   );
 
   const handleSubmit = useHandleSubmit({
@@ -140,7 +141,7 @@ export function useFluentFormBase<Config extends FormConfig>(
     return formConfigHelper.getMappedFields(
       state.values,
       handleTouched,
-      handleChange
+      handleChange,
     );
   }, [formConfigHelper, state.values, handleTouched, handleChange]);
 

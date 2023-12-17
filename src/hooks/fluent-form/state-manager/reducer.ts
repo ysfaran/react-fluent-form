@@ -7,7 +7,7 @@ import {
 export type FluentFormActionTypes<
   ValuesType extends object,
   K extends keyof ValuesType,
-  E extends ErrorsType<ValuesType>
+  E extends ErrorsType<ValuesType>,
 > =
   | Action<"SET_VALUES", { values: Partial<ValuesType> }>
   | Action<
@@ -29,10 +29,10 @@ export type FluentFormActionTypes<
 export const fluentFormReducer = <
   ValuesType extends object,
   K extends keyof ValuesType,
-  E extends ErrorsType<ValuesType>
+  E extends ErrorsType<ValuesType>,
 >(
   state: FluentFormState<ValuesType, E>,
-  action: FluentFormActionTypes<ValuesType, K, E>
+  action: FluentFormActionTypes<ValuesType, K, E>,
 ): FluentFormState<ValuesType, E> => {
   switch (action.type) {
     case "SET_VALUES":

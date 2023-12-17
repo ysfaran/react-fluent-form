@@ -19,7 +19,7 @@ import {
 import { fluentFormArrayReducer } from "./reducer";
 
 export function useFluentArrayStateManager<Config extends FormArrayConfig>(
-  config: Config
+  config: Config,
 ): UseFluentArrayStateManager<Config> {
   type Values = ExtractValuesType<Config>;
   type Fields = ExtractFieldsType<Config>;
@@ -31,7 +31,7 @@ export function useFluentArrayStateManager<Config extends FormArrayConfig>(
   const initalFormArrayValues = useMemo(
     () => formArrayConfigHelper.getInitialArrayValues(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [],
   );
 
   const initialArrayStateRef = useRef<FluentFormArrayState<Values, Errors>>({
@@ -41,7 +41,7 @@ export function useFluentArrayStateManager<Config extends FormArrayConfig>(
 
   const [state, dispatch] = useReducer<FluentFormArrayReducer<Values, Errors>>(
     fluentFormArrayReducer,
-    initialArrayStateRef.current
+    initialArrayStateRef.current,
   );
 
   const sortPositionCountRef = useRef(Object.keys(state.formArray).length);
@@ -71,9 +71,8 @@ export function useFluentArrayStateManager<Config extends FormArrayConfig>(
     initalStateRefs.current = {};
     for (let i = 0; i < entries.length; i++) {
       const [key, item] = entries[i];
-      initalStateRefs.current[
-        key
-      ] = formConfigHelperRef.current.getInitialState(item.values);
+      initalStateRefs.current[key] =
+        formConfigHelperRef.current.getInitialState(item.values);
     }
   }, []);
 
@@ -82,19 +81,16 @@ export function useFluentArrayStateManager<Config extends FormArrayConfig>(
 
   const setInitialArrayRef = useCallback(
     (initialArray: Values[]) => {
-      initialArrayStateRef.current.formArray = formArrayConfigHelper.getInitialArrayValues(
-        initialArray
-      );
+      initialArrayStateRef.current.formArray =
+        formArrayConfigHelper.getInitialArrayValues(initialArray);
     },
-    [formArrayConfigHelper]
+    [formArrayConfigHelper],
   );
 
   const addForm = useCallback(
     ({ initialValues, key }: AddFormArgs<Values> = {}) => {
-      const initialState: FluentFormState<
-        Values,
-        Errors
-      > = formConfigHelper.getInitialState(initialValues);
+      const initialState: FluentFormState<Values, Errors> =
+        formConfigHelper.getInitialState(initialValues);
 
       key =
         key ||
@@ -112,7 +108,7 @@ export function useFluentArrayStateManager<Config extends FormArrayConfig>(
         },
       });
     },
-    [_generateKey, formConfigHelper, getUniqueKey]
+    [_generateKey, formConfigHelper, getUniqueKey],
   );
 
   const removeForm = useCallback((key: FormKey) => {
@@ -134,7 +130,7 @@ export function useFluentArrayStateManager<Config extends FormArrayConfig>(
         payload: { formArrayErrors },
       });
     },
-    []
+    [],
   );
 
   const resetArray = useCallback(() => {
@@ -153,7 +149,7 @@ export function useFluentArrayStateManager<Config extends FormArrayConfig>(
         ...values,
       };
     },
-    []
+    [],
   );
 
   const setSubmittingResult = useCallback((key: FormKey, errors: Errors) => {
@@ -170,7 +166,7 @@ export function useFluentArrayStateManager<Config extends FormArrayConfig>(
         payload: { key, field, touched },
       });
     },
-    []
+    [],
   );
 
   const setValidationFailure = useCallback(
@@ -180,7 +176,7 @@ export function useFluentArrayStateManager<Config extends FormArrayConfig>(
         payload: { key, field, error: error },
       });
     },
-    []
+    [],
   );
 
   const setValidationSuccess = useCallback(
@@ -190,7 +186,7 @@ export function useFluentArrayStateManager<Config extends FormArrayConfig>(
         payload: { key, field },
       });
     },
-    []
+    [],
   );
 
   const setValue = useCallback(
@@ -198,14 +194,14 @@ export function useFluentArrayStateManager<Config extends FormArrayConfig>(
       key: FormKey,
       field: K,
       value: Values[K],
-      touched?: boolean
+      touched?: boolean,
     ) => {
       dispatch({
         type: "VALUE_CHANGE",
         payload: { key, field, value, touched },
       });
     },
-    []
+    [],
   );
 
   const setValues = useCallback((key: FormKey, values: Partial<Values>) => {
@@ -223,15 +219,15 @@ export function useFluentArrayStateManager<Config extends FormArrayConfig>(
         payload: { ...state.formArray[key], ...initalStateRefs.current[key] },
       });
     },
-    [state.formArray]
+    [state.formArray],
   );
 
   const formsAsArrays = useMemo(
     () =>
       Object.values(state.formArray).sort(
-        (a, b) => a.sortPosition - b.sortPosition
+        (a, b) => a.sortPosition - b.sortPosition,
       ),
-    [state.formArray]
+    [state.formArray],
   );
 
   return {

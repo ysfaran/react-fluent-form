@@ -141,7 +141,7 @@ describe("FormConfigHelper", () => {
         ValidationTrigger,
         ValidationTrigger | undefined,
         boolean | undefined,
-        boolean
+        boolean,
       ]
     >([
       [AfterTouchOnChange, OnChange, true, true],
@@ -156,13 +156,13 @@ describe("FormConfigHelper", () => {
         globalTrigger: ValidationTrigger,
         fieldTrigger: ValidationTrigger | undefined,
         touched: boolean | undefined,
-        result: boolean
+        result: boolean,
       ) => {
         setTrigger(formConfig, globalTrigger);
         setTrigger(formConfig._fields.username, fieldTrigger);
 
         expect(helper.shouldValidateOnChange("username", touched)).toBe(result);
-      }
+      },
     );
   });
 
@@ -206,13 +206,13 @@ describe("FormConfigHelper", () => {
         globalTrigger: ValidationTrigger,
         fieldTrigger: ValidationTrigger | undefined,
         touched: boolean,
-        result: boolean
+        result: boolean,
       ) => {
         setTrigger(formConfig, globalTrigger);
         setTrigger(formConfig._fields.username, fieldTrigger);
 
         expect(helper.shouldValidateOnBlur("username", touched)).toBe(result);
-      }
+      },
     );
   });
 });

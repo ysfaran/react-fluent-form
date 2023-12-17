@@ -6,7 +6,7 @@ import { useFluentFormBase } from "../fluent-form/useFluentFormBase";
 import { useStateManagerMapper } from "../helper/useStateManagerMapper";
 
 export function useFluentFormItem<Config extends FormArrayConfig>(
-  args: UseFluentFormItemArgs<Config>
+  args: UseFluentFormItemArgs<Config>,
 ): UseFluentFormItem<Config> {
   const { stateManager, key, config } = args;
   const { removeForm } = stateManager;

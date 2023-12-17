@@ -48,13 +48,15 @@ export class RadioField extends InputField<string, InputPropsRadioGenerator> {
   public mapToComponentProps: ComponentPropsMapper<
     string,
     InputPropsRadioGenerator
-  > = ({ value, setValue, setTouched }) => (radioInputValue: string) => ({
-    type: this._type,
-    checked: radioInputValue === value,
-    name: this._name,
-    value: radioInputValue,
-    onBlur: this.handleBlur(setTouched),
-    onChange: this.handleChange(setValue),
-    onClick: this.handleClick(setValue, value),
-  });
+  > =
+    ({ value, setValue, setTouched }) =>
+    (radioInputValue: string) => ({
+      type: this._type,
+      checked: radioInputValue === value,
+      name: this._name,
+      value: radioInputValue,
+      onBlur: this.handleBlur(setTouched),
+      onChange: this.handleChange(setValue),
+      onClick: this.handleClick(setValue, value),
+    });
 }

@@ -8,16 +8,18 @@ import { createForm } from "../src/form-config/FormCreators";
 import { RequiredValidator } from "./test-helper/RequiredValidator";
 import { renderWithFluentForm } from "./test-utils/renderWithFluentForm";
 import { UserModel } from "./types";
+import { z } from "zod";
 
 describe("useFluentForm (validations)", () => {
   it("allows passing custom validator", () => {
     const formConfig = createForm<UserModel>()({
       username: field.text(),
       email: field.email(),
+      password: field.password(),
     }).withCustomValidator(
       new RequiredValidator<UserModel>({
         username: "required",
-      })
+      }),
     );
 
     const { fluentFormRef, container } = renderWithFluentForm(
@@ -27,11 +29,11 @@ describe("useFluentForm (validations)", () => {
           <input {...fluentForm.fields.username} />
           <input {...fluentForm.fields.email} />
         </>
-      )
+      ),
     );
 
     const [usernameInput, emailInput] = Array.from(
-      container.querySelectorAll("input")
+      container.querySelectorAll("input"),
     );
 
     fireEvent.blur(usernameInput);
@@ -53,6 +55,7 @@ describe("useFluentForm (validations)", () => {
       const formConfig = createForm<UserModel>()({
         username: field.text(),
         email: field.email(),
+        password: field.password(),
       }).withValidation({
         username: yup.string().required(),
         email: (email) => {
@@ -60,12 +63,14 @@ describe("useFluentForm (validations)", () => {
             return "error";
           }
         },
+        password: z.string().min(1),
       });
 
       return renderWithFluentForm(formConfig, ({ fluentForm }) => (
         <>
           <input {...fluentForm.fields.username} />
           <input {...fluentForm.fields.email} />
+          <input {...fluentForm.fields.password} />
         </>
       ));
     };
@@ -78,42 +83,46 @@ describe("useFluentForm (validations)", () => {
 
     it("is empty initially", () => {
       const { fluentFormRef } = renderedForm;
-
       expect(fluentFormRef.current.validity).toMatchObject({});
     });
 
     it("is false when validation fails", () => {
       const { fluentFormRef, container } = renderedForm;
 
-      const [usernameInput, emailInput] = Array.from(
-        container.querySelectorAll("input")
+      const [usernameInput, emailInput, passwordInput] = Array.from(
+        container.querySelectorAll("input"),
       );
 
       fireEvent.blur(usernameInput);
       fireEvent.blur(emailInput);
+      fireEvent.blur(passwordInput);
 
       expect(fluentFormRef.current.validity).toMatchObject({
         username: false,
         email: false,
+        password: false,
       });
     });
 
     it("is set to true when validation succeeds", () => {
       const { fluentFormRef, container } = renderedForm;
 
-      const [usernameInput, emailInput] = Array.from(
-        container.querySelectorAll("input")
+      const [usernameInput, emailInput, passwordInput] = Array.from(
+        container.querySelectorAll("input"),
       );
 
       fireEvent.change(usernameInput, { target: { value: "abc" } });
       fireEvent.change(emailInput, { target: { value: "abc" } });
+      fireEvent.change(passwordInput, { target: { value: "abc" } });
 
       fireEvent.blur(usernameInput);
       fireEvent.blur(emailInput);
+      fireEvent.blur(passwordInput);
 
       expect(fluentFormRef.current.validity).toMatchObject({
         username: true,
         email: true,
+        password: true,
       });
     });
   });
@@ -123,6 +132,7 @@ describe("useFluentForm (validations)", () => {
       createForm<UserModel>()({
         username: field.text(),
         email: field.email().validateOnSubmitOnly(),
+        password: field.password(),
       }).withValidation({
         username: yup.string().required().min(10),
         email: (email) => {
@@ -130,6 +140,7 @@ describe("useFluentForm (validations)", () => {
             return "error";
           }
         },
+        password: z.string().min(8),
       });
 
     let formConfig: ReturnType<typeof createFormConfig>;
@@ -141,7 +152,7 @@ describe("useFluentForm (validations)", () => {
     it("validates after on blur by default", () => {
       const { fluentFormRef, container } = renderWithFluentForm(
         formConfig,
-        ({ fluentForm }) => <input {...fluentForm.fields.username} />
+        ({ fluentForm }) => <input {...fluentForm.fields.username} />,
       );
 
       const usernameInput = container.querySelector("input")!;
@@ -162,7 +173,7 @@ describe("useFluentForm (validations)", () => {
 
       const { fluentFormRef, container } = renderWithFluentForm(
         formConfig,
-        ({ fluentForm }) => <input {...fluentForm.fields.username} />
+        ({ fluentForm }) => <input {...fluentForm.fields.username} />,
       );
 
       fireEvent.change(container.querySelector("input")!, {
@@ -182,7 +193,7 @@ describe("useFluentForm (validations)", () => {
             <input {...fluentForm.fields.username} />
             <button type="submit">Submit</button>
           </form>
-        )
+        ),
       );
 
       const usernameInput = container.querySelector("input")!;
@@ -208,7 +219,7 @@ describe("useFluentForm (validations)", () => {
             <input {...fluentForm.fields.email} />
             <button type="submit">Submit</button>
           </form>
-        )
+        ),
       );
 
       const emailInput = container.querySelector("input")!;

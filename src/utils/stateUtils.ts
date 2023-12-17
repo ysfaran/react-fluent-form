@@ -12,7 +12,7 @@ export function generateAllTouchedTrue<T extends object>(keys: Array<keyof T>) {
 
 export function deriveValidityFromErrors<T extends object>(
   keys: Array<keyof T>,
-  errors: ErrorsType<T>
+  errors: ErrorsType<T>,
 ) {
   const validity: StateValidity<T> = {};
 

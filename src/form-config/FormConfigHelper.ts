@@ -16,7 +16,7 @@ export class FormConfigHelper<Config extends FormConfig = any> {
   }
 
   public getInitialState(
-    initialValues: Partial<ExtractValuesType<Config>> = {}
+    initialValues: Partial<ExtractValuesType<Config>> = {},
   ): FluentFormState<ExtractValuesType<Config>, ExtractErrorsType<Config>> {
     return {
       values: { ...this.getInitialValues(), ...initialValues },
@@ -35,7 +35,7 @@ export class FormConfigHelper<Config extends FormConfig = any> {
 
   public getValidationResultForAllFields(
     values: ExtractValuesType<Config>,
-    context: object
+    context: object,
   ): ExtractErrorsType<Config> {
     if (this.formConfig._validator) {
       return this.formConfig._validator.validateAllFields(values, context);
@@ -48,7 +48,7 @@ export class FormConfigHelper<Config extends FormConfig = any> {
     field: K,
     value: ExtractValuesType<Config>[K],
     values: ExtractValuesType<Config>,
-    context: object
+    context: object,
   ): ExtractErrorsType<Config>[K] {
     if (this.formConfig._validator) {
       const error = this.formConfig._validator.validateField(
@@ -57,7 +57,7 @@ export class FormConfigHelper<Config extends FormConfig = any> {
           ...values,
           [field]: value,
         },
-        context
+        context,
       );
 
       return error;
@@ -70,12 +70,12 @@ export class FormConfigHelper<Config extends FormConfig = any> {
     values: ExtractValuesType<Config>,
     onTouch: <K extends keyof ExtractValuesType<Config>>(
       field: K,
-      value: boolean
+      value: boolean,
     ) => void,
     onChange: <K extends keyof ExtractValuesType<Config>>(
       field: K,
-      value: ExtractValuesType<Config>[K]
-    ) => void
+      value: ExtractValuesType<Config>[K],
+    ) => void,
   ) {
     type Fields = ExtractFieldsType<Config>;
     type Values = ExtractValuesType<Config>;
@@ -85,7 +85,7 @@ export class FormConfigHelper<Config extends FormConfig = any> {
     return (Object.keys(fields) as Array<keyof Fields>).reduce(
       <K extends keyof Fields>(
         mappedObj: MappedFields<Fields>,
-        key: K
+        key: K,
       ): MappedFields<Fields> => {
         const setValueForField = (value: Values[K]) => {
           onChange(key, value);
@@ -104,13 +104,13 @@ export class FormConfigHelper<Config extends FormConfig = any> {
           }),
         };
       },
-      {} as MappedFields<Fields>
+      {} as MappedFields<Fields>,
     );
   }
 
   public shouldValidateOnChange<K extends keyof ExtractValuesType<Config>>(
     field: K,
-    touched?: boolean
+    touched?: boolean,
   ) {
     const toConsiderTrigger = this.getToConsiderTrigger(field);
 
@@ -122,7 +122,7 @@ export class FormConfigHelper<Config extends FormConfig = any> {
 
   public shouldValidateOnBlur<K extends keyof ExtractValuesType<Config>>(
     field: K,
-    touchedNow: boolean
+    touchedNow: boolean,
   ) {
     const toConsiderTrigger = this.getToConsiderTrigger(field);
 
@@ -132,7 +132,7 @@ export class FormConfigHelper<Config extends FormConfig = any> {
   }
 
   private getToConsiderTrigger<K extends keyof ExtractValuesType<Config>>(
-    field: K
+    field: K,
   ) {
     const fieldTrigger = this.getFieldTrigger(field);
     const globalTrigger = this.formConfig._validationTrigger;
