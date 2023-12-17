@@ -1,3 +1,10 @@
+## [1.7.0](https://github.com/ysfaran/react-fluent-form/compare/v1.6.0...v1.7.0) (2023-12-17)
+
+
+### Features
+
+* **form:** add support for Zod in the DefaultValidator ([4414fc2](https://github.com/ysfaran/react-fluent-form/commit/4414fc2c75238c09deb128ebef7a25e41cdf32f1))
+
 ## [1.6.0](https://github.com/ysfaran/react-fluent-form/compare/v1.5.4...v1.6.0) (2021-11-07)
 
 ### Features
